@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="microservice-api" />
+        <module name="microservice-consumer-80" />
+        <module name="microservice-eureka-7001" />
+        <module name="microservice-provider-express-9227" />
+        <module name="microservice-provider-login-8001" />
+        <module name="microservice-provider-order-9427" />
+        <module name="microservice-provider-product-9001" />
+        <module name="microservice-provider-supplier-5001" />
+        <module name="microservice-provider-upload-6001" />
+        <module name="microservice-provider-ymym-9327" />
+        <module name="microservice-zuul-gateway-9527" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="microservice-api" target="1.8" />
+      <module name="microservice-consumer-80" target="1.8" />
+      <module name="microservice-eureka-7001" target="1.8" />
+      <module name="microservice-provider-express-9227" target="1.8" />
+      <module name="microservice-provider-login-8001" target="1.8" />
+      <module name="microservice-provider-order-9427" target="1.8" />
+      <module name="microservice-provider-product-9001" target="1.8" />
+      <module name="microservice-provider-supplier-5001" target="1.8" />
+      <module name="microservice-provider-upload-6001" target="1.8" />
+      <module name="microservice-provider-ymym-9327" target="1.8" />
+      <module name="microservice-zuul-gateway-9527" target="1.8" />
+      <module name="microservice_zmc" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

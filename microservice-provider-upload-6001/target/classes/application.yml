@@ -1,0 +1,42 @@
+# 文件上传路径
+img:
+    location: D:/temp/upload/image
+
+# Tracker Server的地址
+trackerServer: 192.168.220.239:22122
+
+server:
+  port: 6001
+
+logging:
+   level:
+       com:
+          zmc:
+             springcloud:
+                 mapper: debug
+
+spring:
+   # 配置静态路径,多个可用逗号隔开
+   resources:
+     static-locations: file:${img.location}
+   mvc:
+     static-path-pattern: /**
+
+   application:
+     name: microservicecloud-upload
+
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+       defaultZone: http://localhost:7001/eureka
+        #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+    instance:
+      instance-id: microservicecloud-upload-6001
+      prefer-ip-address: true     #访问路径可以显示IP地址
+
+info:
+  app.name: zmc-microservicecloud
+  company.name: www.zmc.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+

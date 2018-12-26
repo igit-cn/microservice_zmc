@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-consumer-80" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-eureka-7001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-express-9227" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-login-8001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-order-9427" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-product-9001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-supplier-5001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-upload-6001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-ymym-9327" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-zuul-gateway-9527" charset="UTF-8" />
+  </component>
+</project>

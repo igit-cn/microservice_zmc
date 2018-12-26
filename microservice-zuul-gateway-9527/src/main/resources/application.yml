@@ -1,0 +1,66 @@
+server:
+  # 将端口由9527改为80,使请求没有端口号
+  port: 80
+
+spring:
+  application:
+    name: microservicecloud-zuul-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
+  instance:
+    instance-id: gateway-9527.com
+    prefer-ip-address: true
+
+
+zuul:
+  routes:
+      # 对各模块进行转发
+      # 登录模块
+      login-service:
+        path: /api/common/**
+        serviceId: microservicecloud-login
+        sensitiveHeaders: "*"
+      # 产品模块
+      product-service:
+        path: /api/admin/business/product/**
+        serviceId: microservicecloud-product
+        sensitiveHeaders: "*"
+      # 文件上传模块
+      upload-service:
+        path: /api/resource/**
+        serviceId: microservicecloud-upload
+      # 供应商模块
+      supplier-service:
+        path: /api/admin/business/provider/**
+        serviceId: microservicecloud-supplier
+        sensitiveHeaders: "*"
+      # 订单模块
+      order-service:
+        path: /api/admin/business/order/**
+        serviceId: microservicecloud-order
+        sensitiveHeaders: "*"
+      # 商城模块
+      ymym-service:
+        path: /api/ymym/**
+        serviceId: microservicecloud-ymym
+        sensitiveHeaders: "*"
+      # 物流模块
+      express-service:
+        path: /api/admin/inbound/**
+        serviceId: microservicecloud-express
+        sensitiveHeaders: "*"
+
+  ignoredServices: "*"
+  sensitiveHeaders: "*"
+  host:
+      connect-timeout-millis: 20000
+      socket-timeout-millis: 20000
+
+info:
+  app.name: atguigu-microcloud
+  company.name: www.atguigu.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$

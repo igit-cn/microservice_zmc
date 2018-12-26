@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/microservice-api/microservice-api.iml" filepath="$PROJECT_DIR$/microservice-api/microservice-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-consumer-80/microservice-consumer-80.iml" filepath="$PROJECT_DIR$/microservice-consumer-80/microservice-consumer-80.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-eureka-7001/microservice-eureka-7001.iml" filepath="$PROJECT_DIR$/microservice-eureka-7001/microservice-eureka-7001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-express-9227/microservice-provider-express-9227.iml" filepath="$PROJECT_DIR$/microservice-provider-express-9227/microservice-provider-express-9227.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-login-8001/microservice-provider-login-8001.iml" filepath="$PROJECT_DIR$/microservice-provider-login-8001/microservice-provider-login-8001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-order-9427/microservice-provider-order-9427.iml" filepath="$PROJECT_DIR$/microservice-provider-order-9427/microservice-provider-order-9427.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-product-9001/microservice-provider-product-9001.iml" filepath="$PROJECT_DIR$/microservice-provider-product-9001/microservice-provider-product-9001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-supplier-5001/microservice-provider-supplier-5001.iml" filepath="$PROJECT_DIR$/microservice-provider-supplier-5001/microservice-provider-supplier-5001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-upload-6001/microservice-provider-upload-6001.iml" filepath="$PROJECT_DIR$/microservice-provider-upload-6001/microservice-provider-upload-6001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider-ymym-9327/microservice-provider-ymym-9327.iml" filepath="$PROJECT_DIR$/microservice-provider-ymym-9327/microservice-provider-ymym-9327.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-zuul-gateway-9527/microservice-zuul-gateway-9527.iml" filepath="$PROJECT_DIR$/microservice-zuul-gateway-9527/microservice-zuul-gateway-9527.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice_zmc.iml" filepath="$PROJECT_DIR$/microservice_zmc.iml" />
+    </modules>
+  </component>
+</project>
