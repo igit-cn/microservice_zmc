@@ -1,9 +1,8 @@
 package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.SpecialtySpecification;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * Created by xyy on 2018/12/14.

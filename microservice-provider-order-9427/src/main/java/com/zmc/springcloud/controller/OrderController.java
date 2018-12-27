@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     /** 渠道销售-订单审核-订单详情*/
-    @RequestMapping("/detail")
+    @RequestMapping("/detail/view")
     public Json orderDetail(Long orderid){
         Json j = new Json();
         try{

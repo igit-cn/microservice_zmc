@@ -22,6 +22,6 @@ public class HyArea {
     private String name;
     private String fullName;
     private String treePath;
-    private String status;
+    private Boolean status;
     private Long orders;
 }

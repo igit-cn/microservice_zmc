@@ -66,7 +66,7 @@ public class SpecialtySpecification {
     /** 基础库存*/
     private Integer baseInbound;
 
-
+    // TODO 这些字段的数据来自与SpecialtyPrice,hy_specialty_specification中没有相应的列
     //门店提成比例
     private BigDecimal storeDivide;
     //非虹宇门店提成比例

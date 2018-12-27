@@ -2,6 +2,7 @@ package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.SpecialtyPrice;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * Created by xyy on 2018/12/10.
