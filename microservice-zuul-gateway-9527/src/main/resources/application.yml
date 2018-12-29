@@ -20,44 +20,44 @@ zuul:
       # 对各模块进行转发
       # 登录模块
       login-service:
-        path: /api/common/**
+        path: /hyapi/common/**
         serviceId: microservicecloud-login
         sensitiveHeaders: "*"
       # 产品模块
       product-service:
-        path: /api/admin/business/product/**
+        path: /hyapi/admin/business/product/**
         serviceId: microservicecloud-product
         sensitiveHeaders: "*"
       # 文件上传模块
       upload-service:
-        path: /api/resource/**
+        path: /hyapi/resource/**
         serviceId: microservicecloud-upload
       # 供应商模块
       supplier-service:
-        path: /api/admin/business/provider/**
+        path: /hyapi/admin/business/provider/**
         serviceId: microservicecloud-supplier
         sensitiveHeaders: "*"
       # 订单模块
       order-service:
-        path: /api/admin/business/order/**
+        path: /hyapi/admin/business/order/**
         serviceId: microservicecloud-order
         sensitiveHeaders: "*"
       # 商城模块
       ymym-service:
-        path: /api/ymym/**
+        path: /hyapi/ymym/**
         serviceId: microservicecloud-ymym
         sensitiveHeaders: "*"
       # 物流模块
       express-service:
-        path: /api/admin/inbound/**
+        path: /hyapi/admin/inbound/**
         serviceId: microservicecloud-express
         sensitiveHeaders: "*"
 
   ignoredServices: "*"
   sensitiveHeaders: "*"
-  host:
-      connect-timeout-millis: 20000
-      socket-timeout-millis: 20000
+#  host:
+#      connect-timeout-millis: 20000
+#      socket-timeout-millis: 20000
 
 info:
   app.name: atguigu-microcloud

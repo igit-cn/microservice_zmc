@@ -76,7 +76,7 @@ public class LoginController {
     }
 
     /** 返回当前登录用户可以分配的子角色*/
-    @RequestMapping(value="/getSubroles", method = RequestMethod.GET)
+    @RequestMapping(value="/privilege/getSubroles", method = RequestMethod.GET)
     public Json getSubRoles(HttpSession session) {
         Json j = new Json();
         try {
