@@ -1,0 +1,23 @@
+version: '2'
+services:
+  discovery:
+    image: itmuch/microservice-eureka-7001:0.0.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+  microservice-provider-express-9227:
+    image: itmuch/microservice-provider-express-9227:0.0.1-SNAPSHOT
+  microservice-provider-login-8001:
+    image: itmuch/microservice-provider-login-8001:0.0.1-SNAPSHOT
+  microservice-provider-order-9427:
+    image: itmuch/microservice-provider-order-9427:0.0.1-SNAPSHOT
+  microservice-provider-product-9001:
+    image: itmuch/microservice-provider-product-9001:0.0.1-SNAPSHOT
+  microservice-provider-supplier-5001:
+    image: itmuch/microservice-provider-supplier-5001:0.0.1-SNAPSHOT
+  microservice-provider-upload-6001:
+    image: itmuch/microservice-provider-upload-6001:0.0.1-SNAPSHOT 
+  microservice-provider-ymym-9327:
+    image: itmuch/microservice-provider-ymym-9327:0.0.1-SNAPSHOT 
+  microservice-zuul-gateway-9527:
+    image: itmuch/microservice-zuul-gateway-9527:0.0.1-SNAPSHOT 
+# 最简单的配置方式，等价于docker-compose.yml。

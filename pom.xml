@@ -124,7 +124,7 @@
 
 
     <build>
-        <finalName>microservicecloud</finalName>
+        <!--<finalName>microservicecloud</finalName>-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -132,15 +132,36 @@
             </resource>
         </resources>
         <plugins>
-            <plugin>
+ <!--           <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
                 <configuration>
                     <delimiters>
                         <delimit>$</delimit>
                     </delimiters>
                 </configuration>
+            </plugin>-->
+
+            <!-- 添加docker-maven插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <imageName>itmuch/${project.artifactId}:${project.version}</imageName>
+                    <baseImage>java</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

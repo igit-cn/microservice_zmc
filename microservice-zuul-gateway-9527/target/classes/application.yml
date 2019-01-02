@@ -1,6 +1,7 @@
 server:
   # 将端口由9527改为80,使请求没有端口号
-  port: 80
+  # 较小的端口号(如80)在Ubuntu下需要权限
+  port: 9527
 
 spring:
   application:
@@ -11,7 +12,7 @@ eureka:
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka
   instance:
-    instance-id: gateway-9527.com
+    instance-id: microservicecloud-zuul-gateway
     prefer-ip-address: true
 
 
@@ -55,9 +56,9 @@ zuul:
 
   ignoredServices: "*"
   sensitiveHeaders: "*"
-  host:
-      connect-timeout-millis: 20000
-      socket-timeout-millis: 20000
+#  host:
+#      connect-timeout-millis: 20000
+#      socket-timeout-millis: 20000
 
 info:
   app.name: atguigu-microcloud

@@ -10,6 +10,7 @@
         <module name="microservice-api" />
         <module name="microservice-consumer-80" />
         <module name="microservice-eureka-7001" />
+        <module name="microservice-provider-common-9127" />
         <module name="microservice-provider-express-9227" />
         <module name="microservice-provider-login-8001" />
         <module name="microservice-provider-order-9427" />
@@ -24,6 +25,7 @@
       <module name="microservice-api" target="1.8" />
       <module name="microservice-consumer-80" target="1.8" />
       <module name="microservice-eureka-7001" target="1.8" />
+      <module name="microservice-provider-common-9127" target="1.8" />
       <module name="microservice-provider-express-9227" target="1.8" />
       <module name="microservice-provider-login-8001" target="1.8" />
       <module name="microservice-provider-order-9427" target="1.8" />
