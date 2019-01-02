@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/microservice-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-consumer-80" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-eureka-7001" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice-provider-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-provider-express-9227" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-provider-login-8001" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/microservice-provider-order-9427" charset="UTF-8" />

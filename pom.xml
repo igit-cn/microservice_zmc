@@ -20,6 +20,7 @@
         <module>microservice-provider-upload-6001</module>
         <module>microservice-provider-ymym-9327</module>
         <module>microservice-zuul-gateway-9527</module>
+        <module>microservice-provider-common-9127</module>
     </modules>
 
 
