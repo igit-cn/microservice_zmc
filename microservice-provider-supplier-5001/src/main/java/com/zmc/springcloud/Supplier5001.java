@@ -6,13 +6,15 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * Created by xyy on 2018/11/19.
+ * Created by xyy on 2018/11/29.
+ *
+ * @author xyy
  */
 @SpringBootApplication
 @EnableEurekaClient //本服务启动后会自动注册进eureka服务中
 @EnableDiscoveryClient
-public class ProviderLogin8001 {
+public class Supplier5001 {
     public static void main(String[] args) {
-        SpringApplication.run(ProviderLogin8001.class, args);
+        SpringApplication.run(Supplier5001.class, args);
     }
 }

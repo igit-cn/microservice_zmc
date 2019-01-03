@@ -7,12 +7,11 @@
         <groupId>com.zmc.springcloud</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <artifactId>microservice-provider-order-9427</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.zmc.springcloud</groupId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <artifactId>microservice-provider-order-9427</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -117,7 +116,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.13</version>
                 <configuration>
-                    <imageName>itmuch/${project.artifactId}:${project.version}</imageName>
+                    <imageName>zmc/${project.artifactId}:${project.version}</imageName>
                     <baseImage>java</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
                     <resources>
