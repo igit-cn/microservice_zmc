@@ -1,7 +1,9 @@
 package com.zmc.springcloud.service.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.*;
+import com.zmc.springcloud.feignclient.common.CommonSequenceFeignClient;
+import com.zmc.springcloud.feignclient.promotion.HySingleitemPromotionFeignClient;
+import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
 import com.zmc.springcloud.mapper.BusinessOrderMapper;
 import com.zmc.springcloud.service.*;
 import com.zmc.springcloud.utils.OrderTransactionSNGenerator;
@@ -25,28 +27,28 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private BusinessOrderMapper businessOrderMapper;
 
     @Autowired
+    private CommonSequenceFeignClient commonSequenceFeignClient;
+
+    @Autowired
+    private ProviderFeignClient providerFeignClient;
+
+    @Autowired
     private SpecialtySpecificationService specialtySpecificationService;
 
     @Autowired
     private HyGroupitemPromotionService hyGroupitemPromotionService;
 
     @Autowired
-    private HySingleitemPromotionService hySingleitemPromotionService;
+    private HySingleitemPromotionFeignClient hySingleitemPromotionFeignClient;
 
     @Autowired
     private WechatAccountService wechatAccountService;
-
-    @Autowired
-    private CommonSequenceService commonSequenceService;
 
     @Autowired
     private CouponGiftService couponGiftService;
 
     @Autowired
     private SpecialtyService specialtyService;
-
-    @Autowired
-    private ProviderService providerService;
 
     @Autowired
     private BusinessOrderItemService businessOrderItemService;
@@ -123,7 +125,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                     Long promotionId = ((Integer) orderItem.get("promotionId")).longValue();
                     Integer quantity = (Integer) orderItem.get("quantity");
                     // 获取优惠明细
-                    HySingleitemPromotion singleitemPromotion = hySingleitemPromotionService.getValidSingleitemPromotion(((Integer) orderItem.get("specialtySpecificationId")).longValue(), promotionId);
+                    HySingleitemPromotion singleitemPromotion = hySingleitemPromotionFeignClient.getValidSingleitemPromotion(((Integer) orderItem.get("specialtySpecificationId")).longValue(), promotionId);
                     // 如果参加了优惠活动
                     if (singleitemPromotion != null) {
                         //判断优惠活动数量
@@ -202,13 +204,13 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
                     Long promotionId = ((Integer) orderItem.get("promotionId")).longValue();
                     Integer quantity = (Integer) orderItem.get("quantity");
                     // 获取优惠明细
-                    HySingleitemPromotion singleitemPromotion = hySingleitemPromotionService.getValidSingleitemPromotion(((Integer) orderItem.get("specialtySpecificationId")).longValue(), promotionId);
+                    HySingleitemPromotion singleitemPromotion = hySingleitemPromotionFeignClient.getValidSingleitemPromotion(((Integer) orderItem.get("specialtySpecificationId")).longValue(), promotionId);
                     // 如果参加了优惠活动
                     if (singleitemPromotion != null) {
                         // 修改优惠数量
                         singleitemPromotion.setPromoteNum(singleitemPromotion.getPromoteNum() - quantity);
                         singleitemPromotion.setHavePromoted(singleitemPromotion.getHavePromoted() + quantity);
-                        hySingleitemPromotionService.updatePromotion(singleitemPromotion);
+                        hySingleitemPromotionFeignClient.updateSingleItemPromotion(singleitemPromotion);
                     }
                 }
             }
@@ -273,7 +275,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             } else {
                 // 如果是普通产品
                 Specialty specialty = specialtyService.find(businessOrderItem.getSpecialtyId());
-                Provider provider = providerService.find(specialty.getProviderId());
+                Provider provider = providerFeignClient.getProviderById(specialty.getProviderId());
                 businessOrderItem.setDeliverName(provider.getProviderName());
             }
             businessOrderItemService.save(businessOrderItem);
@@ -383,9 +385,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
     public String getOrderCode() throws Exception{
         // 获取序列号
-        Long value = commonSequenceService.getValue(CommonSequence.SequenceTypeEnum.businessOrderSuq) + 1;
+        Long value = commonSequenceFeignClient.findValueByType(CommonSequence.SequenceTypeEnum.businessOrderSuq.ordinal()) + 1;
         // 更新序列号
-        commonSequenceService.updateValue(CommonSequence.SequenceTypeEnum.businessOrderSuq, value);
+        commonSequenceFeignClient.updateValue(CommonSequence.SequenceTypeEnum.businessOrderSuq.ordinal(), value);
         // 生成订单编号
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String nowaday = sdf.format(new Date());

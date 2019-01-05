@@ -2,10 +2,7 @@ package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.Provider;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +14,9 @@ import java.util.List;
  */
 @Mapper
 public interface ProviderMapper {
+    @Select("SELECT * FROM hy_provider WHERE id = #{providerId}")
+    Provider findById(Long providerId);
+
     /**
      * 根据筛选条件获取特产供应商列表
      */

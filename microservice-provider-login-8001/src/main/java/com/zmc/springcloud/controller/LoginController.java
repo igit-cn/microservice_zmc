@@ -1,6 +1,7 @@
 package com.zmc.springcloud.controller;
 
 import com.zmc.springcloud.entity.HyAdmin;
+import com.zmc.springcloud.entity.HyArea;
 import com.zmc.springcloud.entity.HyRole;
 import com.zmc.springcloud.service.LoginService;
 import com.zmc.springcloud.utils.CommonAttributes;
@@ -21,15 +22,26 @@ import java.util.Set;
  * Created by xyy on 2018/11/19.
  * @author xyy
  */
-@RestController(value = "/common")
+@RestController()
 public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @RequestMapping(value = "/admin/{username}")
+    public HyAdmin getHyAdminByUserName(@PathVariable("username") String username){
+        return loginService.getByUserName(username);
+    }
+
+
+    @RequestMapping(value = "/admin/add")
+    public void addHyAdmin(HyAdmin hyAdmin){
+        loginService.insertHyAdmin(hyAdmin);
+    }
+
     /**
      * 登录提交
      */
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    @RequestMapping(value = "/common/submit", method = RequestMethod.POST)
     public Json submit(HyAdmin hyAdmin, HttpServletRequest request, HttpServletResponse response) {
         Json j = new Json();
         try {
@@ -55,7 +67,7 @@ public class LoginController {
     /**
      * 获取左侧导航栏
      * */
-    @RequestMapping(value = "/project/menu", method = RequestMethod.GET)
+    @RequestMapping(value = "/common/project/menu", method = RequestMethod.GET)
     public Json menu(HttpServletRequest request) {
         Json j = new Json();
         try {
@@ -76,7 +88,7 @@ public class LoginController {
     }
 
     /** 返回当前登录用户可以分配的子角色*/
-    @RequestMapping(value="/privilege/getSubroles", method = RequestMethod.GET)
+    @RequestMapping(value="/common/privilege/getSubroles", method = RequestMethod.GET)
     public Json getSubRoles(HttpSession session) {
         Json j = new Json();
         try {

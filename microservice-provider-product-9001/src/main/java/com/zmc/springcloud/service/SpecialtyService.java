@@ -1,6 +1,8 @@
 package com.zmc.springcloud.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zmc.springcloud.entity.Specialty;
+import com.zmc.springcloud.entity.SpecialtySpecification;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
  * @author xyy
  */
 public interface SpecialtyService {
+    Specialty getSpecialtyById(Long id);
     /**
      * 编辑部-产品管理-列表
      */

@@ -23,6 +23,9 @@ public interface SpecialtySpecificationMapper {
     @InsertProvider(type = Provider.class, method = "batchInsert")
     void batchInsert(List<SpecialtySpecification> list);
 
+    @Update("UPDATE hy_specialty_specification SET base_inbound = #{baseInbound}, has_sold = #{hasSold}")
+    void updateInboundAndHasSold(SpecialtySpecification specification);
+
     class Provider {
         /* 批量插入 */
         public String batchInsert(List<SpecialtySpecification> list) {

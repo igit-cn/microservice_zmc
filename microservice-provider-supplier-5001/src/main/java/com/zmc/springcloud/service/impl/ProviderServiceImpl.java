@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zmc.springcloud.entity.HyAdmin;
 import com.zmc.springcloud.entity.Provider;
-import com.zmc.springcloud.mapper.LoginMapper;
+import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 import com.zmc.springcloud.mapper.ProviderMapper;
 import com.zmc.springcloud.service.ProviderService;
 import com.zmc.springcloud.utils.CheckedOperation;
@@ -25,7 +25,17 @@ public class ProviderServiceImpl implements ProviderService {
     private ProviderMapper providerMapper;
 
     @Autowired
-    private LoginMapper loginMapper;
+    private HyAdminFeignClient hyAdminFeignClient;
+
+    @Override
+    public Provider getProviderById(Long id) {
+        return providerMapper.findById(id);
+    }
+
+    @Override
+    public List<Provider> findListProvider(Boolean state, Long providerType, String providerName, String contactorName) {
+        return providerMapper.findListProvider(state, providerType, providerName, contactorName);
+    }
 
     @Override
     public HashMap<String, Object> getProviderPage(Integer page, Integer rows, Boolean state, Long providerType, String providerName,
@@ -65,7 +75,7 @@ public class ProviderServiceImpl implements ProviderService {
             map.put("cancelTime", p.getCancelTime());
             map.put("account", p.getAccountUser());
             String operator = p.getOperator();
-            HyAdmin hyAdmin = loginMapper.findByUserName(operator);
+            HyAdmin hyAdmin = hyAdminFeignClient.getHyAdminByUserName(operator);
             map.put("operatorName", hyAdmin.getName());
 
             /** 当前用户对本条数据的操作权限 */
@@ -103,11 +113,21 @@ public class ProviderServiceImpl implements ProviderService {
 
         //1.在hy_admin表中增加数据
         // 用户名重复校验
-        if (null != loginMapper.findByUserName(username)) {
+        if (null != hyAdminFeignClient.getHyAdminByUserName(username)) {
             throw new Exception("用户名已存在");
         }
-        HyAdmin admin = loginMapper.findByUserName(usernameInSession);
-        loginMapper.insert(username, accountmobile, accountaddress, accountwechat, accountname, roleid, admin.getDepartment(), CommonAttributes.DEFAULT_PASSWD);
+        HyAdmin operator = hyAdminFeignClient.getHyAdminByUserName(usernameInSession);
+        HyAdmin hyAdmin = new HyAdmin();
+        hyAdmin.setUsername(username);
+        hyAdmin.setMobile(accountmobile);
+        hyAdmin.setAddress(accountaddress);
+        hyAdmin.setWechat(accountwechat);
+        hyAdmin.setName(accountName);
+        hyAdmin.setRole(roleid);
+        hyAdmin.setDepartment(operator.getDepartment());
+        hyAdmin.setPassword(CommonAttributes.DEFAULT_PASSWD);
+
+
         //2.在hy_provider表中增加数据
         providerMapper.insert(
                 accountType,

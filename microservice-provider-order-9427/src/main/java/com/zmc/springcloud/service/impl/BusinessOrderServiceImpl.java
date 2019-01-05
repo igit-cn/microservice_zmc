@@ -5,6 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zmc.springcloud.entity.*;
+import com.zmc.springcloud.feignclient.common.CommonSequenceFeignClient;
+import com.zmc.springcloud.feignclient.express.HyVinboundFeignClient;
+import com.zmc.springcloud.feignclient.express.InboundFeignClient;
+import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
+import com.zmc.springcloud.feignclient.promotion.HyPromotionFeignClient;
 import com.zmc.springcloud.mapper.BusinessOrderMapper;
 import com.zmc.springcloud.service.*;
 import com.zmc.springcloud.utils.CommonAttributes;
@@ -24,49 +30,40 @@ import java.util.*;
 @Service
 public class BusinessOrderServiceImpl implements BusinessOrderService {
     @Autowired
+    private SpecialtyFeignClient specialtyFeignClient;
+
+    @Autowired
+    private HyAdminFeignClient hyAdminFeignClient;
+
+    @Autowired
+    private CommonSequenceFeignClient commonSequenceFeignClient;
+
+    @Autowired
+    private HyVinboundFeignClient hyVinboundFeignClient;
+
+    @Autowired
+    private InboundFeignClient inboundFeignClient;
+
+    @Autowired
     private BusinessOrderMapper businessOrderMapper;
 
     @Autowired
     private BusinessOrderItemService businessOrderItemService;
 
     @Autowired
-    private SpecialtyService specialtyService;
-
-    @Autowired
-    private HyGroupitemPromotionService hyGroupitemPromotionService;
-
-    @Autowired
-    private HyPromotionService hyPromotionService;
+    private HyPromotionFeignClient hyPromotionFeignClient;
 
     @Autowired
     private PurchaseItemService purchaseItemService;
 
     @Autowired
-    private SpecialtySpecificationService specialtySpecificationService;
-
-    @Autowired
-    private InboundService inboundService;
-
-    @Autowired
-    private HyGroupitemPromotionDetailService hyGroupitemPromotionDetailService;
-
-    @Autowired
     private ShipService shipService;
-
-    @Autowired
-    private LoginService loginService;
 
     @Autowired
     private BusinessOrderOutboundService businessOrderOutboundService;
 
     @Autowired
     private BusinessOrderRefundService businessOrderRefundService;
-
-    @Autowired
-    private CommonSequenceService commonSequenceService;
-
-    @Autowired
-    private HyVinboundService hyVinboundService;
 
     @Override
     public HashMap<String, Object> getOrderOList(Integer page, Integer rows, Integer orderState, String orderCode, String orderPhone) throws Exception {
@@ -113,7 +110,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             m.put("depotName", item.getDepotName());
 
             if (item.getPromotionId() != null) {
-                HyPromotion hyPromotion = hyPromotionService.getHyPromotionById(item.getPromotionId());
+                HyPromotion hyPromotion = hyPromotionFeignClient.getHyPromotionById(item.getPromotionId());
                 m.put("promotionName", hyPromotion.getPromotionName());
                 m.put("promotionRule", hyPromotion.getPromotionRule());
                 m.put("promotionType", hyPromotion.getPromotionType());
@@ -126,7 +123,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             // 获取可发货仓库列表
             if (item.getType() == 0) {
                 // 普通商品
-                SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
+                SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
                 Integer packNumber = specification.getSaleNumber();
                 SpecialtySpecification fuSpecification = getParentSpecification(specification);
                 m.put("depotList", getDepotList(fuSpecification.getId(), item.getQuantity() * packNumber));
@@ -134,11 +131,11 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             } else {
                 // 组合产品
                 List<String> depotList = new ArrayList<>();
-                HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionService.getHyGroupitemPromotionById(item.getSpecialtyId());
+                HyGroupitemPromotion groupitemPromotion = specialtyFeignClient.getHyGroupitemPromotionById(item.getSpecialtyId());
                 // 获取每件组合优惠明细条目的库存
-                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
+                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = specialtyFeignClient.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
                 for (HyGroupitemPromotionDetail detail : hyGroupitemPromotionDetails) {
-                    SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(detail.getItemSpecificationId());
+                    SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(detail.getItemSpecificationId());
                     Integer packNumber = specification.getSaleNumber();
                     //获取父规格
                     SpecialtySpecification fuSpecification = getParentSpecification(specification);
@@ -176,7 +173,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             shipMap.put("receiverAddress", order.getReceiverAddress());
             shipMap.put("receiverRemark", order.getReceiverRemark());
             shipMap.put("recordTime", ship.getRecordTime());
-            HyAdmin hyAdmin = loginService.getHyAdmin(ship.getDeliverOperator());
+            HyAdmin hyAdmin = hyAdminFeignClient.getHyAdminByUserName(ship.getDeliverOperator());
             shipMap.put("deliveror", hyAdmin.getName());
             shipMap.put("shipCompany", ship.getShipCompany());
             shipMap.put("shipCode", ship.getShipCode());
@@ -223,7 +220,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Boolean isDivided = body.getBoolean("isDivided");
         JSONArray jsonArray = body.getJSONArray("items");
 
-        HyAdmin admin = loginService.getHyAdmin(usernameInSession);
+        HyAdmin admin = hyAdminFeignClient.getHyAdminByUserName(usernameInSession);
         BusinessOrder order = businessOrderMapper.findById(id);
         if(order==null){
             j.setSuccess(false);
@@ -419,12 +416,12 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Integer itemType = item.getType();
         // 普通商品
         if (itemType == 0) {
-            Specialty specialty = specialtyService.getSpecialtyId(item.getSpecialtyId());
+            Specialty specialty = specialtyFeignClient.getSpecialtyById(item.getSpecialtyId());
             return specialty.getName();
         } else {
             //组合优惠
-            HyGroupitemPromotion hyGroupitemPromotion = hyGroupitemPromotionService.getHyGroupitemPromotionById(item.getSpecialtyId());
-            HyPromotion hyPromotion = hyPromotionService.getHyPromotionById(hyGroupitemPromotion.getPromotionId());
+            HyGroupitemPromotion hyGroupitemPromotion = specialtyFeignClient.getHyGroupitemPromotionById(item.getSpecialtyId());
+            HyPromotion hyPromotion = hyPromotionFeignClient.getHyPromotionById(hyGroupitemPromotion.getPromotionId());
             return hyPromotion.getPromotionName();
         }
     }
@@ -433,7 +430,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Integer itemType = item.getType();
         // 普通商品
         if (itemType == 0) {
-            Specialty specialty = specialtyService.getSpecialtyId(item.getSpecialtyId());
+            Specialty specialty = specialtyFeignClient.getSpecialtyById(item.getSpecialtyId());
             return specialty.getName();
         } else {
             return null;
@@ -441,7 +438,7 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     }
 
     public List<String> getDepotList(Long specificationId, Integer quantity) throws Exception {
-        List<Inbound> inbounds = inboundService.getInboundListBySpecificationId(specificationId, 0);
+        List<Inbound> inbounds = inboundFeignClient.getInboundListBySpecificationId(specificationId, 0);
 
         Map<String, Integer> map = new HashMap<>();
         for (Inbound inbound : inbounds) {
@@ -465,10 +462,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         for (BusinessOrderItem item : items) {
             if(item.getType() == 0){
                 // 如果是普通商品
-                SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
+                SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
                 // 获取父规格
                 SpecialtySpecification fuSpecification = getParentSpecification(specification);
-                List<Inbound> inbounds = inboundService.getListBySpecificationIdAndDepotCode(specification.getId(), item.getDepotName());
+                List<Inbound> inbounds = inboundFeignClient.getListBySpecificationIdAndDepotCode(specification.getId(), item.getDepotName());
                 Integer inboundsTotal = getInboundTotal(inbounds);
                 Integer total = item.getQuantity() * specification.getSaleNumber();
                 if(inboundsTotal<total){
@@ -477,16 +474,16 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
             }else{
                 // 如果是组合产品
                 // 获取组合优惠活动对象
-                HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionService.getHyGroupitemPromotionById(item.getSpecialtyId());
+                HyGroupitemPromotion groupitemPromotion = specialtyFeignClient.getHyGroupitemPromotionById(item.getSpecialtyId());
                 // 获取构建数量
                 Integer quantity = item.getQuantity();
                 // 获取每件组合优惠明细条目的库存
-                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
+                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = specialtyFeignClient.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
                 for (HyGroupitemPromotionDetail detail : hyGroupitemPromotionDetails) {
-                    SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(detail.getItemSpecificationId());
+                    SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(detail.getItemSpecificationId());
                     // 获取父规格
                     SpecialtySpecification fuSpecification = getParentSpecification(specification);
-                    List<Inbound> inbounds = inboundService.getListBySpecificationIdAndDepotCode(specification.getId(), item.getDepotName());
+                    List<Inbound> inbounds = inboundFeignClient.getListBySpecificationIdAndDepotCode(specification.getId(), item.getDepotName());
                     Integer inboundsTotal = getInboundTotal(inbounds);
                     Integer total = quantity*detail.getBuyNumber()*specification.getSaleNumber();
 
@@ -512,16 +509,16 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         // 获取父规格
         // TODO 这种写法的前提是顶级规格的pid为0,且规格最多只有两级
         if (specification.getPid() != null && specification.getPid() != 0) {
-            return specialtySpecificationService.getSpecialtySpecificationById(specification.getPid());
+            return specialtyFeignClient.getSpecialtySpecificationById(specification.getPid());
         }
         return specification;
     }
 
     public String getOrderCode() throws Exception{
         // 获取序列号
-        Long value = commonSequenceService.getValue(CommonSequence.SequenceTypeEnum.businessOrderSuq) + 1;
+        Long value = commonSequenceFeignClient.findValueByType(CommonSequence.SequenceTypeEnum.businessOrderSuq.ordinal()) + 1;
         // 更新序列号
-        commonSequenceService.updateValue(CommonSequence.SequenceTypeEnum.businessOrderSuq, value);
+        commonSequenceFeignClient.updateValue(CommonSequence.SequenceTypeEnum.businessOrderSuq.ordinal(), value);
         // 生成订单编号
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String nowaday = sdf.format(new Date());
@@ -534,10 +531,10 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
     private void updateOrderItemVinbound(BusinessOrderItem item) throws Exception{
         if(item.getType() == 0){
             // 如果是普通商品
-            SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
+            SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(item.getSpecialtySpecificationId());
             //获取父规格
             SpecialtySpecification fuSpecification = getParentSpecification(specification);
-            List<HyVinbound> vinbounds = hyVinboundService.getHyVinboundListBySpecification(fuSpecification);
+            List<HyVinbound> vinbounds = hyVinboundFeignClient.getHyVinboundListBySpecificationId(fuSpecification.getId());
             if(vinbounds == null || vinbounds.isEmpty()){
                 return;
             }
@@ -547,18 +544,18 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }else{
             // 如果是组合商品
             // 获取组合优惠活动对象
-            HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionService.getHyGroupitemPromotionById(item.getSpecialtyId());
+            HyGroupitemPromotion groupitemPromotion = specialtyFeignClient.getHyGroupitemPromotionById(item.getSpecialtyId());
             // 获取构建数量
             Integer quantity = item.getQuantity();
             // 获取每件组合优惠明细条目的库存
-            List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
+            List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = specialtyFeignClient.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
             for (HyGroupitemPromotionDetail detail : hyGroupitemPromotionDetails) {
                 //获取明细购买数量
                 Integer total = quantity*detail.getBuyNumber();
-                SpecialtySpecification specification = specialtySpecificationService.getSpecialtySpecificationById(detail.getItemSpecificationId());
+                SpecialtySpecification specification = specialtyFeignClient.getSpecialtySpecificationById(detail.getItemSpecificationId());
                 // 获取父规格
                 SpecialtySpecification fuSpecification = getParentSpecification(specification);
-                List<HyVinbound> vinbounds = hyVinboundService.getHyVinboundListBySpecification(fuSpecification);
+                List<HyVinbound> vinbounds = hyVinboundFeignClient.getHyVinboundListBySpecificationId(fuSpecification.getId());
                 if(vinbounds == null || vinbounds.isEmpty()){
                     continue;
                 }
@@ -576,6 +573,6 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Integer vinboundNumber = vinbound.getVinboundNumber();
         saleNumber += total;
         vinboundNumber = vinboundNumber < total ? 0 : vinboundNumber - total;
-        hyVinboundService.updateHyVinboundNum(vinbound.getId(), saleNumber, vinboundNumber);
+        hyVinboundFeignClient.updateHyVinboundNum(vinbound.getId(), saleNumber, vinboundNumber);
     }
 }

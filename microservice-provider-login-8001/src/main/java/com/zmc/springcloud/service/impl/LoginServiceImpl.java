@@ -26,6 +26,16 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
 
     @Override
+    public HyAdmin getByUserName(String username) {
+        return loginMapper.findByUserName(username);
+    }
+
+    @Override
+    public void insertHyAdmin(HyAdmin hyAdmin) {
+        loginMapper.insertHyAdmin(hyAdmin);
+    }
+
+    @Override
     public Boolean loginCheck(HyAdmin hyAdmin) throws Exception{
         String userName = hyAdmin.getUsername();
         HyAdmin admin = loginMapper.findByUserName(userName);

@@ -11,6 +11,16 @@ import java.util.Set;
  */
 public interface LoginService {
     /**
+     * 根据username获取HyAdmin
+     * */
+    HyAdmin getByUserName(String username);
+
+    /**
+     *
+     * */
+    void insertHyAdmin(HyAdmin hyAdmin);
+
+    /**
      * 登录提交
      */
     Boolean loginCheck(HyAdmin hyAdmin) throws Exception;
@@ -21,4 +31,6 @@ public interface LoginService {
 
     /** 返回当前登录用户可以分配的子角色*/
     Set<HyRole> getSubRoles(String username) throws Exception;
+
+
 }

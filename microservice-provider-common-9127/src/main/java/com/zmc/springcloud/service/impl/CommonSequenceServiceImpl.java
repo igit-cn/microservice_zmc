@@ -18,12 +18,12 @@ public class CommonSequenceServiceImpl implements CommonSequenceService{
 
 
     @Override
-    public Long getValue(SequenceTypeEnum sequenceTypeEnum) throws Exception {
-       return commmonSequenceMapper.findValueByType(sequenceTypeEnum.ordinal());
+    public Long getValue(Integer type) throws Exception {
+       return commmonSequenceMapper.findValueByType(type);
     }
 
     @Override
-    public void updateValue(SequenceTypeEnum sequenceTypeEnum, Long newValue) throws Exception{
-        commmonSequenceMapper.updateValue(sequenceTypeEnum.ordinal(), newValue);
+    public void updateValue(Integer type, Long newValue) throws Exception{
+        commmonSequenceMapper.updateValue(type, newValue);
     }
 }

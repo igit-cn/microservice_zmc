@@ -6,7 +6,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.entity.CommonSequence.SequenceTypeEnum;
-import com.zmc.springcloud.mapper.LoginMapper;
+import com.zmc.springcloud.feignclient.common.CommonSequenceFeignClient;
+import com.zmc.springcloud.feignclient.express.HyVinboundFeignClient;
+import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
+import com.zmc.springcloud.feignclient.common.HyAreaFeignClient;
+import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
 import com.zmc.springcloud.mapper.SpecialtyMapper;
 import com.zmc.springcloud.service.*;
 import com.zmc.springcloud.utils.DateUtil;
@@ -25,7 +29,19 @@ import java.util.*;
 
 public class SpecialtyServiceImpl implements SpecialtyService{
     @Autowired
-    private LoginMapper loginMapper;
+    private HyAdminFeignClient hyAdminFeignClient;
+
+    @Autowired
+    private CommonSequenceFeignClient commonSequenceFeignClient;
+
+    @Autowired
+    private HyAreaFeignClient hyAreaFeignClient;
+
+    @Autowired
+    private ProviderFeignClient providerFeignClient;
+
+    @Autowired
+    private HyVinboundFeignClient hyVinboundFeignClient;
 
     @Autowired
     private SpecialtyMapper specialtyMapper;
@@ -34,31 +50,24 @@ public class SpecialtyServiceImpl implements SpecialtyService{
     private SpecialtyAppraiseService specialtyAppraiseService;
 
     @Autowired
-    private CommonSequenceService commonSequenceService;
-
-    @Autowired
     private SpecialtySpecificationService specialtySpecificationService;
 
     @Autowired
     private SpecialtyImageService specialtyImageService;
 
     @Autowired
-    private HyAreaService hyAreaService;
-
-    @Autowired
     private SpecialtyCategoryService specialtyCategoryService;
-
-    @Autowired
-    private ProviderService providerService;
 
     @Autowired
     private SpecialtyPriceService specialtyPriceService;
 
     @Autowired
-    private HyVinboundService hyVinboundService;
-
-    @Autowired
     private BusinessBannerService businessBannerService;
+
+    @Override
+    public Specialty getSpecialtyById(Long id) {
+        return specialtyMapper.findById(id);
+    }
 
     @Override
     public HashMap<String, Object> getProductList(Integer page, Integer rows, Long providerId, String name, Long categoryId, String userNameInSession) throws Exception {
@@ -101,12 +110,12 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         Long providerId = provider.getLong("id");
 
         // 获取序列号
-        Long value = commonSequenceService.getValue(SequenceTypeEnum.specialtySn) + 1;
+        Long value = commonSequenceFeignClient.findValueByType(SequenceTypeEnum.specialtySn.ordinal()) + 1;
         // 更新序列号
-        commonSequenceService.updateValue(SequenceTypeEnum.specialtySn, value);
+        commonSequenceFeignClient.updateValue(SequenceTypeEnum.specialtySn.ordinal(), value);
         String code = String.format("%05d", categoryId) + String.format("%05d", value);
 
-        HyAdmin hyAdmin = loginMapper.findByUserName(usernameInSession);
+        HyAdmin hyAdmin = hyAdminFeignClient.getHyAdminByUserName(usernameInSession);
 
         //新建产品 为了获取自增主键 传递实体而不是参数列表
         Specialty specialty = new Specialty();
@@ -206,7 +215,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         Long areaId = specialty.getAreaId();
         HyArea hyArea = null;
         if(areaId != null){
-             hyArea =  hyAreaService.getHyAreaById(areaId);
+             hyArea =  hyAreaFeignClient.getHyAreaById(areaId);
         }
         obj.put("area", hyArea);
         obj.put("baseSaleNumber", specialty.getBaseSaleNumber());
@@ -250,7 +259,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         obj.put("originalPlace", specialty.getOriginalPlace());
         obj.put("privilege", specialty.getPrivilege());
         obj.put("productionLicenseNumber", specialty.getProductionLicenseNumber());
-        Provider provider = providerService.getProvider(specialty.getProviderId());
+        Provider provider = providerFeignClient.getProviderById(specialty.getProviderId());
         obj.put("provider", provider);
         obj.put("putoffTime", specialty.getPutoffTime());
         obj.put("putonTime", specialty.getPutonTime());
@@ -272,7 +281,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                 spe.setExterStoreDivide(specialtyPrice.getExterStoreDivide());
                 spe.setDeliverPrice(specialtyPrice.getDeliverPrice());
                 if (spe.getPid().equals(Long.valueOf(0))) {
-                    HyVinbound hyVinbound = hyVinboundService.findBySpecification(spe.getId());
+                    HyVinbound hyVinbound = hyVinboundFeignClient.getHyVinboundBySpecificationId(spe.getId());
                     if(hyVinbound != null){
                         spe.setVInboundNumber(hyVinbound.getVinboundNumber());
                     }
@@ -288,7 +297,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
     @Override
     public void modifyProductByQudaoXiaoShou(JSONObject paylaod, String usernameInSession) throws Exception{
         /*操作的用户*/
-        HyAdmin hyAdmin = loginMapper.findByUserName(usernameInSession);
+        HyAdmin hyAdmin = hyAdminFeignClient.getHyAdminByUserName(usernameInSession);
 
         /*paylaod解析*/
         JSONObject specialtyJSONObject = paylaod.getJSONObject("specialty");
@@ -356,7 +365,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 
                 // 只有父规格才考虑虚拟库存
                 if(spe.getPid().equals(Long.valueOf(0))){
-                    HyVinbound hyVinbound = hyVinboundService.findBySpecification(spe.getId());;
+                    HyVinbound hyVinbound = hyVinboundFeignClient.getHyVinboundBySpecificationId(spe.getId());;
                     // 渠道销售修改时才考虑新建虚拟库存或者修改虚拟库存
                     if(hyVinbound != null){
                         // 修改虚拟库存的存量
@@ -364,7 +373,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                             //修改基本库存*wayne*
                             baseInbound = spe.getBaseInbound() - hyVinbound.getVinboundNumber() + vInboundNumber;
                             hyVinbound.setVinboundNumber(vInboundNumber);
-                            hyVinboundService.updateHyVinbound(hyVinbound);
+                            hyVinboundFeignClient.updateHyVinbound(hyVinbound);
                         }else{
                             baseInbound = spe.getBaseInbound();
                         }
@@ -374,7 +383,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                         hyVinbound = new HyVinbound();
                         hyVinbound.setSpecialtySpecificationId(spe.getId());
                         hyVinbound.setVinboundNumber(vInboundNumber);
-                        hyVinboundService.saveHyVinbound(hyVinbound);
+                        hyVinboundFeignClient.addHyVinbound(hyVinbound);
                     }
                 }
 

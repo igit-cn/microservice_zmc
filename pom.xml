@@ -10,7 +10,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>microservice-api</module>
-        <module>microservice-consumer-80</module>
         <module>microservice-eureka-7001</module>
         <module>microservice-provider-express-9227</module>
         <module>microservice-provider-login-8001</module>
@@ -21,6 +20,7 @@
         <module>microservice-provider-ymym-9327</module>
         <module>microservice-zuul-gateway-9527</module>
         <module>microservice-provider-common-9127</module>
+        <module>microservice-provider-promotion-9027</module>
     </modules>
 
 

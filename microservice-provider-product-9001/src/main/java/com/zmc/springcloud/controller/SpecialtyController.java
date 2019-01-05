@@ -1,19 +1,14 @@
 package com.zmc.springcloud.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zmc.springcloud.entity.Provider;
-import com.zmc.springcloud.entity.SpecialtyCategory;
-import com.zmc.springcloud.service.ProviderService;
-import com.zmc.springcloud.service.SpecialtyCategoryService;
-import com.zmc.springcloud.service.SpecialtyService;
-import com.zmc.springcloud.service.SpecialtySpecificationService;
+import com.netflix.discovery.converters.Auto;
+import com.zmc.springcloud.entity.*;
+import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
+import com.zmc.springcloud.service.*;
 import com.zmc.springcloud.utils.CommonAttributes;
 import com.zmc.springcloud.utils.Json;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -25,14 +20,13 @@ import java.util.Map;
  * 特产
  * Created by xyy on 2018/11/23.
  */
-@RestController(value = "/admin/business/product")
+@RestController()
 public class SpecialtyController {
+    @Autowired
+    private ProviderFeignClient providerFeignClient;
 
     @Autowired
     private SpecialtyService specialtyService;
-
-    @Autowired
-    private ProviderService providerService;
 
     @Autowired
     private SpecialtySpecificationService specialtySpecificationService;
@@ -40,31 +34,55 @@ public class SpecialtyController {
     @Autowired
     private SpecialtyCategoryService specialtyCategoryService;
 
+    @Autowired
+    private HyGroupitemPromotionService hyGroupitemPromotionService;
+
+    @Autowired
+    private HyGroupitemPromotionDetailService hyGroupitemPromotionDetailService;
+
+    @RequestMapping(value = "/product/specialty/{id}")
+    public Specialty getSpecialtyById(@PathVariable Long id){
+        return specialtyService.getSpecialtyById(id);
+    }
+
+    @RequestMapping(value = "/product/specification/{id}")
+    public SpecialtySpecification getSpecialtySpecificationById(@PathVariable Long id) throws Exception{
+        return specialtySpecificationService.findById(id);
+    }
+
+    @RequestMapping(value = "/group/promotion/{id}")
+    public HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable Long id) throws Exception{
+        return hyGroupitemPromotionService.getHyGroupitemPromotionById(id);
+    }
+
+    @RequestMapping(value = "/group/promotion/detail/{id}")
+    public List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable Long id) throws Exception{
+        return hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(id);
+    }
+
     /**
      * 系统配置-分区管理-列表
      */
-    @RequestMapping(value = "/category/page/view")
+    @RequestMapping(value = "/admin/business/product/category/page/view")
     public Json categoryList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean isActive, String name) {
         Json j = new Json();
-//        try {
-//            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
-//            j.setMsg("操作成功");
-//            j.setObj(p);
-//            j.setSuccess(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            j.setSuccess(false);
-//            j.setMsg(e.getMessage());
-//        }
-
-        System.out.println("zuul压测");
+        try {
+            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
+            j.setMsg("操作成功");
+            j.setObj(p);
+            j.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg(e.getMessage());
+        }
         return j;
     }
 
     /**
      * 系统配置-分区管理-新建-获取父分区
      */
-    @RequestMapping(value = "/category/selectlist/view")
+    @RequestMapping(value = "/admin/business/product/category/selectlist/view")
     public Json selectlist(Long id, Boolean isActive, String name) {
         Json j = new Json();
         try {
@@ -83,7 +101,7 @@ public class SpecialtyController {
     /**
      * 系统配置-分区管理-新建-保存
      */
-    @RequestMapping(value = "/category/add")
+    @RequestMapping(value = "/admin/business/product/category/add")
     public Json categoryAdd(String name, Boolean isActive, String parentName, Long pid, String iconUrl, HttpSession session) {
         Json j = new Json();
         try {
@@ -100,7 +118,7 @@ public class SpecialtyController {
     /**编辑部-产品管理-列表-特产分区下拉列表
      * 渠道销售-产品管理-列表-特产分区下拉列表
      * */
-    @RequestMapping(value = "/category/treelist/view")
+    @RequestMapping(value = "/admin/business/product/category/treelist/view")
     public Json specialtyCategoryTreeList(){
         Json j = new Json();
         try{
@@ -122,11 +140,11 @@ public class SpecialtyController {
     /**编辑部-产品管理-列表-特产供应商下拉列表
      * 渠道销售-产品管理-列表-特产供应商下拉列表
      * */
-    @RequestMapping(value = "/provider/list/view")
+    @RequestMapping(value = "/admin/business/product/provider/list/view")
     public Json providerList(){
         Json j = new Json();
         try{
-            List<Provider> list = providerService.getProviderList();
+            List<Provider> list = providerFeignClient.getListProvider(true, null, null, null);
             j.setSuccess(true);
             j.setObj(list);
             j.setMsg("查询成功");
@@ -141,7 +159,7 @@ public class SpecialtyController {
     /** 编辑部-产品管理-列表
      *  渠道销售-产品管理-列表
      * */
-    @RequestMapping(value = "/page/view")
+    @RequestMapping(value = "/admin/business/product/page/view")
     public Json productList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Long providerid, String name, Long categoryid, HttpSession session){
         Json j = new Json();
         try{
@@ -160,7 +178,7 @@ public class SpecialtyController {
 
     // 不使用包装类,直接用JSON接收  注意JSONArray和JSONObject
     /** 编辑部-产品管理-新建*/
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/admin/business/product/add")
     public Json add(@RequestBody JSONObject specialty, HttpSession session) {
         Json j = new Json();
         try {
@@ -178,7 +196,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-详情*/
-    @RequestMapping(value = "/detail/view")
+    @RequestMapping(value = "/admin/business/product/detail/view")
     public Json detail(Long id){
         Json j = new Json();
         try{
@@ -194,7 +212,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-详情-获取父规格*/
-    @RequestMapping(value = "/getparentspecificationlist/view")
+    @RequestMapping(value = "/admin/business/product/getparentspecificationlist/view")
     public Json getParentSpecificationList(Long specialtyid){
         Json j = new Json();
         try{
@@ -211,7 +229,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-详情-相关推荐列表*/
-    @RequestMapping(value = "/recommendlist/view")
+    @RequestMapping(value = "/admin/business/product/recommendlist/view")
     public Json recommendList(Long id){
         Json j = new Json();
         try{
@@ -228,7 +246,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-提交产品编辑*/
-    @RequestMapping(value = "/qudao/modify")
+    @RequestMapping(value = "/admin/business/product/qudao/modify")
     public Json specialtyQudaoModify(@RequestBody JSONObject paylaod, HttpSession session){
         Json j = new Json();
         try {

@@ -1,10 +1,12 @@
 package com.zmc.springcloud.controller;
 
+import com.zmc.springcloud.entity.Provider;
 import com.zmc.springcloud.service.ProviderService;
 import com.zmc.springcloud.utils.CheckedOperation;
 import com.zmc.springcloud.utils.CommonAttributes;
 import com.zmc.springcloud.utils.Json;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,21 +15,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/11/29.
  *
  * @author xyy
  */
-@RestController(value = "/admin/business/provider")
+@RestController()
 public class ProviderController {
     @Autowired
     private ProviderService providerService;
 
+    @RequestMapping(value = "/provider/{id}")
+    public Provider getProviderById(@PathVariable Long id) {
+        return providerService.getProviderById(id);
+    }
+
+    @RequestMapping(value = "/provider/list")
+    public List<Provider> getListProvider(Boolean state, Long providerType, String providerName, String contactorName) {
+        return providerService.findListProvider(state, providerType, providerName, contactorName);
+    }
+
     /**
      * 采购部 特产供应商 列表
      */
-    @RequestMapping(value = "/page/view")
+    @RequestMapping(value = "/admin/business/provider/page/view")
     public Json providerPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean state, Long providerType, String providerName, String contactorName, HttpServletRequest request) {
         Json j = new Json();
         try {
@@ -49,7 +62,7 @@ public class ProviderController {
     /**
      * 采购部 特产供应商 新建
      */
-    @RequestMapping("/add")
+    @RequestMapping("/admin/business/provider/add")
     public Json add(
             String providerName,
             Integer providerType,

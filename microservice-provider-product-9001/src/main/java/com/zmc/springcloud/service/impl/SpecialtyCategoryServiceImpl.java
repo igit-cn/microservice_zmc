@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zmc.springcloud.entity.HyAdmin;
 import com.zmc.springcloud.entity.SpecialtyCategory;
-import com.zmc.springcloud.mapper.LoginMapper;
+import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 import com.zmc.springcloud.mapper.SpecialtyCategoryMapper;
 import com.zmc.springcloud.service.SpecialtyCategoryService;
 import com.zmc.springcloud.utils.Json;
@@ -27,7 +27,7 @@ public class SpecialtyCategoryServiceImpl implements SpecialtyCategoryService {
     private SpecialtyCategoryMapper specialtyCategoryMapper;
 
     @Autowired
-    private LoginMapper loginMapper;
+    private HyAdminFeignClient hyAdminFeignClient;
 
     @Override
     public SpecialtyCategory getSpecialtyCategoryById(Long categoryId)throws Exception {
@@ -59,7 +59,7 @@ public class SpecialtyCategoryServiceImpl implements SpecialtyCategoryService {
     @Override
     public Json addSpecialtyCategory(String name, Boolean isActive, String parentName, Long pid, String iconUrl, String username) throws Exception {
         Json json = new Json();
-        HyAdmin admin = loginMapper.findByUserName(username);
+        HyAdmin admin = hyAdminFeignClient.getHyAdminByUserName(username);
 
         // 父分区校验
         SpecialtyCategory parent = specialtyCategoryMapper.findSpecialtyCategory(pid);

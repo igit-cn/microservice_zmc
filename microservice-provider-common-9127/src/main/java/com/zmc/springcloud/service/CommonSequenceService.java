@@ -8,6 +8,6 @@ import com.zmc.springcloud.entity.CommonSequence.SequenceTypeEnum;
  * @author xyy
  */
 public interface CommonSequenceService {
-    Long getValue(SequenceTypeEnum sequenceTypeEnum) throws Exception;
-    void updateValue(SequenceTypeEnum sequenceTypeEnum, Long newValue) throws Exception;
+    Long getValue(Integer type) throws Exception;
+    void updateValue(Integer type, Long newValue) throws Exception;
 }

@@ -38,7 +38,7 @@ spring:
    datasource:
     type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
     driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
-    url: jdbc:mysql://eureka7001.com:3306/hy              # 数据库名称
+    url: jdbc:mysql://eureka7001.com:3306/hy_product              # 数据库名称
     username: yuehutest
     password: yuehukuaixiu
     dbcp2:

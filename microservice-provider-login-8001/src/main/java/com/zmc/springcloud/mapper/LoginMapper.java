@@ -20,6 +20,9 @@ public interface LoginMapper {
     @Select("SELECT * FROM hy_admin WHERE username = #{userName}")
     HyAdmin findByUserName(String userName);
 
+    @Insert("INSERT INTO hy_admin(username, mobile,address, wechat, name, role, department, password,is_enabled,create_date) VALUES(#{username}, #{mobile}, #{address}, #{wechat}, #{name}, #{role}, #{department},#{password}, 1, NOW())")
+    void insertHyAdmin(HyAdmin hyAdmin);
+
     /**
      * 根据id获取HyRole
      */

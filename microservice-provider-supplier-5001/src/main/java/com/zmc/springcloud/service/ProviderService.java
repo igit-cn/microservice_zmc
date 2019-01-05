@@ -1,9 +1,11 @@
 package com.zmc.springcloud.service;
 
+import com.zmc.springcloud.entity.Provider;
 import com.zmc.springcloud.utils.CheckedOperation;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/11/29.
@@ -15,4 +17,8 @@ public interface ProviderService {
     HashMap<String,Object> getProviderPage(Integer page, Integer rows, Boolean state, Long providerType, String providerName, String contactorName, CheckedOperation co, String username) throws Exception;
     /** 采购部 特产供应商 新建*/
     void addProvider(String usernameInSession, String providerName, Integer providerType, String contractNumber, String address, String postcode, Integer balanceType, String introduction, String contactorName, String contactorMobile, String contactorPostcode, String contactorQq, String contactorWechat, String contactorEmail, String bankName, String accountName, String bankAccount, String bankCode, Integer accountType, String username, String accountname, String accountmobile, String accountwechat, String accountaddress, Long roleid, Date startTime, Date endTime, Integer balanceDate, Boolean state) throws Exception;
+
+    Provider getProviderById(Long id);
+
+    List<Provider> findListProvider(Boolean state, Long providerType, String providerName, String contactorName);
 }
