@@ -8,7 +8,7 @@ import com.zmc.springcloud.entity.CouponGift;
  * @author xyy
  */
 public interface CouponGiftService {
-    CouponGift find(long l) throws Exception;
+    CouponGift findCouponGiftById(Long id) throws Exception;
     /** 将商城赠送电子券设置为使用状态*/
-    void update(CouponGift coupon)throws Exception;
+    void updateUseState(CouponGift coupon)throws Exception;
 }

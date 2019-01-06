@@ -20,4 +20,9 @@ public class HyGroupitemPromotionServiceImpl implements HyGroupitemPromotionServ
     public HyGroupitemPromotion getHyGroupitemPromotionById(Long specialtyId) throws Exception {
         return hyGroupitemPromotionMapper.findById(specialtyId);
     }
+
+    @Override
+    public void updateHyGroupitemPromotion(HyGroupitemPromotion groupitemPromotion) {
+        hyGroupitemPromotionMapper.updateHyGroupitemPromotion(groupitemPromotion);
+    }
 }

@@ -1,7 +1,7 @@
 package com.zmc.springcloud.controller;
 
 import com.zmc.springcloud.entity.ShoppingCart;
-import com.zmc.springcloud.service.BusinessOrderService;
+import com.zmc.springcloud.feignclient.order.BusinessOrderFeignClient;
 import com.zmc.springcloud.service.ShoppingCartService;
 import com.zmc.springcloud.utils.Json;
 import com.zmc.springcloud.util.WechatPayMainOffcialAccount;
@@ -32,7 +32,7 @@ public class YmymController {
     private ShoppingCartService shoppingCartService;
 
     @Autowired
-    private BusinessOrderService businessOrderService;
+    private BusinessOrderFeignClient businessOrderFeignClient;
 
     /** 添加到购物车  实体中是wechatId而不是wechat_id 增加一个参数接收*/
     @RequestMapping(value = "/shopping_cart/add_items")
@@ -55,7 +55,7 @@ public class YmymController {
                             @RequestBody HashMap<String, Object> bodys){
         Json j = new Json();
         try{
-            Map<String, Object> obj = businessOrderService.createOrder(params, bodys);
+            Map<String, Object> obj = businessOrderFeignClient.createOrder(params, bodys);
             j.setMsg("操作成功");
             j.setSuccess(true);
             j.setObj(obj);
@@ -136,8 +136,7 @@ public class YmymController {
         m = XMLUtil.doXMLParse(sb.toString());
 
 		/*支付成功，处理回调,修改订单状态*/
-		businessOrderService.updateOrderAfterPay(orderId);
-
+        businessOrderFeignClient.updateOrderAfterPay(orderId);
         String resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
         BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
         out.write(resXml.getBytes());

@@ -2,13 +2,12 @@ package com.zmc.springcloud.service.impl;
 
 import com.zmc.springcloud.entity.ShoppingCart;
 import com.zmc.springcloud.entity.WechatAccount;
+import com.zmc.springcloud.feignclient.wechataccount.WechatAccountFeignClient;
 import com.zmc.springcloud.mapper.ShoppingCartMapper;
 import com.zmc.springcloud.service.ShoppingCartService;
-import com.zmc.springcloud.service.WechatAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,11 +22,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
     private ShoppingCartMapper shoppingCartMapper;
 
     @Autowired
-    private WechatAccountService wechatAccountService;
+    private WechatAccountFeignClient wechatAccountFeignClient;
 
     @Override
     public void addShoppingCart(ShoppingCart shoppingCart, Long wechatId) throws Exception {
-        WechatAccount wechatAccount = wechatAccountService.findById(wechatId);
+        WechatAccount wechatAccount = wechatAccountFeignClient.getWechatAccountById(wechatId);
         if(wechatAccount == null){
             throw new Exception("用户不存在");
         }

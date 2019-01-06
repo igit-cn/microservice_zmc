@@ -8,6 +8,7 @@ import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.entity.CommonSequence.SequenceTypeEnum;
 import com.zmc.springcloud.feignclient.common.CommonSequenceFeignClient;
 import com.zmc.springcloud.feignclient.express.HyVinboundFeignClient;
+import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 import com.zmc.springcloud.feignclient.common.HyAreaFeignClient;
 import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
@@ -44,13 +45,13 @@ public class SpecialtyServiceImpl implements SpecialtyService{
     private HyVinboundFeignClient hyVinboundFeignClient;
 
     @Autowired
+    private SpecialtySpecificationFeignClient specialtySpecificationFeignClient;
+
+    @Autowired
     private SpecialtyMapper specialtyMapper;
 
     @Autowired
     private SpecialtyAppraiseService specialtyAppraiseService;
-
-    @Autowired
-    private SpecialtySpecificationService specialtySpecificationService;
 
     @Autowired
     private SpecialtyImageService specialtyImageService;
@@ -109,12 +110,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         Long categoryId = category.getLong("id");
         Long providerId = provider.getLong("id");
 
-        // 获取序列号
-        Long value = commonSequenceFeignClient.findValueByType(SequenceTypeEnum.specialtySn.ordinal()) + 1;
-        // 更新序列号
-        commonSequenceFeignClient.updateValue(SequenceTypeEnum.specialtySn.ordinal(), value);
-        String code = String.format("%05d", categoryId) + String.format("%05d", value);
-
+        String code = commonSequenceFeignClient.getCode(SequenceTypeEnum.specialtySn, categoryId);
         HyAdmin hyAdmin = hyAdminFeignClient.getHyAdminByUserName(usernameInSession);
 
         //新建产品 为了获取自增主键 传递实体而不是参数列表
@@ -164,7 +160,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
             s.setBaseInbound(0);
             specialtySpecificationList.add(s);
         }
-        specialtySpecificationService.batchInsert(specialtySpecificationList);
+        specialtySpecificationFeignClient.batchInsert(specialtySpecificationList);
 
         // 保存产品图片
         List<SpecialtyImage> specialtyImageList = new ArrayList<>();
@@ -269,7 +265,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         List<Specialty> recommendList = specialtyMapper.getSpecialtiesForRecommendSpecialty(id);
         obj.put("specialtiesForRecommendSpecialtyId", recommendList);
         List<SpecialtySpecification> filterSpecifications = new ArrayList<>();
-        List<SpecialtySpecification> specialtySpecificationList = specialtySpecificationService.getAllSpecification(id);
+        List<SpecialtySpecification> specialtySpecificationList = specialtySpecificationFeignClient.getAllSpecification(id);
         for (SpecialtySpecification spe : specialtySpecificationList) {
             SpecialtyPrice specialtyPrice = specialtyPriceService.findList(spe.getSpecialtyId(), true);
             if(specialtyPrice != null){
@@ -356,7 +352,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                 BigDecimal exterStoreDivide = jsonObject.getBigDecimal("exterStoreDivide");
                 BigDecimal businessPersonDivide = jsonObject.getBigDecimal("businessPersonDivide");
 
-                SpecialtySpecification spe = specialtySpecificationService.findById(specificationsId);
+                SpecialtySpecification spe = specialtySpecificationFeignClient.getSpecialtySpecificationById(specificationsId);
                 // TODO 前台没有传递baseInbound
                 Integer baseInbound = 0;
                 if(spe.getBaseInbound() == null){
@@ -413,7 +409,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                 spe.setSpecification(specificationName);
                 spe.setModifierName(usernameInSession);
                 // 更新规格
-                specialtySpecificationService.update(spe);
+                specialtySpecificationFeignClient.update(spe);
 
                 // 将原工程中的修改价格 合并到修改规格中
                 SpecialtyPrice oldprice = specialtyPriceService.findList(spe.getId(), true);

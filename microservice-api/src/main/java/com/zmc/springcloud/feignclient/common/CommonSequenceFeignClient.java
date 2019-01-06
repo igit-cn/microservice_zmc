@@ -1,5 +1,6 @@
 package com.zmc.springcloud.feignclient.common;
 
+import com.zmc.springcloud.entity.CommonSequence;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @FeignClient(name = "microservicecloud-common")
 public interface CommonSequenceFeignClient {
-    @RequestMapping("/sequence/{type}")
-    Long findValueByType(Integer type);
+      @RequestMapping("/sequence/code")
+      String getCode(CommonSequence.SequenceTypeEnum type, Long param);
 
-    @RequestMapping("/sequence/update")
-    void updateValue(Integer type, Long newValue);
 }

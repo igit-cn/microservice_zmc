@@ -1,0 +1,73 @@
+server:
+  port: 9627
+
+logging:
+   level:
+       com:
+          zmc:
+             springcloud:
+                 mapper: debug
+
+#pagehelper分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+#mybatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+   application:
+    name: microservicecloud-wechataccount
+
+#   redis:
+#     host: eureka7001.com
+#     port: 6379
+#     lettuce:
+#       pool:
+#         max-active: 8
+#         max-wait: -1ms
+#         max-idle: 8
+#         min-idle: 0
+#     database: 0
+
+   datasource:
+    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+    driver-class-name: org.gjt.mm.mysql.Driver              # mysql驱动包
+    url: jdbc:mysql://eureka7001.com:3306/hy_wechataccount  # 数据库名称
+    username: yuehutest
+    password: yuehukuaixiu
+    dbcp2:
+      min-idle: 5                                           # 数据库连接池的最小维持连接数
+      initial-size: 5                                       # 初始化连接数
+      max-total: 5                                          # 最大连接数
+      max-wait-millis: 200                                  # 等待连接获取的最大超时时间
+
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+       defaultZone: http://eureka7001.com:7001/eureka
+        #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+    instance:
+      instance-id: microservicecloud-wechataccount-9627
+      prefer-ip-address: true     #访问路径可以显示IP地址
+
+management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+        cors:
+          allowed-origins: "*"
+          allowed-methods: "*"
+
+
+info:
+  app.name: zmc-microservicecloud
+  company.name: www.zmc.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+

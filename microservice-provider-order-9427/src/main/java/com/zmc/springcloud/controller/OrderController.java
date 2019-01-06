@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.swing.text.EditorKit;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xyy on 2018/12/5.
@@ -24,6 +25,17 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private BusinessOrderService businessOrderService;
+
+    @RequestMapping("/order/create")
+    public Map<String, Object> createOrder(HashMap<String, Object> params, HashMap<String, Object> bodys) throws Exception{
+        return businessOrderService.createOrder(params, bodys);
+    }
+
+    @RequestMapping("/order/")
+    public void updateOrderAfterPay(String orderId)throws Exception{
+        businessOrderService.updateOrderAfterPay(orderId);
+    }
+
 
     /**
      * 渠道销售-订单审核-列表

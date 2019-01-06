@@ -20,6 +20,9 @@ public interface BusinessOrderMapper {
     @Select("SELECT * FROM hy_business_order WHERE ID = #{id}")
     BusinessOrder findById(Long id);
 
+    @Select("SELECT * FROM hy_business_order WHERE order_code = #{orderCode}")
+    BusinessOrder getByOrderCode(String orderCode);
+
     @SelectProvider(type = Provider.class, method = "findListOrder")
     List<BusinessOrder> findListOrder(Integer orderState, String orderCode, String orderPhone);
     class Provider {
@@ -56,6 +59,13 @@ public interface BusinessOrderMapper {
     @Insert("INSERT INTO hy_business_order(order_code, order_phone, order_wechat_id, webusiness_id, total_money, promotion_amount, ship_fee, shouldpay_money, coupon_money, balance_money, pay_money, order_state, order_time, review_time, pay_time, receiver_name, receiver_phone, receiver_address, receiver_remark, receiver_type, coupon_id, is_balanced, is_divided, parent_order_id, is_show, is_appraised, is_balance, reviewer, is_valid)  VALUES(#{orderCode},#{orderPhone},#{orderWechatId},#{weBusinessId},#{totalMoney},#{promotionAmount},#{shipFee},#{shouldpayMoney},#{couponMoney},#{balanceMoney},#{payMoney},#{orderState},#{orderTime},#{reviewTime},#{payTime},#{receiverName},#{receiverPhone},#{receiverAddress},#{receiverRemark},#{receiveType},#{couponId},#{isBalanced},#{isDivided},#{parentOrderId},#{isShow},#{isAppraised},#{isBalance},#{reviewer},#{isValid})" )
     void saveBusinessOrder(BusinessOrder order);
 
+    @Insert("INSERT INTO hy_business_order(order_code, order_phone, order_wechat_id, webusiness_id, total_money, promotion_amount, ship_fee, shouldpay_money, coupon_money, balance_money, pay_money, order_state, order_time, receiver_name, receiver_phone, receiver_address, receiver_remark, receive_type, coupon_id,  promotion_id, is_balanced, is_divided, is_show, is_appraised, is_balance, is_valid) VALUES(#{orderCode}, #{orderPhone}, #{orderWechatId}, #{weBusinessId}, #{totalMoney}, #{promotionAmount}, #{shipFee}, #{shouldpayMoney}, #{couponMoney}, #{balanceMoney}, #{payMoney}, #{orderState}, #{orderTime}, #{receiverName}, #{receiver_phone}, #{receiverAddress}, #{receiverRemark}, #{receiveType}, #{couponId}, #{promotionId}, #{isBalanced}, #{isDivided}, #{isShow}, #{isAppraised}, #{isBalance}, #{isValid})")
+    void save(BusinessOrder businessOrder);
+
+    @Update("UPDATE hy_business_order SET order_state = #{orderState}, pay_time = #{payTime} WHERE id = #{id}")
+    void updateOrderStateAndPayTime(BusinessOrder businessOrder);
+
+    // TODO  完成sql语句
     @Update("UPDATE hy_business_order SET  = ,  = ,  = ,   WHERE id = #{id}")
     void updateBusinessOrder(BusinessOrder order);
 }

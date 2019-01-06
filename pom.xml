@@ -21,6 +21,7 @@
         <module>microservice-zuul-gateway-9527</module>
         <module>microservice-provider-common-9127</module>
         <module>microservice-provider-promotion-9027</module>
+        <module>microservice-provider-wechataccount-9627</module>
     </modules>
 
 

@@ -4,18 +4,19 @@ import com.zmc.springcloud.entity.BusinessOrderItem;
 import com.zmc.springcloud.entity.HyGroupitemPromotion;
 import com.zmc.springcloud.entity.HyGroupitemPromotionDetail;
 import com.zmc.springcloud.entity.SpecialtySpecification;
+import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
 import com.zmc.springcloud.mapper.SpecialtySpecificationMapper;
-import com.zmc.springcloud.service.HyGroupitemPromotionDetailService;
-import com.zmc.springcloud.service.HyGroupitemPromotionService;
 import com.zmc.springcloud.service.SpecialtySpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by xyy on 2018/12/14.
+ * Created by xyy on 2018/12/4.
  *
  * @author xyy
  */
@@ -25,16 +26,42 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
     private SpecialtySpecificationMapper specialtySpecificationMapper;
 
     @Autowired
-    private HyGroupitemPromotionService hyGroupitemPromotionService;
-
-    @Autowired
-    private HyGroupitemPromotionDetailService hyGroupitemPromotionDetailService;
+    private HyGroupitemPromotionFeignClient hyGroupitemPromotionFeignClient;
 
     @Override
-    public SpecialtySpecification find(Long specialtySpecificationId) throws Exception{
-        return specialtySpecificationMapper.findById(specialtySpecificationId);
+    public void batchInsert(List<SpecialtySpecification> specialtySpecificationList)throws Exception {
+        specialtySpecificationMapper.batchInsert(specialtySpecificationList);
     }
 
+    @Override
+    public List<Map<String, Object>> getParentSpecificationList(Long specialtyid) throws Exception{
+        List<SpecialtySpecification> list = specialtySpecificationMapper.getParentSpecificationListByspecialtyid(specialtyid);
+
+        List<Map<String, Object>> res = new ArrayList<>();
+        for (SpecialtySpecification specification : list) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", specification.getId());
+            map.put("specification", specification.getSpecification());
+            res.add(map);
+        }
+
+        return res;
+    }
+
+    @Override
+    public List<SpecialtySpecification> getAllSpecification(Long id) throws Exception{
+        return specialtySpecificationMapper.findAllSpecificationBySpecialtyId(id);
+    }
+
+    @Override
+    public SpecialtySpecification findById(Long specificationsId) throws Exception{
+        return specialtySpecificationMapper.findById(specificationsId);
+    }
+
+    @Override
+    public void update(SpecialtySpecification specialtySpecification) throws Exception{
+        specialtySpecificationMapper.update(specialtySpecification);
+    }
 
     @Override
     public boolean isBaseInboundEnough(List<Map<String, Object>> orderItems) throws Exception {
@@ -42,11 +69,11 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
             // 如果是组合优惠
             if ((Boolean) orderItem.get("isGroupPromotion")) {
                 // 获取组合优惠活动对象
-                HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionService.find(((Integer) orderItem.get("specialtyId")).longValue());
+                HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionFeignClient.getHyGroupitemPromotionById(((Integer) orderItem.get("specialtyId")).longValue());
                 // 获取购买数量
                 Integer quantity = (Integer) orderItem.get("quantity");
                 // 检查每件组合优惠明细条目的库存
-                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
+                List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionFeignClient.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
                 for(HyGroupitemPromotionDetail detail:hyGroupitemPromotionDetails){
                     // 获取明细购买数量
                     Integer total = quantity*detail.getBuyNumber();
@@ -78,16 +105,6 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
         return true;
     }
 
-    /** 获取父规格*/
-    private SpecialtySpecification getParentSpecification(SpecialtySpecification specification) throws Exception{
-        // 获取父规格
-        // TODO 这种写法的前提是顶级规格的pid为0,且规格最多只有两级
-        if (specification.getPid() != null && specification.getPid() != 0) {
-            return specialtySpecificationMapper.findById(specification.getPid());
-        }
-        return specification;
-    }
-
     @Override
     public void updateBaseInboundAndHasSold(BusinessOrderItem orderItem, Boolean isSale) throws Exception {
         if(orderItem.getType() == 0){
@@ -112,7 +129,7 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
         }else{
             //如果是组合产品
             //获取组合优惠活动对象
-            HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionService.find(orderItem.getSpecialtyId());
+            HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionFeignClient.getHyGroupitemPromotionById(orderItem.getSpecialtyId());
             //获取购买数量
             Integer quantity = orderItem.getQuantity();
             //修改组合优惠相关数量
@@ -122,11 +139,11 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
                 groupitemPromotion.setPromoteNum(groupitemPromotion.getPromoteNum()+quantity);
             }
             //修改每件组合优惠明细条目的库存
-            List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
+            List<HyGroupitemPromotionDetail> hyGroupitemPromotionDetails = hyGroupitemPromotionFeignClient.getHyGroupitemPromotionDetailList(groupitemPromotion.getId());
             for (HyGroupitemPromotionDetail detail : hyGroupitemPromotionDetails) {
                 //获取明细购买数量
                 Integer total = quantity*detail.getBuyNumber();
-                SpecialtySpecification specification = this.find(detail.getItemSpecificationId());
+                SpecialtySpecification specification = this.findById(detail.getItemSpecificationId());
                 //获取父规格
                 SpecialtySpecification fuSpecification = getParentSpecification(specification);
                 if(fuSpecification==null){
@@ -144,7 +161,17 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
                 specialtySpecificationMapper.updateInboundAndHasSold(fuSpecification);
                 specialtySpecificationMapper.updateInboundAndHasSold(specification);
             }
-            hyGroupitemPromotionService.updatePromotion(groupitemPromotion);
+            hyGroupitemPromotionFeignClient.updateGroupitemPromotion(groupitemPromotion);
         }
+    }
+
+    /** 获取父规格*/
+    private SpecialtySpecification getParentSpecification(SpecialtySpecification specification) throws Exception{
+        // 获取父规格
+        // TODO 这种写法的前提是顶级规格的pid为0,且规格最多只有两级
+        if (specification.getPid() != null && specification.getPid() != 0) {
+            return specialtySpecificationMapper.findById(specification.getPid());
+        }
+        return specification;
     }
 }

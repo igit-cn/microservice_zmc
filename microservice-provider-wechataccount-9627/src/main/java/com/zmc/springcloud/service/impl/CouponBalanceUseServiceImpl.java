@@ -1,6 +1,5 @@
 package com.zmc.springcloud.service.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.CouponBalanceUse;
 import com.zmc.springcloud.mapper.CouponBalanceUseMapper;
 import com.zmc.springcloud.service.CouponBalanceUseService;

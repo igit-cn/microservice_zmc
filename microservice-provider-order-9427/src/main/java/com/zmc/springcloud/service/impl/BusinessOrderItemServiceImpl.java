@@ -32,4 +32,15 @@ public class BusinessOrderItemServiceImpl implements BusinessOrderItemService {
     public void setBusinessOrder(BusinessOrderItem item, Long orderId) throws Exception {
         businessOrderItemMapper.updateOrderId(item.getId(), orderId);
     }
+
+    @Override
+    public void save(BusinessOrderItem businessOrderItem) throws Exception {
+        businessOrderItemMapper.insert(businessOrderItem);
+    }
+
+    @Override
+    public List<BusinessOrderItem> getListByOrderId(Long orderId) throws Exception {
+        return businessOrderItemMapper.findListByOrderId(orderId);
+    }
+
 }

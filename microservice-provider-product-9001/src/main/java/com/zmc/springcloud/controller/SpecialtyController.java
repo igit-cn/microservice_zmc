@@ -29,35 +29,11 @@ public class SpecialtyController {
     private SpecialtyService specialtyService;
 
     @Autowired
-    private SpecialtySpecificationService specialtySpecificationService;
-
-    @Autowired
     private SpecialtyCategoryService specialtyCategoryService;
-
-    @Autowired
-    private HyGroupitemPromotionService hyGroupitemPromotionService;
-
-    @Autowired
-    private HyGroupitemPromotionDetailService hyGroupitemPromotionDetailService;
 
     @RequestMapping(value = "/product/specialty/{id}")
     public Specialty getSpecialtyById(@PathVariable Long id){
         return specialtyService.getSpecialtyById(id);
-    }
-
-    @RequestMapping(value = "/product/specification/{id}")
-    public SpecialtySpecification getSpecialtySpecificationById(@PathVariable Long id) throws Exception{
-        return specialtySpecificationService.findById(id);
-    }
-
-    @RequestMapping(value = "/group/promotion/{id}")
-    public HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable Long id) throws Exception{
-        return hyGroupitemPromotionService.getHyGroupitemPromotionById(id);
-    }
-
-    @RequestMapping(value = "/group/promotion/detail/{id}")
-    public List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable Long id) throws Exception{
-        return hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(id);
     }
 
     /**
@@ -207,23 +183,6 @@ public class SpecialtyController {
             e.printStackTrace();
             j.setSuccess(false);
             j.setMsg(e.getMessage());
-        }
-        return j;
-    }
-
-    /** 渠道销售-产品管理-查看产品-详情-获取父规格*/
-    @RequestMapping(value = "/admin/business/product/getparentspecificationlist/view")
-    public Json getParentSpecificationList(Long specialtyid){
-        Json j = new Json();
-        try{
-            List<Map<String, Object>> res = specialtySpecificationService.getParentSpecificationList(specialtyid);
-            j.setMsg("操作成功");
-            j.setSuccess(true);
-            j.setObj(res);
-        }catch (Exception e){
-            e.printStackTrace();
-            j.setSuccess(false);
-            j.setMsg("操作失败");
         }
         return j;
     }

@@ -3,7 +3,7 @@ package com.zmc.springcloud.service.impl;
 import com.zmc.springcloud.entity.HyPromotion;
 import com.zmc.springcloud.entity.HySingleitemPromotion;
 import com.zmc.springcloud.entity.SpecialtySpecification;
-import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
+import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.mapper.HySingleitemPromotionMapper;
 import com.zmc.springcloud.service.HyPromotionService;
 import com.zmc.springcloud.service.HySingleitemPromotionService;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class HySingleitemPromotionServiceImpl implements HySingleitemPromotionService {
     @Autowired
-    private SpecialtyFeignClient specialtyFeignClient;
+    private SpecialtySpecificationFeignClient specialtySpecificationFeignClient;
 
     @Autowired
     private HySingleitemPromotionMapper hySingleitemPromotionMapper;
@@ -33,7 +33,7 @@ public class HySingleitemPromotionServiceImpl implements HySingleitemPromotionSe
         if (specialtySpecificationId == null || promotionId == null) {
             return null;
         }
-        SpecialtySpecification specialtySpecification = specialtyFeignClient.getSpecialtySpecificationById(specialtySpecificationId);
+        SpecialtySpecification specialtySpecification = specialtySpecificationFeignClient.getSpecialtySpecificationById(specialtySpecificationId);
         if (specialtySpecification == null) {
             return null;
         }

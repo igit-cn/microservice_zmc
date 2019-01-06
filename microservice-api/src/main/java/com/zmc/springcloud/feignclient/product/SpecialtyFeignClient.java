@@ -19,13 +19,4 @@ import java.util.List;
 public interface SpecialtyFeignClient {
     @RequestMapping(value = "/product/specialty/{id}")
     Specialty getSpecialtyById(@PathVariable Long id);
-
-    @RequestMapping(value = "/product/specification/{id}")
-    SpecialtySpecification getSpecialtySpecificationById(@PathVariable Long id);
-
-    @RequestMapping(value = "/group/promotion/{id}")
-    HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable Long id);
-
-    @RequestMapping(value = "/group/promotion/detail/{id}")
-    List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable Long id);
 }

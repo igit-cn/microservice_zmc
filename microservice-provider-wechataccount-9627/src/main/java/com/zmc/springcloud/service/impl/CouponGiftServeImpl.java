@@ -16,12 +16,12 @@ public class CouponGiftServeImpl implements CouponGiftService{
     @Autowired
     private CouponGiftMapper counponMapper;
     @Override
-    public CouponGift find(long id) throws Exception {
+    public CouponGift findCouponGiftById(Long id) throws Exception {
         return counponMapper.find(id);
     }
 
     @Override
-    public void update(CouponGift coupon)throws Exception {
+    public void updateUseState(CouponGift coupon)throws Exception {
         counponMapper.update(coupon);
     }
 }

@@ -1,6 +1,5 @@
 package com.zmc.springcloud.service.impl;
 
-import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.BusinessOrderRefund;
 import com.zmc.springcloud.mapper.BusinessOrderRefundMapper;
 import com.zmc.springcloud.service.BusinessOrderRefundService;
