@@ -65,7 +65,6 @@ public interface BusinessOrderMapper {
     @Update("UPDATE hy_business_order SET order_state = #{orderState}, pay_time = #{payTime} WHERE id = #{id}")
     void updateOrderStateAndPayTime(BusinessOrder businessOrder);
 
-    // TODO  完成sql语句
-    @Update("UPDATE hy_business_order SET  = ,  = ,  = ,   WHERE id = #{id}")
+    @Update("UPDATE hy_business_order SET  reviewer=#{reviewer},is_divided=#{isDivided},parent_order_id=#{parentOrderId},is_show=#{isShow},order_state=#{orderState},review_time=#{reviewTime} WHERE id = #{id}")
     void updateBusinessOrder(BusinessOrder order);
 }
