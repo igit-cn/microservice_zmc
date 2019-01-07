@@ -18,5 +18,5 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-product")
 public interface SpecialtyFeignClient {
     @RequestMapping(value = "/product/specialty/{id}")
-    Specialty getSpecialtyById(@PathVariable Long id);
+    Specialty getSpecialtyById(@PathVariable("id") Long id);
 }

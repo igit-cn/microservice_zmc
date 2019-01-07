@@ -19,8 +19,8 @@ public class InboundServiceImpl implements InboundService{
     private InboundMapper inboundMapper;
 
     @Override
-    public List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer i) throws Exception {
-        return inboundMapper.findListInbound(specificationId, i);
+    public List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer quantity) throws Exception {
+        return inboundMapper.findListInbound(specificationId, quantity);
     }
 
     @Override

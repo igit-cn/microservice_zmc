@@ -16,10 +16,10 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-product")
 public interface HyGroupitemPromotionFeignClient {
     @RequestMapping(value = "/group/item/promotion/{id}")
-    HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable Long id);
+    HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/group/item/promotion/detail/{id}")
-    List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable Long id);
+    List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/group/item/promotion/update")
     void updateGroupitemPromotion(HyGroupitemPromotion hyGroupitemPromotion);

@@ -18,7 +18,7 @@ public class WechatAccountController {
     private WechatAccountService wechatAccountService;
 
     @RequestMapping("/wechataccount/{id}")
-    public WechatAccount getWechatAccountById(@PathVariable Long id) throws Exception {
+    public WechatAccount getWechatAccountById(@PathVariable("id") Long id) throws Exception {
         return wechatAccountService.findById(id);
     }
 

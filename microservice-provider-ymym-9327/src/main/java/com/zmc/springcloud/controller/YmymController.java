@@ -55,7 +55,12 @@ public class YmymController {
                             @RequestBody HashMap<String, Object> bodys){
         Json j = new Json();
         try{
-            Map<String, Object> obj = businessOrderFeignClient.createOrder(params, bodys);
+            // 将两个Map放到一个Map中 避免FeignClient调用时 Query map can only be present once
+            // 这样不可避免产生耦合 因为FeignClient中 必须要知道map中的key分别是 "params"和"bodys"
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("params", params);
+            map.put("bodys", bodys);
+            Map<String, Object> obj = businessOrderFeignClient.createOrder(map);
             j.setMsg("操作成功");
             j.setSuccess(true);
             j.setObj(obj);
@@ -68,7 +73,7 @@ public class YmymController {
 
     /** 统一下单*/
     @RequestMapping(value = "/pay/wechat/mp/{orderId}")
-    public Map<String, Object> detailWithWap(@PathVariable String orderId, @RequestParam Map<String, Object> params, @RequestBody Map<String, Object> models, HttpServletResponse servletResponse) throws Exception {
+    public Map<String, Object> detailWithWap(@PathVariable("orderId") String orderId, @RequestParam Map<String, Object> params, @RequestBody Map<String, Object> models, HttpServletResponse servletResponse) throws Exception {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> result = new HashMap<>();
         PayBean payBean = new PayBean();
@@ -117,7 +122,7 @@ public class YmymController {
 
     /** 订单支付成功回调*/
     @RequestMapping(value = "/order/pay/wechat/notify/{orderId}")
-    public void notify(@PathVariable String orderId, @RequestParam Map<String, Object> params,
+    public void notify(@PathVariable("orderId") String orderId, @RequestParam Map<String, Object> params,
                        HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 读取参数
         InputStream inputStream;

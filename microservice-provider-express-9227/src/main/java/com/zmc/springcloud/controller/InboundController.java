@@ -18,9 +18,9 @@ public class InboundController {
     @Autowired
     private InboundService inboundService;
 
-    @RequestMapping("/inbound/")
-    public List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer i) throws Exception{
-        return inboundService.getInboundListBySpecificationId(specificationId, i);
+    @RequestMapping("/inbound/list")
+    public List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer quantity) throws Exception{
+        return inboundService.getInboundListBySpecificationId(specificationId, quantity);
     }
 
     @RequestMapping("/inbound/")

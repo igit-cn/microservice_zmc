@@ -32,7 +32,7 @@ public class SpecialtyController {
     private SpecialtyCategoryService specialtyCategoryService;
 
     @RequestMapping(value = "/product/specialty/{id}")
-    public Specialty getSpecialtyById(@PathVariable Long id){
+    public Specialty getSpecialtyById(@PathVariable("id") Long id){
         return specialtyService.getSpecialtyById(id);
     }
 

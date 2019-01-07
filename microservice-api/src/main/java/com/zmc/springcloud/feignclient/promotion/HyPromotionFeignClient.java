@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "microservicecloud-promotion")
 public interface HyPromotionFeignClient {
     @RequestMapping("/promotion/{id}")
-    HyPromotion getHyPromotionById(@PathVariable Long id);
+    HyPromotion getHyPromotionById(@PathVariable("id") Long id);
 }

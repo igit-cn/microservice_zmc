@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "microservicecloud-wechataccount")
 public interface CouponGiftFeignClient {
     @RequestMapping("/coupon/gift/{id}")
-    CouponGift getCouponGiftById(@PathVariable Long id);
+    CouponGift getCouponGiftById(@PathVariable("id") Long id);
 
     /** 将商城赠送电子券设置为使用状态*/
     @RequestMapping("/coupon/gift/update")

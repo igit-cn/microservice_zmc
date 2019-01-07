@@ -18,7 +18,7 @@ public class PromotionController {
     private HyPromotionService hyPromotionService;
 
     @RequestMapping("/promotion/{id}")
-    public HyPromotion getHyPromotionById(@PathVariable  Long id) throws Exception{
+    public HyPromotion getHyPromotionById(@PathVariable("id")  Long id) throws Exception{
         return hyPromotionService.getHyPromotionById(id);
     }
 

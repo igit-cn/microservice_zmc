@@ -4,6 +4,8 @@ import com.zmc.springcloud.entity.HyVinbound;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-express")
 public interface HyVinboundFeignClient {
     @RequestMapping("/vinbound/{id}")
-    HyVinbound getHyVinboundBySpecificationId(@PathVariable Long id);
+    HyVinbound getHyVinboundBySpecificationId(@PathVariable("id") Long id);
 
     @RequestMapping("/vinbound/add")
     void addHyVinbound(HyVinbound hyVinbound);
@@ -23,9 +25,9 @@ public interface HyVinboundFeignClient {
     @RequestMapping("/vinbound/update")
     void updateHyVinbound(HyVinbound hyVinbound);
 
-    @RequestMapping("/vinbound/updatenum")
-    void updateHyVinboundNum(Long id, Integer saleNumber, Integer vinboundNumber);
+    @RequestMapping(value = "/vinbound/updatenum", method = RequestMethod.POST)
+    void updateHyVinboundNum(@RequestParam("id") Long id, @RequestParam("saleNumber")Integer saleNumber, @RequestParam("vinboundNumber")Integer vinboundNumber);
 
     @RequestMapping("/vinbound/list/{id}")
-    List<HyVinbound> getHyVinboundListBySpecificationId(@PathVariable Long id);
+    List<HyVinbound> getHyVinboundListBySpecificationId(@PathVariable("id") Long id);
 }

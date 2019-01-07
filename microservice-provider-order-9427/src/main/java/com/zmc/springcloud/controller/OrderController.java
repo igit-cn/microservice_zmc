@@ -27,11 +27,13 @@ public class OrderController {
     private BusinessOrderService businessOrderService;
 
     @RequestMapping("/order/create")
-    public Map<String, Object> createOrder(HashMap<String, Object> params, HashMap<String, Object> bodys) throws Exception{
+    public Map<String, Object> createOrder(HashMap<String, Object> map) throws Exception{
+        HashMap<String, Object> params = (HashMap<String, Object>) map.get("params");
+        HashMap<String, Object> bodys = (HashMap<String, Object>) map.get("bodys");
         return businessOrderService.createOrder(params, bodys);
     }
 
-    @RequestMapping("/order/")
+    @RequestMapping("/order/updateafter")
     public void updateOrderAfterPay(String orderId)throws Exception{
         businessOrderService.updateOrderAfterPay(orderId);
     }

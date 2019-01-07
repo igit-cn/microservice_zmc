@@ -18,7 +18,7 @@ public class HyAreaController {
     private HyAreaService hyAreaService;
 
     @RequestMapping("/area/{id}")
-    public HyArea getHyAreaById(@PathVariable Long id) throws Exception {
+    public HyArea getHyAreaById(@PathVariable("id") Long id) throws Exception {
         return hyAreaService.getHyAreaById(id);
     }
 }

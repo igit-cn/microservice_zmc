@@ -20,7 +20,7 @@ public class HyVinboundController {
     private HyVinboundService hyVinboundService;
 
     @RequestMapping("/vinbound/{id}")
-    public HyVinbound getHyVinboundBySpecificationId(@PathVariable Long id) throws Exception{
+    public HyVinbound getHyVinboundBySpecificationId(@PathVariable("id") Long id) throws Exception{
         return hyVinboundService.findBySpecification(id);
     }
 
@@ -40,7 +40,7 @@ public class HyVinboundController {
     }
 
     @RequestMapping("/vinbound/list/{id}")
-    public List<HyVinbound> getHyVinboundListBySpecificationId(@PathVariable Long id) throws Exception{
+    public List<HyVinbound> getHyVinboundListBySpecificationId(@PathVariable("id") Long id) throws Exception{
         return hyVinboundService.getHyVinboundListBySpecificationId(id);
     }
 }

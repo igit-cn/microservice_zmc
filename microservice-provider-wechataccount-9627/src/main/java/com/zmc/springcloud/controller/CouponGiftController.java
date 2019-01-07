@@ -18,7 +18,7 @@ public class CouponGiftController {
     private CouponGiftService couponGiftService;
 
     @RequestMapping("/coupon/gift/{id}")
-    public CouponGift getCouponGiftById(@PathVariable  Long id) throws Exception{
+    public CouponGift getCouponGiftById(@PathVariable("id")  Long id) throws Exception{
         return  couponGiftService.findCouponGiftById(id);
     }
 

@@ -25,12 +25,12 @@ public class HyGroupitemPromotionController {
     private HyGroupitemPromotionDetailService hyGroupitemPromotionDetailService;
 
     @RequestMapping(value = "/group/item/promotion/{id}")
-    public HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable Long id) throws Exception{
+    public HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable("id") Long id) throws Exception{
         return hyGroupitemPromotionService.getHyGroupitemPromotionById(id);
     }
 
     @RequestMapping(value = "/group/item/promotion/detail/{id}")
-    public List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable Long id) throws Exception{
+    public List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable("id") Long id) throws Exception{
         return hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(id);
     }
 

@@ -5,6 +5,8 @@ import com.zmc.springcloud.entity.SpecialtySpecification;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -17,13 +19,13 @@ import java.util.Map;
 @FeignClient(name = "microservicecloud-express")
 public interface SpecialtySpecificationFeignClient {
     @RequestMapping(value = "/product/specification/{id}")
-    SpecialtySpecification getSpecialtySpecificationById(@PathVariable Long id);
+    SpecialtySpecification getSpecialtySpecificationById(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/product/specification/parent/list/{id}")
-    List<Map<String, Object>> getParentSpecificationList(@PathVariable Long id);
+    List<Map<String, Object>> getParentSpecificationList(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/product/specification/all/{id}")
-    List<SpecialtySpecification> getAllSpecification(@PathVariable Long id);
+    List<SpecialtySpecification> getAllSpecification(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/product/specification/add")
     void batchInsert(List<SpecialtySpecification> specialtySpecificationList);
@@ -34,6 +36,6 @@ public interface SpecialtySpecificationFeignClient {
     @RequestMapping(value = "/product/specification/baseinbound")
     boolean isBaseInboundEnough(List<Map<String, Object>> orderItems);
 
-    @RequestMapping(value = "/product/specification/baseinbound/update")
-    void updateBaseInboundAndHasSold(BusinessOrderItem businessOrderItem, Boolean isSale);
+    @RequestMapping(value = "/product/specification/baseinbound/update", method = RequestMethod.POST)
+    void updateBaseInboundAndHasSold(@RequestParam("businessOrderItem") BusinessOrderItem businessOrderItem, @RequestParam("isSale")Boolean isSale);
 }

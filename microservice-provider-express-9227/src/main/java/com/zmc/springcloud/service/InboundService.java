@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface InboundService {
     /** 需要注意第二个参数*/
-    List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer i) throws Exception;
+    List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer quantity) throws Exception;
 
     List<Inbound> getListBySpecificationIdAndDepotCode(Long specificationId, String depotCode) throws Exception;
 }

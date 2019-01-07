@@ -23,17 +23,17 @@ public class SpecialtySpecificationController {
     private SpecialtySpecificationService specialtySpecificationService;
 
     @RequestMapping(value = "/product/specification/{id}")
-    public SpecialtySpecification getSpecialtySpecificationById(@PathVariable Long id) throws Exception{
+    public SpecialtySpecification getSpecialtySpecificationById(@PathVariable("id") Long id) throws Exception{
         return specialtySpecificationService.findById(id);
     }
 
     @RequestMapping(value = "/product/specification/parent/list/{id}")
-    public List<Map<String, Object>> getParentSpecificationList(@PathVariable Long id) throws Exception{
+    public List<Map<String, Object>> getParentSpecificationList(@PathVariable("id") Long id) throws Exception{
         return specialtySpecificationService.getParentSpecificationList(id);
     }
 
     @RequestMapping(value = "/product/specification/all/{id}")
-    public List<SpecialtySpecification> getAllSpecification(@PathVariable Long id) throws Exception{
+    public List<SpecialtySpecification> getAllSpecification(@PathVariable("id") Long id) throws Exception{
         return specialtySpecificationService.getAllSpecification(id);
     }
 

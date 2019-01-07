@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface WechatAccountFeignClient {
 
     @RequestMapping("/wechataccount/{id}")
-    WechatAccount getWechatAccountById(@PathVariable Long id);
+    WechatAccount getWechatAccountById(@PathVariable("id") Long id);
 
     @RequestMapping("/wechataccount/update/totalbalance")
     void updateTotalBalance(WechatAccount wechatAccount);
