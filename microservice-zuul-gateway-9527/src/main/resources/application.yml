@@ -26,7 +26,8 @@ zuul:
   host:
     max-per-route-connections: 10000
     max-total-connections: 60000
-    socket-timeout-millis: 2000
+    socket-timeout-millis: 30000
+    connect-timeout-millis: 30000
   routes:
       ignoredServices: "*"
       sensitiveHeaders: "*"
@@ -42,11 +43,11 @@ zuul:
         sensitiveHeaders: "*"
       # 产品模块
       product-service:
+        ribbon:
+          MaxTotalConnecttions: 30000
+          MaxConnectionsPerHost: 30000
         path: /hyapi/admin/business/product/**
         serviceId: microservicecloud-product
-          ribbon:
-             MaxTotalConnecttions: 20000
-             MaxConnectionsPerHost: 20000
         sensitiveHeaders: "*"
       # 供应商模块
       supplier-service:
@@ -63,8 +64,24 @@ zuul:
         serviceId: microservicecloud-ymym
         sensitiveHeaders: "*"
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+            thread:
+              timeoutInMilliseconds: 60000
+            strategy: THREAD
+
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+  MaxAutoRetries: 1
+  MaxTotalHttpConnections: 20000
+  MaxCOnnectionsPerHost: 10000
+
 info:
-  app.name: atguigu-microcloud
-  company.name: www.atguigu.com
+  app.name: zmc-microcloud
+  company.name: www.zmc.com
   build.artifactId: $project.artifactId$
   build.version: $project.version$
