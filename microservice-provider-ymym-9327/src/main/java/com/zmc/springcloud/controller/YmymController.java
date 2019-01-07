@@ -34,43 +34,6 @@ public class YmymController {
     @Autowired
     private BusinessOrderFeignClient businessOrderFeignClient;
 
-    /** 添加到购物车  实体中是wechatId而不是wechat_id 增加一个参数接收*/
-    @RequestMapping(value = "/shopping_cart/add_items")
-    public Json add(ShoppingCart shoppingCart, Long wechat_id){
-        Json j = new Json();
-        try{
-            shoppingCartService.addShoppingCart(shoppingCart, wechat_id);
-            j.setMsg("操作成功");
-            j.setSuccess(true);
-        }catch (Exception e){
-            j.setSuccess(false);
-            j.setMsg(e.getMessage());
-        }
-        return j;
-    }
-
-    /** 创建订单*/
-    @RequestMapping(value = "/order/create")
-    public Json createOrder(@RequestParam(required = false) HashMap<String, Object> params,
-                            @RequestBody HashMap<String, Object> bodys){
-        Json j = new Json();
-        try{
-            // 将两个Map放到一个Map中 避免FeignClient调用时 Query map can only be present once
-            // 这样不可避免产生耦合 因为FeignClient中 必须要知道map中的key分别是 "params"和"bodys"
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("params", params);
-            map.put("bodys", bodys);
-            Map<String, Object> obj = businessOrderFeignClient.createOrder(map);
-            j.setMsg("操作成功");
-            j.setSuccess(true);
-            j.setObj(obj);
-        }catch (Exception e){
-            j.setSuccess(false);
-            j.setMsg(e.getMessage());
-        }
-        return j;
-    }
-
     /** 统一下单*/
     @RequestMapping(value = "/pay/wechat/mp/{orderId}")
     public Map<String, Object> detailWithWap(@PathVariable("orderId") String orderId, @RequestParam Map<String, Object> params, @RequestBody Map<String, Object> models, HttpServletResponse servletResponse) throws Exception {
@@ -148,5 +111,42 @@ public class YmymController {
         out.flush();
         out.close();
         return;
+    }
+
+    /** 添加到购物车  实体中是wechatId而不是wechat_id 增加一个参数接收*/
+    @RequestMapping(value = "/shopping_cart/add_items")
+    public Json add(ShoppingCart shoppingCart, Long wechat_id){
+        Json j = new Json();
+        try{
+            shoppingCartService.addShoppingCart(shoppingCart, wechat_id);
+            j.setMsg("操作成功");
+            j.setSuccess(true);
+        }catch (Exception e){
+            j.setSuccess(false);
+            j.setMsg(e.getMessage());
+        }
+        return j;
+    }
+
+    /** 创建订单*/
+    @RequestMapping(value = "/order/create")
+    public Json createOrder(@RequestParam(required = false) HashMap<String, Object> params,
+                            @RequestBody HashMap<String, Object> bodys){
+        Json j = new Json();
+        try{
+            // 将两个Map放到一个Map中 避免FeignClient调用时 Query map can only be present once
+            // 这样不可避免产生耦合 因为FeignClient中 必须要知道map中的key分别是 "params"和"bodys"
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("params", params);
+            map.put("bodys", bodys);
+            Map<String, Object> obj = businessOrderFeignClient.createOrder(map);
+            j.setMsg("操作成功");
+            j.setSuccess(true);
+            j.setObj(obj);
+        }catch (Exception e){
+            j.setSuccess(false);
+            j.setMsg(e.getMessage());
+        }
+        return j;
     }
 }

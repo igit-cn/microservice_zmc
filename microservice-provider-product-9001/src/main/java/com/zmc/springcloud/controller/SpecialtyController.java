@@ -20,7 +20,7 @@ import java.util.Map;
  * 特产
  * Created by xyy on 2018/11/23.
  */
-@RestController()
+@RestController("")
 public class SpecialtyController {
     @Autowired
     private ProviderFeignClient providerFeignClient;
@@ -39,26 +39,26 @@ public class SpecialtyController {
     /**
      * 系统配置-分区管理-列表
      */
-    @RequestMapping(value = "/admin/business/product/category/page/view")
+    @RequestMapping(value = "/category/page/view")
     public Json categoryList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean isActive, String name) {
         Json j = new Json();
-        try {
-            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
-            j.setMsg("操作成功");
-            j.setObj(p);
-            j.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            j.setSuccess(false);
-            j.setMsg(e.getMessage());
-        }
+//        try {
+//            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
+//            j.setMsg("操作成功");
+//            j.setObj(p);
+//            j.setSuccess(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            j.setSuccess(false);
+//            j.setMsg(e.getMessage());
+//        }
         return j;
     }
 
     /**
      * 系统配置-分区管理-新建-获取父分区
      */
-    @RequestMapping(value = "/admin/business/product/category/selectlist/view")
+    @RequestMapping(value = "/category/selectlist/view")
     public Json selectlist(Long id, Boolean isActive, String name) {
         Json j = new Json();
         try {
@@ -77,7 +77,7 @@ public class SpecialtyController {
     /**
      * 系统配置-分区管理-新建-保存
      */
-    @RequestMapping(value = "/admin/business/product/category/add")
+    @RequestMapping(value = "/category/add")
     public Json categoryAdd(String name, Boolean isActive, String parentName, Long pid, String iconUrl, HttpSession session) {
         Json j = new Json();
         try {
@@ -94,7 +94,7 @@ public class SpecialtyController {
     /**编辑部-产品管理-列表-特产分区下拉列表
      * 渠道销售-产品管理-列表-特产分区下拉列表
      * */
-    @RequestMapping(value = "/admin/business/product/category/treelist/view")
+    @RequestMapping(value = "/category/treelist/view")
     public Json specialtyCategoryTreeList(){
         Json j = new Json();
         try{
@@ -112,11 +112,11 @@ public class SpecialtyController {
 
     //分区产品分割线==================================================================================================================
 
-    // TODO 从模块划分的角度来说,这个接口应该放到供应商模块 但前台的URL写成了/admin/business/product 而不是 /admin/business/provider
+    // TODO 从模块划分的角度来说,这个接口应该放到供应商模块 但前台的URL写成了 而不是 /admin/business/provider
     /**编辑部-产品管理-列表-特产供应商下拉列表
      * 渠道销售-产品管理-列表-特产供应商下拉列表
      * */
-    @RequestMapping(value = "/admin/business/product/provider/list/view")
+    @RequestMapping(value = "/provider/list/view")
     public Json providerList(){
         Json j = new Json();
         try{
@@ -135,7 +135,7 @@ public class SpecialtyController {
     /** 编辑部-产品管理-列表
      *  渠道销售-产品管理-列表
      * */
-    @RequestMapping(value = "/admin/business/product/page/view")
+    @RequestMapping(value = "/page/view")
     public Json productList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Long providerid, String name, Long categoryid, HttpSession session){
         Json j = new Json();
         try{
@@ -154,7 +154,7 @@ public class SpecialtyController {
 
     // 不使用包装类,直接用JSON接收  注意JSONArray和JSONObject
     /** 编辑部-产品管理-新建*/
-    @RequestMapping(value = "/admin/business/product/add")
+    @RequestMapping(value = "/add")
     public Json add(@RequestBody JSONObject specialty, HttpSession session) {
         Json j = new Json();
         try {
@@ -172,7 +172,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-详情*/
-    @RequestMapping(value = "/admin/business/product/detail/view")
+    @RequestMapping(value = "/detail/view")
     public Json detail(Long id){
         Json j = new Json();
         try{
@@ -188,7 +188,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-详情-相关推荐列表*/
-    @RequestMapping(value = "/admin/business/product/recommendlist/view")
+    @RequestMapping(value = "/recommendlist/view")
     public Json recommendList(Long id){
         Json j = new Json();
         try{
@@ -205,7 +205,7 @@ public class SpecialtyController {
     }
 
     /** 渠道销售-产品管理-查看产品-提交产品编辑*/
-    @RequestMapping(value = "/admin/business/product/qudao/modify")
+    @RequestMapping(value = "/qudao/modify")
     public Json specialtyQudaoModify(@RequestBody JSONObject paylaod, HttpSession session){
         Json j = new Json();
         try {

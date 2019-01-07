@@ -1,19 +1,15 @@
 server:
   port: 9001
+  tomcat:
+    max-connections: 10000
+    max-threads: 200
 
 logging:
    level:
        com:
           zmc:
              springcloud:
-                 mapper: debug
-
-#pagehelper分页插件配置
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-
+                 mapper: info
 
 #mybatis
 mybatis:
@@ -47,23 +43,14 @@ spring:
       max-total: 5                                          # 最大连接数
       max-wait-millis: 200                                  # 等待连接获取的最大超时时间
 
-eureka:
-  client: #客户端注册进eureka服务列表内
-    service-url:
-       defaultZone: http://eureka7001.com:7001/eureka
-    instance:
-      instance-id: microservicecloud-product-9001
-      prefer-ip-address: true     #访问路径可以显示IP地址
-
-
 management:
-    endpoints:
-      web:
-        exposure:
-          include: "*"
-        cors:
-          allowed-origins: "*"
-          allowed-methods: "*"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
 
 info:
   app.name: zmc-microservicecloud
@@ -71,5 +58,18 @@ info:
   build.artifactId: $project.artifactId$
   build.version: $project.version$
 
+#pagehelper分页插件配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+eureka:
+  client: #客户端注册进eureka服务列表内
+      service-url:
+         defaultZone: http://eureka7001.com:7001/eureka
+  instance:
+        instance-id: microservicecloud-product-9001
+        prefer-ip-address: true     #访问路径可以显示IP地址
 
 

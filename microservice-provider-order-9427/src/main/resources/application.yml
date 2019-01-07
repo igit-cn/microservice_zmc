@@ -28,9 +28,9 @@ spring:
      host: eureka7001.com
      port: 6379
      lettuce:
-         pool:
+     pool:
            max-active: 8
-           max-wait: -1ms
+           max-wait: 0
            max-idle: 8
            min-idle: 0
      database: 0
@@ -52,7 +52,7 @@ eureka:
     service-url:
        defaultZone: http://eureka7001.com:7001/eureka
         #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
-    instance:
+  instance:
       instance-id: microservicecloud-order-9427
       prefer-ip-address: true     #访问路径可以显示IP地址
 

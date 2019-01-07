@@ -24,34 +24,29 @@ zuul:
         path: /hyapi/common/**
         serviceId: microservicecloud-login
         sensitiveHeaders: "*"
-      # 产品模块
-      product-service:
-        path: /hyapi/admin/business/product/**
-        serviceId: microservicecloud-product
-        sensitiveHeaders: "*"
-      # 文件上传模块
-      upload-service:
-        path: /hyapi/resource/**
-        serviceId: microservicecloud-upload
-      # 供应商模块
-      supplier-service:
-        path: /hyapi/admin/business/provider/**
-        serviceId: microservicecloud-supplier
-        sensitiveHeaders: "*"
       # 订单模块
       order-service:
         path: /hyapi/admin/business/order/**
         serviceId: microservicecloud-order
         sensitiveHeaders: "*"
+      # 产品模块
+      product-service:
+        path: /hyapi/admin/business/product/**
+        serviceId: microservicecloud-product
+        sensitiveHeaders: "*"
+      # 供应商模块
+      supplier-service:
+        path: /hyapi/admin/business/provider/**
+        serviceId: microservicecloud-supplier
+        sensitiveHeaders: "*"
+      # 文件上传模块
+      upload-service:
+        path: /hyapi/resource/**
+        serviceId: microservicecloud-upload
       # 商城模块
       ymym-service:
         path: /hyapi/ymym/**
         serviceId: microservicecloud-ymym
-        sensitiveHeaders: "*"
-      # 物流模块
-      express-service:
-        path: /hyapi/admin/inbound/**
-        serviceId: microservicecloud-express
         sensitiveHeaders: "*"
 
   ignoredServices: "*"
