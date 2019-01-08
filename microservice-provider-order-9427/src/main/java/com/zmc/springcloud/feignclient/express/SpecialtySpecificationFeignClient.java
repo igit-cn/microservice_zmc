@@ -37,5 +37,5 @@ public interface SpecialtySpecificationFeignClient {
     boolean isBaseInboundEnough(List<Map<String, Object>> orderItems);
 
     @RequestMapping(value = "/product/specification/baseinbound/update", method = RequestMethod.POST)
-    void updateBaseInboundAndHasSold(@RequestParam("businessOrderItem") BusinessOrderItem businessOrderItem, @RequestParam("isSale")Boolean isSale);
+    void updateBaseInboundAndHasSold(@RequestParam("businessOrderItem") BusinessOrderItem businessOrderItem, @RequestParam("isSale") Boolean isSale);
 }

@@ -26,7 +26,7 @@ public interface HyVinboundFeignClient {
     void updateHyVinbound(HyVinbound hyVinbound);
 
     @RequestMapping(value = "/vinbound/updatenum", method = RequestMethod.POST)
-    void updateHyVinboundNum(@RequestParam("id") Long id, @RequestParam("saleNumber")Integer saleNumber, @RequestParam("vinboundNumber")Integer vinboundNumber);
+    void updateHyVinboundNum(@RequestParam("id") Long id, @RequestParam("saleNumber") Integer saleNumber, @RequestParam("vinboundNumber") Integer vinboundNumber);
 
     @RequestMapping("/vinbound/list/{id}")
     List<HyVinbound> getHyVinboundListBySpecificationId(@PathVariable("id") Long id);

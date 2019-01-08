@@ -16,5 +16,5 @@ import java.math.BigDecimal;
 @FeignClient(name = "microservicecloud-wechataccount")
 public interface VipFeignClient {
     @RequestMapping(value = "/vip/318",  method = RequestMethod.POST)
-    void setVip318(@RequestParam("wechatAccount") WechatAccount wechatAccount, @RequestParam("money")BigDecimal money);
+    void setVip318(@RequestParam("wechatAccount") WechatAccount wechatAccount, @RequestParam("money") BigDecimal money);
 }

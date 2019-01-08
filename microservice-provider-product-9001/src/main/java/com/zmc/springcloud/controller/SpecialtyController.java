@@ -20,7 +20,7 @@ import java.util.Map;
  * 特产
  * Created by xyy on 2018/11/23.
  */
-@RestController("")
+@RestController()
 public class SpecialtyController {
     @Autowired
     private ProviderFeignClient providerFeignClient;

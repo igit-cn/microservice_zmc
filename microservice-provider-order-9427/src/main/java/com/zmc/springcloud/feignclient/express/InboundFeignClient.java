@@ -19,5 +19,5 @@ public interface InboundFeignClient {
     List<Inbound> getInboundListBySpecificationId(@RequestParam("specificationId") Long specificationId, @RequestParam("quantity") Integer quantity);
 
     @RequestMapping(value = "/inbound/depotcode", method = RequestMethod.GET)
-    List<Inbound> getListBySpecificationIdAndDepotCode(@RequestParam("specificationId")Long specificationId, @RequestParam("depotCode")String depotCode);
+    List<Inbound> getListBySpecificationIdAndDepotCode(@RequestParam("specificationId") Long specificationId, @RequestParam("depotCode") String depotCode);
 }

@@ -25,7 +25,7 @@ public class SpecialtySpecificationController {
     private SpecialtySpecificationFeignClient specialtySpecificationFeignClient;
 
     /** 渠道销售-产品管理-查看产品-详情-获取父规格*/
-    @RequestMapping(value = "/admin/business/product/getparentspecificationlist/view")
+    @RequestMapping(value = "/getparentspecificationlist/view")
     public Json getParentSpecificationList(Long specialtyid){
         Json j = new Json();
         try{

@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "microservicecloud-wechataccount")
 public interface PointRecordFeignClient {
     @RequestMapping(value = "/pointrecord/modify", method = RequestMethod.POST)
-    void changeUserPoint(@RequestParam("orderWechatId") Long orderWechatId, @RequestParam("changevalue")Integer changevalue, @RequestParam("reason")String reason);
+    void changeUserPoint(@RequestParam("orderWechatId") Long orderWechatId, @RequestParam("changevalue") Integer changevalue, @RequestParam("reason") String reason);
 }
