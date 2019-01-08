@@ -52,6 +52,7 @@ public class SpecialtyController {
 //            j.setSuccess(false);
 //            j.setMsg(e.getMessage());
 //        }
+        System.out.println("Zuul test");
         return j;
     }
 

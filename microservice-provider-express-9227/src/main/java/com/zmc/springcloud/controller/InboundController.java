@@ -18,12 +18,12 @@ public class InboundController {
     @Autowired
     private InboundService inboundService;
 
-    @RequestMapping("/inbound/list")
+    @RequestMapping("/inbound/list/quantity")
     public List<Inbound> getInboundListBySpecificationId(Long specificationId, Integer quantity) throws Exception{
         return inboundService.getInboundListBySpecificationId(specificationId, quantity);
     }
 
-    @RequestMapping("/inbound/")
+    @RequestMapping("/inbound/depotcode")
     public List<Inbound> getListBySpecificationIdAndDepotCode(Long specificationId, String depotCode) throws Exception{
         return inboundService.getListBySpecificationIdAndDepotCode(specificationId, depotCode);
     }
