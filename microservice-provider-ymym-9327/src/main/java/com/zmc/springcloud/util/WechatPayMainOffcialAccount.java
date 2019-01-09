@@ -23,15 +23,16 @@ public class WechatPayMainOffcialAccount {
     private static String url= "https://api.mch.weixin.qq.com/pay/unifiedorder";
     
 
-    public static void main(String[] args) throws Exception {
-        PayBean payBean = new PayBean();
-        payBean.setAmount("2");
-        payBean.setBody("JSAPI Test");
-        payBean.setOrder("201801191545");
-        payBean.setCallbackUrl("http://tobyli16.com");
-        payBean.setOpenId("ocgJPv1kyOAGEJbNYlhmOry7lgBg");
-        getReqOfficial(payBean,1);
-    }
+
+//    public static void main(String[] args) throws Exception {
+//        PayBean payBean = new PayBean();
+//        payBean.setAmount("2");
+//        payBean.setBody("JSAPI Test");
+//        payBean.setOrder("201801191545");
+//        payBean.setCallbackUrl("http://tobyli16.com");
+//        payBean.setOpenId("ocgJPv1kyOAGEJbNYlhmOry7lgBg");
+//        getReqOfficial(payBean,1);
+//    }
     //type==1 wechat type==2 xiaochengxu
     public static ReqOfficialBean getReqOfficial(PayBean payBean,int type) throws Exception{
         String entity=getProductArgs(payBean,type);
