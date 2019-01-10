@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.CommonSequence;
 import com.zmc.springcloud.service.CommonSequenceService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class CommonSequenceController {
+public class CommonSequenceControllerApi {
     @Autowired
     private CommonSequenceService commonSequenceService;
 

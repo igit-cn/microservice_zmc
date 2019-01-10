@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.service.PointRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class PointRecordController {
+public class PointRecordControllerApi {
     @Autowired
     private PointRecordService pointRecordService;
 

@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.HySingleitemPromotion;
 import com.zmc.springcloud.service.HySingleitemPromotionService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class HySingleitemPromotionController {
+public class HySingleitemPromotionControllerApi {
     @Autowired
     private HySingleitemPromotionService hySingleitemPromotionService;
 

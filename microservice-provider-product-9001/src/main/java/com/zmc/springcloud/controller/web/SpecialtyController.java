@@ -1,7 +1,6 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
-import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
 import com.zmc.springcloud.service.*;
@@ -20,7 +19,7 @@ import java.util.Map;
  * 特产
  * Created by xyy on 2018/11/23.
  */
-@RestController()
+@RestController
 public class SpecialtyController {
     @Autowired
     private ProviderFeignClient providerFeignClient;
@@ -31,10 +30,6 @@ public class SpecialtyController {
     @Autowired
     private SpecialtyCategoryService specialtyCategoryService;
 
-    @RequestMapping(value = "/product/specialty/{id}")
-    public Specialty getSpecialtyById(@PathVariable("id") Long id){
-        return specialtyService.getSpecialtyById(id);
-    }
 
     /**
      * 系统配置-分区管理-列表
@@ -42,17 +37,16 @@ public class SpecialtyController {
     @RequestMapping(value = "/category/page/view")
     public Json categoryList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean isActive, String name) {
         Json j = new Json();
-//        try {
-//            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
-//            j.setMsg("操作成功");
-//            j.setObj(p);
-//            j.setSuccess(true);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            j.setSuccess(false);
-//            j.setMsg(e.getMessage());
-//        }
-        System.out.println("Zuul test");
+        try {
+            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
+            j.setMsg("操作成功");
+            j.setObj(p);
+            j.setSuccess(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg(e.getMessage());
+        }
         return j;
     }
 

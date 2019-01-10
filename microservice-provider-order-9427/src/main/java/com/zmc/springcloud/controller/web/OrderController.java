@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.web;
 
 import com.zmc.springcloud.service.BusinessOrderService;
 import com.zmc.springcloud.utils.CommonAttributes;
@@ -11,33 +11,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.EditorKit;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by xyy on 2018/12/5.
  *
  * @author xyy
  */
-@RestController()
+@RestController
 public class OrderController {
     @Autowired
     private BusinessOrderService businessOrderService;
-
-    @RequestMapping("/order/create")
-    public Map<String, Object> createOrder(HashMap<String, Object> map) throws Exception{
-        HashMap<String, Object> params = (HashMap<String, Object>) map.get("params");
-        HashMap<String, Object> bodys = (HashMap<String, Object>) map.get("bodys");
-        return businessOrderService.createOrder(params, bodys);
-    }
-
-    @RequestMapping("/order/updateafter")
-    public void updateOrderAfterPay(String orderId)throws Exception{
-        businessOrderService.updateOrderAfterPay(orderId);
-    }
-
 
     /**
      * 渠道销售-订单审核-列表

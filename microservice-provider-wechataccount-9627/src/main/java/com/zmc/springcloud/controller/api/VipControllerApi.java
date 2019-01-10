@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.WechatAccount;
 import com.zmc.springcloud.service.VipService;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author xyy
  */
 @RestController
-public class VipController {
+public class VipControllerApi {
     @Autowired
     private VipService vipService;
 

@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.WechatAccount;
 import com.zmc.springcloud.service.WechatAccountService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class WechatAccountController {
+public class WechatAccountControllerApi {
     @Autowired
     private WechatAccountService wechatAccountService;
 

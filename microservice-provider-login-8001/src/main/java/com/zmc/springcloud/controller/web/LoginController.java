@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.web;
 
 import com.zmc.springcloud.entity.HyAdmin;
 import com.zmc.springcloud.entity.HyArea;
@@ -22,21 +22,10 @@ import java.util.Set;
  * Created by xyy on 2018/11/19.
  * @author xyy
  */
-@RestController()
+@RestController
 public class LoginController {
     @Autowired
     private LoginService loginService;
-
-    @RequestMapping(value = "/admin/{username}")
-    public HyAdmin getHyAdminByUserName(@PathVariable("username") String username){
-        return loginService.getByUserName(username);
-    }
-
-
-    @RequestMapping(value = "/admin/add")
-    public void addHyAdmin(HyAdmin hyAdmin){
-        loginService.insertHyAdmin(hyAdmin);
-    }
 
     /**
      * 登录提交

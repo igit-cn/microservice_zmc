@@ -1,9 +1,8 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.BusinessOrderItem;
 import com.zmc.springcloud.entity.SpecialtySpecification;
 import com.zmc.springcloud.service.SpecialtySpecificationService;
-import com.zmc.springcloud.utils.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,7 @@ import java.util.Map;
  * @author xyy
  */
 @RestController
-public class SpecialtySpecificationController {
+public class SpecialtySpecificationControllerApi {
     @Autowired
     private SpecialtySpecificationService specialtySpecificationService;
 

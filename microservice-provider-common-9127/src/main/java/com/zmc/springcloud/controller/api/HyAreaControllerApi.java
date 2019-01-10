@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.HyArea;
 import com.zmc.springcloud.service.HyAreaService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController()
-public class HyAreaController {
+public class HyAreaControllerApi {
     @Autowired
     private HyAreaService hyAreaService;
 

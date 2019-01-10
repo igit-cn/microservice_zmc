@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.CouponBalanceUse;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class CouponBalanceUseController {
+public class CouponBalanceUseControllerApi {
     @Autowired
     private CouponBalanceUseService couponBalanceUseService;
 

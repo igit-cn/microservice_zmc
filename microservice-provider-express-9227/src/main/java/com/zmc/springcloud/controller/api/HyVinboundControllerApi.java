@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.HyVinbound;
 import com.zmc.springcloud.service.HyVinboundService;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author xyy
  */
 @RestController
-public class HyVinboundController {
+public class HyVinboundControllerApi {
     @Autowired
     private HyVinboundService hyVinboundService;
 

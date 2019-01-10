@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.web;
 
 import com.zmc.springcloud.entity.Provider;
 import com.zmc.springcloud.service.ProviderService;
@@ -22,20 +22,10 @@ import java.util.List;
  *
  * @author xyy
  */
-@RestController()
+@RestController
 public class ProviderController {
     @Autowired
     private ProviderService providerService;
-
-    @RequestMapping(value = "/provider/{id}")
-    public Provider getProviderById(@PathVariable("id") Long id) {
-        return providerService.getProviderById(id);
-    }
-
-    @RequestMapping(value = "/provider/list")
-    public List<Provider> getListProvider(Boolean state, Long providerType, String providerName, String contactorName) {
-        return providerService.findListProvider(state, providerType, providerName, contactorName);
-    }
 
     /**
      * 采购部 特产供应商 列表

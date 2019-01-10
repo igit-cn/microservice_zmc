@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.web;
 
 import com.zmc.springcloud.service.FileService;
 import com.zmc.springcloud.utils.FileInfo;

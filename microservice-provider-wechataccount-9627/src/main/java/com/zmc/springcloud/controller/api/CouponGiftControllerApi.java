@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.CouponGift;
 import com.zmc.springcloud.service.CouponGiftService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class CouponGiftController {
+public class CouponGiftControllerApi {
     @Autowired
     private CouponGiftService couponGiftService;
 

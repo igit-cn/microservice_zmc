@@ -1,4 +1,4 @@
-package com.zmc.springcloud.controller;
+package com.zmc.springcloud.controller.api;
 
 import com.zmc.springcloud.entity.HyGroupitemPromotion;
 import com.zmc.springcloud.entity.HyGroupitemPromotionDetail;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author xyy
  */
 @RestController
-public class HyGroupitemPromotionController {
+public class HyGroupitemPromotionControllerApi {
     @Autowired
     private HyGroupitemPromotionService hyGroupitemPromotionService;
 
