@@ -37,16 +37,16 @@ public class SpecialtyController {
     @RequestMapping(value = "/category/page/view")
     public Json categoryList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean isActive, String name) {
         Json j = new Json();
-        try {
-            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
-            j.setMsg("操作成功");
-            j.setObj(p);
-            j.setSuccess(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            j.setSuccess(false);
-            j.setMsg(e.getMessage());
-        }
+//        try {
+//            HashMap<String, Object> p = specialtyCategoryService.getSpecialtyCategoryList(page, rows, isActive, name);
+//            j.setMsg("操作成功");
+//            j.setObj(p);
+//            j.setSuccess(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            j.setSuccess(false);
+//            j.setMsg(e.getMessage());
+//        }
         return j;
     }
 
