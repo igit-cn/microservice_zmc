@@ -26,7 +26,7 @@ public class OrderController {
     /**
      * 渠道销售-订单审核-列表
      */
-    @RequestMapping("/admin/business/order/page/view")
+    @RequestMapping("/page/view")
     public Json orderAuditList(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Integer orderState, String orderCode, String orderPhone) {
         Json j = new Json();
         try {
@@ -43,7 +43,7 @@ public class OrderController {
     }
 
     /** 渠道销售-订单审核-订单详情*/
-    @RequestMapping("/admin/business/order/detail/view")
+    @RequestMapping("/detail/view")
     public Json orderDetail(Long orderid){
         Json j = new Json();
         try{
@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     /** 渠道销售-订单审核-订单审核*/
-    @RequestMapping("/admin/business/order/verify_agree")
+    @RequestMapping("/verify_agree")
     public Json verifyAgree(@RequestBody JSONObject body, HttpSession session){
         Json j = new Json();
         try{

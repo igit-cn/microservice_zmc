@@ -30,7 +30,7 @@ public class ProviderController {
     /**
      * 采购部 特产供应商 列表
      */
-    @RequestMapping(value = "/admin/business/provider/page/view")
+    @RequestMapping(value = "/page/view")
     public Json providerPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer rows, Boolean state, Long providerType, String providerName, String contactorName, HttpServletRequest request) {
         Json j = new Json();
         try {
@@ -52,7 +52,7 @@ public class ProviderController {
     /**
      * 采购部 特产供应商 新建
      */
-    @RequestMapping("/admin/business/provider/add")
+    @RequestMapping("/add")
     public Json add(
             String providerName,
             Integer providerType,
