@@ -1,10 +1,7 @@
 package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.ShoppingCart;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,10 +24,10 @@ public interface ShoppingCartMapper {
             if (wechatId != null) {
                 sql.append(" AND wechat_id = " + wechatId);
             }
-            if (wechatId != null) {
+            if (specialtyId != null) {
                 sql.append(" AND specialty_id = " + specialtyId);
             }
-            if (wechatId != null) {
+            if (specialtySpecificationId != null) {
                 sql.append(" AND specialty_specification_id = " + specialtySpecificationId);
             }
             return sql.toString();
@@ -46,4 +43,7 @@ public interface ShoppingCartMapper {
     /** 更新购物车中的数量*/
     @Update("UPDATE shopping_cart SET quantity = #{quantity} WHERE id = #{id}")
     void updateQuantity(ShoppingCart tmp);
+
+    @Delete("DELETE FROM shopping_cart WHERE id = #{id}")
+    void delete(Long id);
 }

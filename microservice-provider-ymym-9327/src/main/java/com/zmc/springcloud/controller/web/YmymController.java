@@ -28,8 +28,7 @@ import java.util.Map;
  */
 @Controller
 public class YmymController {
-    @Autowired
-    private ShoppingCartService shoppingCartService;
+
 
     @Autowired
     private BusinessOrderFeignClient businessOrderFeignClient;
@@ -113,20 +112,6 @@ public class YmymController {
         return;
     }
 
-    /** 添加到购物车  实体中是wechatId而不是wechat_id 增加一个参数接收*/
-    @RequestMapping(value = "/shopping_cart/add_items")
-    public Json add(ShoppingCart shoppingCart, Long wechat_id){
-        Json j = new Json();
-        try{
-            shoppingCartService.addShoppingCart(shoppingCart, wechat_id);
-            j.setMsg("操作成功");
-            j.setSuccess(true);
-        }catch (Exception e){
-            j.setSuccess(false);
-            j.setMsg(e.getMessage());
-        }
-        return j;
-    }
 
     /** 创建订单*/
     @RequestMapping(value = "/order/create")

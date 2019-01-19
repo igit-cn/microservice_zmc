@@ -61,7 +61,7 @@ zuul:
         serviceId: microservicecloud-upload
       # 商城模块
       ymym-service:
-        path: /hyapi/ymym/**
+        path: /hyapi/ymmall/**
         serviceId: microservicecloud-ymym
         sensitiveHeaders: "*"
 

@@ -30,23 +30,37 @@ public class HySingleitemPromotionServiceImpl implements HySingleitemPromotionSe
 
     @Override
     public HySingleitemPromotion getValidSingleitemPromotion(Long specialtySpecificationId, Long promotionId) throws Exception {
-        if (specialtySpecificationId == null || promotionId == null) {
+        // 将虹宇中的两个getValidSingleitemPromotion()方法合并, 使用prpmotionId是否为null作为判断
+        if (specialtySpecificationId == null) {
             return null;
         }
         SpecialtySpecification specialtySpecification = specialtySpecificationFeignClient.getSpecialtySpecificationById(specialtySpecificationId);
         if (specialtySpecification == null) {
             return null;
         }
-        HyPromotion promotion = hyPromotionService.getHyPromotionById(promotionId);
-        if (promotion == null) {
+        if (null == promotionId) {
+            List<HySingleitemPromotion> singleitemPromotions = hySingleitemPromotionMapper.findList(specialtySpecificationId, null);
+            if (singleitemPromotions == null || singleitemPromotions.isEmpty()) {
+                return null;
+            }
+            for (HySingleitemPromotion singleitemPromotion : singleitemPromotions) {
+                HyPromotion promotion = hyPromotionService.getHyPromotionById(singleitemPromotion.getPromotionId());
+                if (promotion.getStatus() == HyPromotion.PromotionStatus.进行中) {
+                    return singleitemPromotion;
+                }
+            }
             return null;
+        } else {
+            HyPromotion promotion = hyPromotionService.getHyPromotionById(promotionId);
+            if (promotion == null) {
+                return null;
+            }
+            List<HySingleitemPromotion> singleitemPromotions = hySingleitemPromotionMapper.findList(specialtySpecificationId, promotionId);
+            if (singleitemPromotions == null || singleitemPromotions.isEmpty()) {
+                return null;
+            }
+            return singleitemPromotions.get(0);
         }
-
-        List<HySingleitemPromotion> singleitemPromotions = hySingleitemPromotionMapper.findList(specialtySpecificationId, promotionId);
-        if (singleitemPromotions == null || singleitemPromotions.isEmpty()) {
-            return null;
-        }
-        return singleitemPromotions.get(0);
     }
 
     @Override
