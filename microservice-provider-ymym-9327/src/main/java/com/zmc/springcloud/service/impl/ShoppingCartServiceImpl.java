@@ -4,7 +4,7 @@ import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.order.PurchaseItemFeignClient;
 import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
-import com.zmc.springcloud.feignclient.product.SpecialtyFeingClient;
+import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyImageFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyPriceFeignClient;
 import com.zmc.springcloud.feignclient.promotion.*;
@@ -51,7 +51,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
     private HySingleitemPromotionFeignClient hySingleitemPromotionFeignClient;
 
     @Autowired
-    private SpecialtyFeingClient specialtyFeingClient;
+    private SpecialtyFeignClient specialtyFeignClient;
 
     @Autowired
     private SpecialtyImageFeignClient specialtyImageFeignClient;
@@ -162,7 +162,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService{
                 if(singleitemPromotion != null){
                     map.put("promotionId", singleitemPromotion.getPromotionId());
                 }
-                Specialty specialty = specialtyFeingClient.getSpecialtyById(tmp.getSpecialtyId());
+                Specialty specialty = specialtyFeignClient.getSpecialtyById(tmp.getSpecialtyId());
                 map.put("name", specialty.getName());
                 map.put("specification", specialtySpecification.getSpecification());
 

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
+ * 商贸管理平台-订单相关
+ *
  * Created by xyy on 2018/12/5.
  *
  * @author xyy

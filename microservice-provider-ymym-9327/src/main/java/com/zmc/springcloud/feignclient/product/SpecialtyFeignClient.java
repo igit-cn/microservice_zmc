@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author xyy
  */
 @FeignClient(name = "microservicecloud-product")
-public interface SpecialtyFeingClient {
+public interface SpecialtyFeignClient {
     @RequestMapping(value = "/product/specialty/{id}")
     Specialty getSpecialtyById(@PathVariable("id") Long id);
 }
