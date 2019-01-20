@@ -17,8 +17,8 @@ public class SpecialtyPriceServiceImpl implements SpecialtyPriceService{
     private SpecialtyPriceMapper specialtyPriceMapper;
 
     @Override
-    public SpecialtyPrice findList(Long specialtyId, boolean isActive) throws Exception{
-        return specialtyPriceMapper.findList(specialtyId, isActive);
+    public SpecialtyPrice find(Long specialtyId, boolean isActive) throws Exception{
+        return specialtyPriceMapper.find(specialtyId, isActive);
     }
 
     @Override

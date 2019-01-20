@@ -9,7 +9,7 @@ import com.zmc.springcloud.entity.SpecialtyPrice;
  */
 public interface SpecialtyPriceService {
     /** 通过特产id筛选isActive的特产价格*/
-    SpecialtyPrice findList(Long id, boolean isActive) throws Exception;
+    SpecialtyPrice find(Long id, boolean isActive) throws Exception;
     /** 新建 SpecialtyPrice*/
     void save(SpecialtyPrice newprice) throws Exception;
     /** 价格等变化 将之前的SpecialtyPrice的isActive置为false*/

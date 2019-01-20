@@ -4,7 +4,13 @@ import com.zmc.springcloud.entity.ShoppingCart;
 import com.zmc.springcloud.service.ShoppingCartService;
 import com.zmc.springcloud.utils.Json;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by xyy on 2019/1/19.
@@ -72,5 +78,22 @@ public class ShoppingCartController {
            j.setMsg("操作失败");
        }
        return j;
+    }
+
+    @RequestMapping(value = "/shopping_cart/total_price")
+    public Json totalPrice(List<HashMap<String, Object>> params, List<HashMap<String, Object>> bodys, HttpSession session){
+        Json j = new Json();
+        try{
+            Long wechat_id = (Long) session.getAttribute("wechat_id");
+            HashMap<String, Object> map = shoppingCartService.totalPrice(params, bodys, wechat_id);
+            j.setSuccess(true);
+            j.setMsg("操作成功");
+            j.setObj(map);
+        }catch(Exception e){
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+        }
+        return j;
     }
 }

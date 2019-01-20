@@ -42,7 +42,7 @@ public class HyPromotion {
     private Integer orders;
     private Boolean couponAvailable;
     private Date createTime;
-    private HyAdmin creator;
+    private Long creator;
     private Date deadTime;
     private Boolean isBanner;
 }

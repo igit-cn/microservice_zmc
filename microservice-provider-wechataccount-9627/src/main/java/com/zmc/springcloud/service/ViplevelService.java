@@ -12,4 +12,6 @@ import java.util.List;
 public interface ViplevelService {
     /** 获取所有的会员等级*/
     List<Viplevel> findAll()throws Exception;
+    /** 根据微信账户表id获取Viplevel*/
+    Viplevel getViplevelBywechataccountId(Long wechatAccountId);
 }

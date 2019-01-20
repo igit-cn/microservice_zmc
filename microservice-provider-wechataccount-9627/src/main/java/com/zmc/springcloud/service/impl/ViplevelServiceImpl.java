@@ -22,4 +22,9 @@ public class ViplevelServiceImpl implements ViplevelService{
     public List<Viplevel> findAll()throws Exception {
         return viplevelMapper.findAll();
     }
+
+    @Override
+    public Viplevel getViplevelBywechataccountId(Long wechatAccountId) {
+        return viplevelMapper.getViplevelBywechataccountId(wechatAccountId);
+    }
 }

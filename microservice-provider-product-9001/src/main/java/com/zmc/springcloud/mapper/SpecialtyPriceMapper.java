@@ -15,7 +15,7 @@ public interface SpecialtyPriceMapper {
      * 通过特产id筛选isActive的特产价格
      */
     @Select("SELECT * FROM hy_specialty_price WHERE specialty_id = #{specialtyId} AND is_active = #{isActive}")
-    SpecialtyPrice findList(@Param("specialtyId") Long specialtyId, @Param("isActive") boolean isActive);
+    SpecialtyPrice find(@Param("specialtyId") Long specialtyId, @Param("isActive") boolean isActive);
 
     @Insert("INSERT INTO hy_specialty_price(specialty_id, specification_id, market_price, platform_price, cost_price, is_active, create_time, creator_name, store_divide, exter_store_divide, business_person_divide, deliver_price)  VALUES(#{specialtyId}, #{specificationId}, #{marketPrice}, #{platformPrice}, #{costPrice}, #{isActive}, #{createTime}, #{creatorName}, #{storeDivide}, #{exterStoreDivide}, #{businessPersonDivide}, #{deliverPrice})")
     void insert(SpecialtyPrice specialtyPrice);

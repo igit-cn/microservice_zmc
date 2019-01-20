@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "microservicecloud-product")
 public interface SpecialtyPriceFeignClient {
     @RequestMapping(value = "/product/price")
-    SpecialtyPrice getSpecialtyPriceList(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive);
+    SpecialtyPrice getSpecialtyPrice(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive);
 }

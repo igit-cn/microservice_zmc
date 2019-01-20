@@ -6,6 +6,8 @@ import com.zmc.springcloud.service.PurchaseItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by xyy on 2018/12/5.
  *
@@ -19,5 +21,10 @@ public class PurchaseItemServiceImpl implements PurchaseItemService {
     @Override
     public PurchaseItem getPurchaseItemById(Long purchaseItemId) throws Exception {
         return purchaseItemMapper.findById(purchaseItemId);
+    }
+
+    @Override
+    public List<PurchaseItem> getPurchaseItemList(Long specificationId, Boolean isValid, Boolean state) {
+        return purchaseItemMapper.getPurchaseItemList(specificationId, isValid, state);
     }
 }

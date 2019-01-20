@@ -19,7 +19,7 @@ public class SpecialtyPriceControllerApi {
     @Autowired
     private SpecialtyPriceService specialtyPriceService;
     @RequestMapping(value = "/product/price")
-    public SpecialtyPrice getSpecialtyPriceList(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive) throws Exception{
-        return specialtyPriceService.findList(specialtySpecificationId, isActive);
+    public SpecialtyPrice getSpecialtyPrice(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive) throws Exception{
+        return specialtyPriceService.find(specialtySpecificationId, isActive);
     }
 }
