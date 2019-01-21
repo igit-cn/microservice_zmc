@@ -132,4 +132,11 @@ public final class CommonAttributes {
      */
     public static final Integer BUSINESS_ORDER_STATUS_FINISH_REFUND = 12;
 
+    /************************订单退款状态***********************************/
+    public static final Integer BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_CONFIRM = 1;
+    public static final Integer BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_RETURN_PRODUCT = 2;
+    public static final Integer BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_RETURN_INBOUND = 3;
+    public static final Integer BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_REFUND_MONEY = 4;
+    public static final Integer BUSINESS_ORDER_REFUND_STATUS_FINISH = 5;
+
 }

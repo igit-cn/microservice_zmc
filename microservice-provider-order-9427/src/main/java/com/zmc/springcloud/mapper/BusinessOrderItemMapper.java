@@ -21,6 +21,6 @@ public interface BusinessOrderItemMapper {
     @Insert("INSERT INTO hy_business_order_item(order_id, type, specialty_id, specialty_specification_id, quantity, return_quantity, sale_price, original_price, promotion_id, isappraised, deliver_name, deliver_type, create_time, lost1_quantity, lost2_quantity, is_gift) VALUES(#{orderId}, #{type}, #{specialtyId}, #{specialtySpecificationId}, #{quantity}, 0, #{salePrice}, #{originalPrice}, #{promotionId}, #{isappraised}, #{deliverName}, #{deliverType}, NOW(), 0, 0, #{isGift})")
     void insert(BusinessOrderItem businessOrderItem);
 
-    @Update(" UPDATE hy_business_order_item SET order_id = #{orderId} WHERE id = #{orderItemId}")
+    @Update("UPDATE hy_business_order_item SET order_id = #{orderId} WHERE id = #{orderItemId}")
     void updateOrderId(@Param("orderItemId") Long orderItemId, @Param("orderId") Long orderId);
 }

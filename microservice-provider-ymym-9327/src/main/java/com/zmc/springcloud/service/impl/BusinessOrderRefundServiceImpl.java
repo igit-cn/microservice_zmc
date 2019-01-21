@@ -22,4 +22,9 @@ public class BusinessOrderRefundServiceImpl implements BusinessOrderRefundServic
     public List<BusinessOrderRefund> getListByBusinessOrderId(Long id) throws Exception {
         return businessOrderRefundMapper.findListByBusinessOrderId(id);
     }
+
+    @Override
+    public void save(BusinessOrderRefund bRefund) {
+        businessOrderRefundMapper.insert(bRefund);
+    }
 }

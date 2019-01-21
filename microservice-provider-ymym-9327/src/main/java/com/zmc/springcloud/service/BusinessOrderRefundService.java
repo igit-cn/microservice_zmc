@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface BusinessOrderRefundService {
     List<BusinessOrderRefund> getListByBusinessOrderId(Long id) throws Exception;
+    /** 保存退款订单*/
+    void save(BusinessOrderRefund bRefund);
 }

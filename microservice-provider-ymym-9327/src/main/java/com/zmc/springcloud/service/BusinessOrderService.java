@@ -16,4 +16,10 @@ public interface BusinessOrderService {
     HashMap<String,Object> getOrderDetailById(Long orderId) throws Exception;
     /** 退款订单详情*/
     Json getRefundOrderDetail(Long orderId) throws Exception;
+    /** 订单申请退款*/
+    Json applyRefund(HashMap<String, Object> params, HashMap<String, Object> bodys) throws Exception;
+    /** 订单确认收货*/
+    Json confirmReceive(Long id) throws Exception;
+    /** 删除订单*/
+    void deleteBusinessOrder(Long id) throws Exception;
 }
