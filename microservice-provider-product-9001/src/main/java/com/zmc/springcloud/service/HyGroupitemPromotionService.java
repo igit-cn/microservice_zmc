@@ -9,5 +9,7 @@ import com.zmc.springcloud.entity.HyGroupitemPromotion;
  */
 public interface HyGroupitemPromotionService {
     HyGroupitemPromotion getHyGroupitemPromotionById(Long specialtyId) throws Exception;
+
+    /** 更新promotionNum和havePromoted*/
     void updateHyGroupitemPromotion(HyGroupitemPromotion groupitemPromotion);
 }

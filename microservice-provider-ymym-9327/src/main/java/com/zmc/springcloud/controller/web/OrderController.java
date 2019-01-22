@@ -103,7 +103,15 @@ public class OrderController {
     /** 取消订单*/
     @RequestMapping(value = "/order/cancel")
     public Json cancel(@RequestParam("order_id") Long id){
-
+        Json j = new Json();
+        try{
+            j = businessOrderService.cancelOrder(id);
+        }catch(Exception e){
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+        }
+        return j;
     }
 
     /** 删除订单 将订单状态置为无效*/

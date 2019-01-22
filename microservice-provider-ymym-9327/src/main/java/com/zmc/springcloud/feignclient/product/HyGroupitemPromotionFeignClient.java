@@ -14,4 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface HyGroupitemPromotionFeignClient {
     @RequestMapping(value = "/group/item/promotion/{id}")
     HyGroupitemPromotion getHyGroupitemPromotionById(@PathVariable("id") Long id);
+
+    @RequestMapping(value = "/group/item/promotion/update")
+    void updateGroupitemPromotion(HyGroupitemPromotion hyGroupitemPromotion);
 }

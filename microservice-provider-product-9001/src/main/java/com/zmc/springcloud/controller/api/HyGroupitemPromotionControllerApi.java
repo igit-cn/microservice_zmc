@@ -34,6 +34,7 @@ public class HyGroupitemPromotionControllerApi {
         return hyGroupitemPromotionDetailService.getHyGroupitemPromotionDetailList(id);
     }
 
+    /** 更新promotionNum和havePromoted*/
     @RequestMapping(value = "/group/item/promotion/update")
     public void updateGroupitemPromotion(HyGroupitemPromotion hyGroupitemPromotion){
         hyGroupitemPromotionService.updateHyGroupitemPromotion(hyGroupitemPromotion);

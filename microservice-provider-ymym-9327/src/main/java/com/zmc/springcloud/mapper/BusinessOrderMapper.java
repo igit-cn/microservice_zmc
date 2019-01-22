@@ -34,4 +34,8 @@ public interface BusinessOrderMapper {
     /** 更新订单的isValid状态*/
     @Update("UPDATE hy_business_order SET is_valid = #{isValid} WHERE id = #{id}")
     void updateIsValid(BusinessOrder order);
+
+    /** 更新订单的取消时间和订单状态*/
+    @Update("UPDATE hy_business_order SET order_cancel_time = #{orderCancelTime}, order_state = #{orderState} WHERE id = #{id}")
+    void updateOrderCancelTimeAndOrderState(BusinessOrder businessOrder);
 }

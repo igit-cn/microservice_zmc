@@ -15,6 +15,7 @@ public interface HyGroupitemPromotionMapper {
     @Select("SELECT * FROM hy_groupitem_promotion WHERE id = #{id}")
      HyGroupitemPromotion findById(Long id);
 
+    /** 更新promotionNum和havePromoted*/
     @Update("UPDATE hy_groupitem_promotion SET promote_num = #{promoteNum}, have_promoted = #{havePromoted} WHERE id = #{id}")
     void updateHyGroupitemPromotion(HyGroupitemPromotion groupitemPromotion);
 }

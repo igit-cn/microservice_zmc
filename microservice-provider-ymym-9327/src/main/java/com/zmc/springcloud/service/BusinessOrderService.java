@@ -22,4 +22,6 @@ public interface BusinessOrderService {
     Json confirmReceive(Long id) throws Exception;
     /** 删除订单*/
     void deleteBusinessOrder(Long id) throws Exception;
+    /** 取消订单*/
+    Json cancelOrder(Long id) throws Exception;
 }

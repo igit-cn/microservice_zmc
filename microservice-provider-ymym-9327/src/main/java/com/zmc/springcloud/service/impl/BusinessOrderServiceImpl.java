@@ -2,7 +2,6 @@ package com.zmc.springcloud.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.regexp.internal.RE;
 import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
@@ -10,6 +9,8 @@ import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyImageFeignClient;
 import com.zmc.springcloud.feignclient.promotion.HyPromotionFeignClient;
 import com.zmc.springcloud.feignclient.promotion.HyPromotionPicFeignClient;
+import com.zmc.springcloud.feignclient.promotion.HySingleitemPromotionFeignClient;
+import com.zmc.springcloud.feignclient.wechataccount.WechatAccountFeignClient;
 import com.zmc.springcloud.mapper.BusinessOrderMapper;
 import com.zmc.springcloud.service.*;
 import com.zmc.springcloud.utils.Json;
@@ -55,6 +56,12 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
 
     @Autowired
     private HyPromotionPicFeignClient hyPromotionPicFeignClient;
+
+    @Autowired
+    private HySingleitemPromotionFeignClient hySingleitemPromotionFeignClient;
+
+    @Autowired
+    private WechatAccountFeignClient wechatAccountFeignClient;
 
     @Autowired
     private ShipService shipService;
@@ -333,6 +340,147 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         }
         order.setIsValid(false);
         businessOrderMapper.updateIsValid(order);
+    }
+
+    @Override
+    public Json cancelOrder(Long id) throws Exception {
+        Json j = new Json();
+        BusinessOrder businessOrder = businessOrderMapper.findById(id);
+        if (businessOrder == null) {
+            j.setSuccess(true);
+            j.setMsg("订单不存在");
+            return j;
+        }
+        int state = businessOrder.getOrderState();
+        if (state < BUSINESS_ORDER_STATUS_WAIT_FOR_DELIVERY) {
+            // 恢复规格商品的库存和销量
+            List<BusinessOrderItem> orderItems = businessOrderItemService.getBusinessOrderItemListByOrderId(id);
+            for (BusinessOrderItem orderItem : orderItems) {
+                specialtySpecificationFeignClient.updateBaseInboundAndHasSold(orderItem, false);
+                // 修改优惠数量
+                Boolean isGroupPromotion = orderItem.getType() != 0;
+                // 如果是组合产品
+                if (isGroupPromotion) {
+                    // 获取组合优惠活动对象
+                    HyGroupitemPromotion groupitemPromotion = hyGroupitemPromotionFeignClient.getHyGroupitemPromotionById(orderItem.getSpecialtyId());
+                    // 获取购买数量
+                    Integer quantity = orderItem.getQuantity();
+                    // 修改优惠活动数量
+                    groupitemPromotion.setPromoteNum(groupitemPromotion.getPromoteNum() + quantity);
+                    groupitemPromotion.setHavePromoted(groupitemPromotion.getHavePromoted() - quantity);
+                    hyGroupitemPromotionFeignClient.updateGroupitemPromotion(groupitemPromotion);
+                } else {
+                    // 如果是普通产品
+                    // 获取购买数量
+                    if (orderItem.getPromotionId() != null) {
+                        Integer quantity = orderItem.getQuantity();
+                        // 获取优惠明细
+                        HySingleitemPromotion singleitemPromotion = hySingleitemPromotionFeignClient.getValidSingleitemPromotion(orderItem.getSpecialtySpecificationId(), orderItem.getPromotionId());
+                        // 如果参加了优惠活动
+                        if (singleitemPromotion != null) {
+                            // 修改优惠数量
+                            singleitemPromotion.setPromoteNum(singleitemPromotion.getPromoteNum() + quantity);
+                            singleitemPromotion.setHavePromoted(singleitemPromotion.getHavePromoted() - quantity);
+
+                            hySingleitemPromotionFeignClient.updateSingleItemPromotion(singleitemPromotion);
+                        }
+                    }
+                }
+            }
+
+            // 如果是未支付或为出库 则可取消订单
+            // 如果使用了余额支付, 将余额退回给用户
+            if (state > BUSINESS_ORDER_STATUS_WAIT_FOR_PAY) {
+                // 如果已支付 要退款
+                // BusinessOrderRefund Entity
+                BusinessOrderRefund bRefund = new BusinessOrderRefund();
+                BusinessOrder bOrder = businessOrder;
+                // 订单
+                bRefund.setBusinessOrderId(bOrder.getId());
+                // 是否退货
+                // bRefund.setIsDelivered(isDelivered);
+                // 发货类型
+                bRefund.setDeliverType(0);
+                // 退款理由
+                bRefund.setRefundReason("取消订单");
+
+                Date refundDate = new Date();
+                // 退款申请时间
+                bRefund.setRefundApplyTime(refundDate);
+                // 退款确认时间
+                bRefund.setRefundAcceptTime(refundDate);
+                // 设置入库时间
+                bRefund.setInboundTime(refundDate);
+                // 设置物流时间
+                bRefund.setShipTime(refundDate);
+                // 设置退货完成世界
+                bRefund.setReturnCompleteTime(refundDate);
+                // 下单微信账户
+                bRefund.setWechatId(bOrder.getOrderWechatId());
+                /* 退款金额以及设置退货条目 */
+                // 订单优惠前总额
+                BigDecimal orderTotal = bOrder.getTotalMoney().add(bOrder.getShipFee());
+                // 余额支付金额
+                BigDecimal orderBalance = bOrder.getBalanceMoney();
+                // 其他支付金额
+                BigDecimal orderPay = bOrder.getPayMoney();
+                // 余额支付退款金额
+                BigDecimal rRefundAmount = orderBalance;
+                // 其他支付退款金额
+                BigDecimal qRefundAmount = orderPay;
+                // 货物退款金额
+                BigDecimal refundAmount = rRefundAmount.add(qRefundAmount);
+                // 设置余额支付退款金额
+                bRefund.setRrefundAmount(rRefundAmount);
+                // 设置其他支付退款金额
+                bRefund.setQrefundAmount(qRefundAmount);
+                // 设置货物退款金额
+                bRefund.setRefundAmount(refundAmount);
+                // 设置少退金额
+                bRefund.setErefundAmount(BigDecimal.ZERO);
+                // 设置退货物流费
+                bRefund.setRefundShipFee(BigDecimal.ZERO);
+                // 设置应退款总额
+                bRefund.setRefundTotalamount(refundAmount);
+                // 设置是否退货
+                bRefund.setIsDelivered(false);
+                // 设置责任方
+                bRefund.setResponsibleParty(1);
+                // 状态为待退款
+                bRefund.setState(BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_REFUND_MONEY);
+
+                businessOrderRefundService.save(bRefund);
+
+                // 订单设置退款金额
+                bOrder.setRefoundMoney(refundAmount);
+                // 设置订单为待退款状态
+                bOrder.setOrderState(BUSINESS_ORDER_STATUS_WAIT_FOR_REFUND); // 设置订单为待退款状态
+                businessOrderMapper.updateRefundMoneyAndOrderState(bOrder);
+            } else {
+                WechatAccount account = wechatAccountFeignClient.getWechatAccountById(businessOrder.getOrderWechatId());
+                // 恢复账户余额并保存
+                account.setTotalbalance(account.getTotalbalance().add(businessOrder.getBalanceMoney()));
+                wechatAccountFeignClient.updateTotalBalance(account);
+                // 取消订单
+                businessOrder.setOrderState(BUSINESS_ORDER_STATUS_CANCELED);
+                businessOrder.setOrderCancelTime(new Date());
+                businessOrderMapper.updateOrderCancelTimeAndOrderState(businessOrder);
+            }
+            j.setSuccess(true);
+            j.setMsg("取消订单成功");
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("id", businessOrder.getId());
+            obj.put("state", businessOrder.getOrderState());
+            j.setObj(obj);
+        } else {
+            j.setSuccess(true);
+            j.setMsg("订单状态错误，无法取消订单");
+            Map<String, Object> obj = new HashMap<>();
+            obj.put("id", businessOrder.getId());
+            obj.put("state", businessOrder.getOrderState());
+            j.setObj(obj);
+        }
+        return j;
     }
 
     private HashMap<String, Object> getOrderListItemMap(BusinessOrder bOrder) throws Exception {

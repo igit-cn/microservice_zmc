@@ -13,4 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface HySingleitemPromotionFeignClient {
     @RequestMapping("/promotion/singleitem/")
     HySingleitemPromotion getValidSingleitemPromotion(Long specialtySpecificationId, Long promotionId);
+
+    @RequestMapping("/promotion/singleitem/update")
+    void updateSingleItemPromotion(HySingleitemPromotion singleitemPromotion);
 }

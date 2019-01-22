@@ -70,10 +70,15 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
         <!--FastDFS的jar包,只有文件上传模块会使用,不放到主pom中-->
-        <dependency>
+ <!--       <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>
-            <version>1.27-SNAPSHOT</version>
+            <version>1.27.0</version>
+        </dependency>-->
+        <dependency>
+            <groupId>net.arccode</groupId>
+            <artifactId>fastdfs-client-java</artifactId>
+            <version>1.27.0</version>
         </dependency>
     </dependencies>
 
