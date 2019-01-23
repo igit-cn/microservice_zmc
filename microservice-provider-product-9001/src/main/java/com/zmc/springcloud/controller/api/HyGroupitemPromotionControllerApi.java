@@ -6,6 +6,7 @@ import com.zmc.springcloud.service.HyGroupitemPromotionDetailService;
 import com.zmc.springcloud.service.HyGroupitemPromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class HyGroupitemPromotionControllerApi {
 
     /** 更新promotionNum和havePromoted*/
     @RequestMapping(value = "/group/item/promotion/update")
-    public void updateGroupitemPromotion(HyGroupitemPromotion hyGroupitemPromotion){
+    public void updateGroupitemPromotion(@RequestBody HyGroupitemPromotion hyGroupitemPromotion){
         hyGroupitemPromotionService.updateHyGroupitemPromotion(hyGroupitemPromotion);
     }
 }

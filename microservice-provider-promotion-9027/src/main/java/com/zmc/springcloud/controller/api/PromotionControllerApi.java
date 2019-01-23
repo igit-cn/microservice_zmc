@@ -21,6 +21,4 @@ public class PromotionControllerApi {
     public HyPromotion getHyPromotionById(@PathVariable("id")  Long id) throws Exception{
         return hyPromotionService.getHyPromotionById(id);
     }
-
-
 }

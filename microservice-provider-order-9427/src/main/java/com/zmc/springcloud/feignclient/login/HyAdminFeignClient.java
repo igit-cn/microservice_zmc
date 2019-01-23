@@ -3,6 +3,7 @@ package com.zmc.springcloud.feignclient.login;
 import com.zmc.springcloud.entity.HyAdmin;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -16,5 +17,5 @@ public interface HyAdminFeignClient {
     HyAdmin getHyAdminByUserName(@PathVariable("username") String username);
 
     @RequestMapping(value = "/admin/add")
-    void addHyAdmin(HyAdmin hyAdmin);
+    void addHyAdmin(@RequestBody HyAdmin hyAdmin);
 }

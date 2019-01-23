@@ -267,7 +267,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         List<SpecialtySpecification> filterSpecifications = new ArrayList<>();
         List<SpecialtySpecification> specialtySpecificationList = specialtySpecificationFeignClient.getAllSpecification(id);
         for (SpecialtySpecification spe : specialtySpecificationList) {
-            SpecialtyPrice specialtyPrice = specialtyPriceService.findList(spe.getSpecialtyId(), true);
+            SpecialtyPrice specialtyPrice = specialtyPriceService.find(spe.getSpecialtyId(), true);
             if(specialtyPrice != null){
                 spe.setCostPrice(specialtyPrice.getCostPrice());
                 spe.setMarketPrice(specialtyPrice.getMarketPrice());
@@ -412,7 +412,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
                 specialtySpecificationFeignClient.update(spe);
 
                 // 将原工程中的修改价格 合并到修改规格中
-                SpecialtyPrice oldprice = specialtyPriceService.findList(spe.getId(), true);
+                SpecialtyPrice oldprice = specialtyPriceService.find(spe.getId(), true);
                 // 之前hy_specialty_price已有数据
                 if(oldprice != null){
                     // 页面传来的数据和之前的数据不同

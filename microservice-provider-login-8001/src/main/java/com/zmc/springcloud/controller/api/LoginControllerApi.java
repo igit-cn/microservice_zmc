@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.HyAdmin;
 import com.zmc.springcloud.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class LoginControllerApi {
     }
 
     @RequestMapping(value = "/admin/add")
-    public void addHyAdmin(HyAdmin hyAdmin) {
+    public void addHyAdmin(@RequestBody HyAdmin hyAdmin) {
         loginService.insertHyAdmin(hyAdmin);
     }
 }

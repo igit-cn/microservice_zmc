@@ -19,5 +19,5 @@ public interface BusinessOrderFeignClient {
     Map<String, Object> createOrder(@RequestParam("map") HashMap<String, Object> map);
 
     @RequestMapping("/order/updateafter")
-    void updateOrderAfterPay(String orderId);
+    void updateOrderAfterPay(@RequestParam String orderId);
 }

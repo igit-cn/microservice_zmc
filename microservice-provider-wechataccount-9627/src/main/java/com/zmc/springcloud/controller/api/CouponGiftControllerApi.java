@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.CouponGift;
 import com.zmc.springcloud.service.CouponGiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class CouponGiftControllerApi {
 
     /** 将商城赠送电子券设置为使用状态*/
     @RequestMapping("/coupon/gift/update")
-    public void updateUseState(CouponGift coupon) throws Exception{
+    public void updateUseState(@RequestBody CouponGift coupon) throws Exception{
         couponGiftService.updateUseState(coupon);
     }
 }

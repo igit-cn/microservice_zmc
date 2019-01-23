@@ -80,6 +80,7 @@ public class ReceiverController {
         return j;
     }
 
+    /** 删除收货地址*/
     @RequestMapping("/receiver/delete")
     public Json deleteReceiver(Long id){
         Json j = new Json();

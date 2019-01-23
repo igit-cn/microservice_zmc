@@ -21,7 +21,7 @@ import java.util.Map;
 @Controller
 public class PayController {
     /** 统一下单*/
-    @RequestMapping(value = "/pay/wechat/mp/{orderId}")
+    @RequestMapping(value = "/mp/{orderId}")
     public Map<String, Object> detailWithWap(@PathVariable("orderId") String orderId, @RequestParam Map<String, Object> params, @RequestBody Map<String, Object> models, HttpServletResponse servletResponse) throws Exception {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> result = new HashMap<>();

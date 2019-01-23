@@ -3,10 +3,7 @@ package com.zmc.springcloud.feignclient.express;
 import com.zmc.springcloud.entity.BusinessOrderItem;
 import com.zmc.springcloud.entity.SpecialtySpecification;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,13 +25,13 @@ public interface SpecialtySpecificationFeignClient {
     List<SpecialtySpecification> getAllSpecification(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/product/specification/add")
-    void batchInsert(List<SpecialtySpecification> specialtySpecificationList);
+    void batchInsert(@RequestBody List<SpecialtySpecification> specialtySpecificationList);
 
     @RequestMapping(value = "/product/specification/update")
-    void update(SpecialtySpecification spe);
+    void update(@RequestBody SpecialtySpecification spe);
 
     @RequestMapping(value = "/product/specification/baseinbound")
-    boolean isBaseInboundEnough(List<Map<String, Object>> orderItems);
+    boolean isBaseInboundEnough(@RequestBody List<Map<String, Object>> orderItems);
 
     @RequestMapping(value = "/product/specification/baseinbound/update", method = RequestMethod.POST)
     void updateBaseInboundAndHasSold(@RequestParam("businessOrderItem") BusinessOrderItem businessOrderItem, @RequestParam("isSale") Boolean isSale);

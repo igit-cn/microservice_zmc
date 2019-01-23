@@ -5,6 +5,7 @@ import com.zmc.springcloud.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProviderControllerApi {
     }
 
     @RequestMapping(value = "/provider/list")
-    public List<Provider> getListProvider(Boolean state, Long providerType, String providerName, String contactorName) {
+    public List<Provider> getListProvider(@RequestParam Boolean state, @RequestParam Long providerType, @RequestParam String providerName, @RequestParam String contactorName) {
         return providerService.findListProvider(state, providerType, providerName, contactorName);
     }
 }

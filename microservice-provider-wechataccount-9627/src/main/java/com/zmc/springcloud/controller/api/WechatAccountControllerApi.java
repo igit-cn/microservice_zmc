@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.WechatAccount;
 import com.zmc.springcloud.service.WechatAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,17 +24,17 @@ public class WechatAccountControllerApi {
     }
 
     @RequestMapping("/wechataccount/update/totalbalance")
-    public void updateTotalBalance(WechatAccount wechatAccount) throws Exception {
+    public void updateTotalBalance(@RequestBody WechatAccount wechatAccount) throws Exception {
         wechatAccountService.updateTotalBalance(wechatAccount);
     }
 
     @RequestMapping("/wechataccount/update/isnew")
-    public void updateIsNew(WechatAccount wechatAccount)throws Exception{
+    public void updateIsNew(@RequestBody WechatAccount wechatAccount)throws Exception{
         wechatAccountService.updateIsNew(wechatAccount);
     }
 
     @RequestMapping("/wechataccount/update/viptotalbalance")
-    public void updateVipPointTotalpointTotalbalance(WechatAccount wechatAccount) throws Exception{
+    public void updateVipPointTotalpointTotalbalance(@RequestBody WechatAccount wechatAccount) throws Exception{
         wechatAccountService.updateVipPointTotalpointTotalbalance(wechatAccount);
     }
 

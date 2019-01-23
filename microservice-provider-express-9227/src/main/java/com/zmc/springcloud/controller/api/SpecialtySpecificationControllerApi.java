@@ -4,9 +4,7 @@ import com.zmc.springcloud.entity.BusinessOrderItem;
 import com.zmc.springcloud.entity.SpecialtySpecification;
 import com.zmc.springcloud.service.SpecialtySpecificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -37,22 +35,22 @@ public class SpecialtySpecificationControllerApi {
     }
 
     @RequestMapping(value = "/product/specification/add")
-    public void batchInsert(List<SpecialtySpecification> specialtySpecificationList) throws Exception{
+    public void batchInsert(@RequestBody List<SpecialtySpecification> specialtySpecificationList) throws Exception{
         specialtySpecificationService.batchInsert(specialtySpecificationList);
     }
 
     @RequestMapping(value = "/product/specification/update")
-    public void update(SpecialtySpecification spe) throws Exception{
+    public void update(@RequestBody SpecialtySpecification spe) throws Exception{
         specialtySpecificationService.update(spe);
     }
 
     @RequestMapping(value = "/product/specification/baseinbound")
-    public boolean isBaseInboundEnough(List<Map<String, Object>> orderItems) throws Exception{
+    public boolean isBaseInboundEnough(@RequestBody List<Map<String, Object>> orderItems) throws Exception{
         return specialtySpecificationService.isBaseInboundEnough(orderItems);
     }
 
     @RequestMapping(value = "/product/specification/baseinbound/update")
-    public void updateBaseInboundAndHasSold(BusinessOrderItem businessOrderItem, Boolean isSale) throws Exception{
+    public void updateBaseInboundAndHasSold(@RequestBody BusinessOrderItem businessOrderItem, @RequestParam Boolean isSale) throws Exception{
         specialtySpecificationService.updateBaseInboundAndHasSold(businessOrderItem, isSale);
     }
 }

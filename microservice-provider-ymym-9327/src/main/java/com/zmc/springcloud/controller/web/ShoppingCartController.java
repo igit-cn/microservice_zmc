@@ -22,7 +22,7 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     /** 获取购物车列表*/
-    @RequestMapping(value = "shopping_cart/get_items")
+    @RequestMapping(value = "/shopping_cart/get_items")
     public Json getList(Long wechat_id){
         Json j = new Json();
         try{
@@ -80,6 +80,7 @@ public class ShoppingCartController {
        return j;
     }
 
+    /** 计算选中的总价*/
     @RequestMapping(value = "/shopping_cart/total_price")
     public Json totalPrice(List<HashMap<String, Object>> params, List<HashMap<String, Object>> bodys, HttpSession session){
         Json j = new Json();

@@ -42,6 +42,11 @@ zuul:
         path: /hyapi/admin/business/order/**
         serviceId: microservicecloud-order
         sensitiveHeaders: "*"
+      # 支付模块
+      pay-service:
+        path: /hyapi/pay/wechat/**
+        serviceID: microservicecloud-pay
+        sensitiveHeaders: "*"
       # 产品模块
       product-service:
         ribbon:

@@ -5,6 +5,7 @@ import com.zmc.springcloud.service.SpecialtyPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class SpecialtyPriceControllerApi {
     @Autowired
     private SpecialtyPriceService specialtyPriceService;
     @RequestMapping(value = "/product/price")
-    public SpecialtyPrice getSpecialtyPrice(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive) throws Exception{
+    public SpecialtyPrice getSpecialtyPrice(@RequestParam("specialtySpecificationId") Long specialtySpecificationId, @RequestParam("isActive") Boolean isActive) throws Exception{
         return specialtyPriceService.find(specialtySpecificationId, isActive);
     }
 }

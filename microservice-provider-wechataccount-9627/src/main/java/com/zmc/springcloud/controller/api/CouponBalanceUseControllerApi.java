@@ -4,6 +4,7 @@ import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.CouponBalanceUse;
 import com.zmc.springcloud.service.CouponBalanceUseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +19,7 @@ public class CouponBalanceUseControllerApi {
     private CouponBalanceUseService couponBalanceUseService;
 
     @RequestMapping("/coupon/balanceuse/save")
-    public void save(CouponBalanceUse couponBalanceUse) throws Exception{
+    public void save(@RequestBody CouponBalanceUse couponBalanceUse) throws Exception{
         couponBalanceUseService.save(couponBalanceUse);
     }
-
 }

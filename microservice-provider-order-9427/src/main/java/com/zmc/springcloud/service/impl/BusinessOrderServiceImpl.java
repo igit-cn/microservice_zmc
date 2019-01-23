@@ -596,7 +596,9 @@ public class BusinessOrderServiceImpl implements BusinessOrderService {
         Integer vinboundNumber = vinbound.getVinboundNumber();
         saleNumber += total;
         vinboundNumber = vinboundNumber < total ? 0 : vinboundNumber - total;
-        hyVinboundFeignClient.updateHyVinboundNum(vinbound.getId(), saleNumber, vinboundNumber);
+        vinbound.setSaleNumber(saleNumber);
+        vinbound.setVinboundNumber(vinboundNumber);
+        hyVinboundFeignClient.updateHyVinbound(vinbound);
     }
 
 

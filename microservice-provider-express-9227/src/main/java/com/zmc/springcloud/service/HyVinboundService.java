@@ -27,9 +27,4 @@ public interface HyVinboundService {
     void updateHyVinbound(HyVinbound hyVinbound) throws Exception;
 
     List<HyVinbound> getHyVinboundListBySpecificationId(Long id) throws Exception;
-
-    /**
-     * 修改虚拟库存的数量
-     */
-    void updateHyVinboundNum(Long id, Integer saleNumber, Integer vinboundNumber) throws Exception;
 }

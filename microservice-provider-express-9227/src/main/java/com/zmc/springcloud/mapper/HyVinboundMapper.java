@@ -33,10 +33,4 @@ public interface HyVinboundMapper {
      */
     @Update("UPDATE hy_vinbound SET vinbound_number = #{vinboundNumber}, sale_number = #{saleNumber}, vupdate_time = NOW() WHERE id = #{id}")
     void update(HyVinbound hyVinbound);
-
-    /**
-     * 注意时间更新
-     */
-    @Update("UPDATE hy_vinbound SET vinbound_number = #{vinboundNumber}, sale_number = #{saleNumber}, vupdate_time = NOW() WHERE id = #{id}")
-    void updateHyVinboundNum(@Param("id") Long id, @Param("saleNumber") Integer saleNumber, @Param("vinboundNumber") Integer vinboundNumber);
 }

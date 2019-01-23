@@ -3,7 +3,9 @@ package com.zmc.springcloud.controller.api;
 import com.zmc.springcloud.entity.WechatAccount;
 import com.zmc.springcloud.service.VipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -19,7 +21,7 @@ public class VipControllerApi {
     private VipService vipService;
 
     @RequestMapping("/vip/318")
-    public void setVip318(WechatAccount wechatAccount, BigDecimal money)throws Exception{
+    public void setVip318(@RequestBody WechatAccount wechatAccount, @RequestParam BigDecimal money)throws Exception{
        vipService.setVip318(wechatAccount, money);
     }
 

@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.HyVinbound;
 import com.zmc.springcloud.service.HyVinboundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,18 +26,13 @@ public class HyVinboundControllerApi {
     }
 
     @RequestMapping("/vinbound/add")
-    public void addHyVinbound(HyVinbound hyVinbound) throws Exception{
+    public void addHyVinbound(@RequestBody HyVinbound hyVinbound) throws Exception{
         hyVinboundService.saveHyVinbound(hyVinbound);
     }
 
     @RequestMapping("/vinbound/update")
-    public void updateHyVinbound(HyVinbound hyVinbound) throws Exception{
+    public void updateHyVinbound(@RequestBody HyVinbound hyVinbound) throws Exception{
         hyVinboundService.updateHyVinbound(hyVinbound);
-    }
-
-    @RequestMapping("/vinbound/updatenum")
-    public void updateHyVinboundNum(Long id, Integer saleNumber, Integer vinboundNumber) throws Exception{
-        hyVinboundService.updateHyVinboundNum(id, saleNumber, vinboundNumber);
     }
 
     @RequestMapping("/vinbound/list/{id}")

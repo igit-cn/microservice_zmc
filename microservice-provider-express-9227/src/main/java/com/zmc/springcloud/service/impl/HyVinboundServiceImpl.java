@@ -38,9 +38,4 @@ public class HyVinboundServiceImpl implements HyVinboundService{
     public List<HyVinbound> getHyVinboundListBySpecificationId(Long id) throws Exception {
         return hyVinboundMapper.findListBySpecificationId(id);
     }
-
-    @Override
-    public void updateHyVinboundNum(Long id, Integer saleNumber, Integer vinboundNumber) throws Exception {
-        hyVinboundMapper.updateHyVinboundNum(id, saleNumber, vinboundNumber);
-    }
 }

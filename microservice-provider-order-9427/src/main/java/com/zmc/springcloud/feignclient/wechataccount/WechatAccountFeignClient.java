@@ -3,6 +3,7 @@ package com.zmc.springcloud.feignclient.wechataccount;
 import com.zmc.springcloud.entity.WechatAccount;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -17,11 +18,11 @@ public interface WechatAccountFeignClient {
     WechatAccount getWechatAccountById(@PathVariable("id") Long id);
 
     @RequestMapping("/wechataccount/update/totalbalance")
-    void updateTotalBalance(WechatAccount wechatAccount);
+    void updateTotalBalance(@RequestBody WechatAccount wechatAccount);
 
     @RequestMapping("/wechataccount/update/viptotalbalance")
-    void updateVipPointTotalpointTotalbalance(WechatAccount wechatAccount);
+    void updateVipPointTotalpointTotalbalance(@RequestBody WechatAccount wechatAccount);
 
     @RequestMapping("/wechataccount/update/isnew")
-    void updateIsNew(WechatAccount wechatAccount);
+    void updateIsNew(@RequestBody WechatAccount wechatAccount);
 }

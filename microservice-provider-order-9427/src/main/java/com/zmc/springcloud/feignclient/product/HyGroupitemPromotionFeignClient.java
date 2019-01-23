@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.HyGroupitemPromotion;
 import com.zmc.springcloud.entity.HyGroupitemPromotionDetail;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -22,5 +23,5 @@ public interface HyGroupitemPromotionFeignClient {
     List<HyGroupitemPromotionDetail> getHyGroupitemPromotionDetailList(@PathVariable("id") Long id);
 
     @RequestMapping(value = "/group/item/promotion/update")
-    void updateGroupitemPromotion(HyGroupitemPromotion hyGroupitemPromotion);
+    void updateGroupitemPromotion(@RequestBody HyGroupitemPromotion hyGroupitemPromotion);
 }
