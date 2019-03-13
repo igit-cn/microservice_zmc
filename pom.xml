@@ -11,17 +11,18 @@
     <modules>
         <module>microservice-api</module>
         <module>microservice-eureka-7001</module>
+        <module>microservice-provider-common-9127</module>
         <module>microservice-provider-express-9227</module>
         <module>microservice-provider-login-8001</module>
         <module>microservice-provider-order-9427</module>
+        <module>microservice-provider-pay-9727</module>
         <module>microservice-provider-product-9001</module>
+        <module>microservice-provider-promotion-9027</module>
         <module>microservice-provider-supplier-5001</module>
         <module>microservice-provider-upload-6001</module>
+        <module>microservice-provider-wechataccount-9627</module>
         <module>microservice-provider-ymym-9327</module>
         <module>microservice-zuul-gateway-9527</module>
-        <module>microservice-provider-common-9127</module>
-        <module>microservice-provider-promotion-9027</module>
-        <module>microservice-provider-wechataccount-9627</module>
     </modules>
 
 
