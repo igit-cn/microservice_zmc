@@ -1,6 +1,6 @@
 package com.zmc.springcloud.controller.web;
 
-import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.utils.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

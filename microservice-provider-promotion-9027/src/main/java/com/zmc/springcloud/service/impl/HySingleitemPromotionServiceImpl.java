@@ -3,7 +3,7 @@ package com.zmc.springcloud.service.impl;
 import com.zmc.springcloud.entity.HyPromotion;
 import com.zmc.springcloud.entity.HySingleitemPromotion;
 import com.zmc.springcloud.entity.SpecialtySpecification;
-import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.mapper.HySingleitemPromotionMapper;
 import com.zmc.springcloud.service.HyPromotionService;
 import com.zmc.springcloud.service.HySingleitemPromotionService;

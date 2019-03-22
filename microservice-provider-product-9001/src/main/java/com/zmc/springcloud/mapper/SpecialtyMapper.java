@@ -1,10 +1,12 @@
 package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.Specialty;
+import com.zmc.springcloud.utils.CommonAttributes;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xyy on 2018/12/3.
@@ -43,6 +45,14 @@ public interface SpecialtyMapper {
             sql += " ORDER BY id DESC";
             return sql;
         }
+
+        public String findSubListForRecommendBySize(Integer size){
+            String sqlstr = CommonAttributes.SQL_MIN_PRICE_SPEC_PARAMS + CommonAttributes.SQL_MIN_PRICE_SPEC + " and s1.is_recommend=1";
+            sqlstr += " group by p1.id";
+            sqlstr += " order by hasSold desc";
+            sqlstr += " limit 0," + size;
+            return sqlstr;
+        }
     }
 
     /**
@@ -71,4 +81,7 @@ public interface SpecialtyMapper {
 
     @Insert("INSERT INTO hy_recommend_specialty(specilty_id, recommend_specialty_id) VALUES(#{id}, #{recommendSpecialtyId})")
     void insertSpecialtiesForRecommend(@Param("id") Long id, @Param("recommendSpecialtyId") Long recommendSpecialtyId);
+
+    @SelectProvider(type = SpecialtyDaoProvicer.class, method = "findSubListForRecommendBySize")
+    List<Object[]> findSubListForRecommendBySize(Integer size);
 }

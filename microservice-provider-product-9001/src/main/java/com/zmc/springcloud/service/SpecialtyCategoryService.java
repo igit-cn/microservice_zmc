@@ -34,5 +34,9 @@ public interface SpecialtyCategoryService {
      */
     List<HashMap<String, Object>> getSpecialtyCategoryTreeList() throws Exception;
 
+    /** 客户端-获取某个顶级分类categoryId下的size个商品*/
+    List<Object[]> getSubListByCategoryIdAndSize(Long categoryId, Integer size) throws Exception;
 
+    /** 获取商品的所有顶级分区*/
+    List<SpecialtyCategory> getSpecialtyCategorySuperList();
 }

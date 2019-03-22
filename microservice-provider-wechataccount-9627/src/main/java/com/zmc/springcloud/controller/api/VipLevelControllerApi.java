@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author xyy
  */
 @RestController
-public class VipLevelController {
+public class VipLevelControllerApi {
     @Autowired
     private ViplevelService viplevelService;
 

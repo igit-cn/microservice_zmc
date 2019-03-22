@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.EnumOrdinalTypeHandler;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/12/12.
@@ -43,4 +44,8 @@ public interface BusinessBannerMapper {
 
     @Insert("INSERT INTO hy_business_banner(title, img, type, target_id, state, start_time, end_time, pv_price, uv_price, create_date, modify_date, creator) VALUES(#{title},#{img},#{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{targetId},#{state},#{startTime},#{endTime},0,0,NOW(),NOW(),#{creator})")
     void insert(BusinessBanner banner);
+
+    /** 根据BusinessBanner的状态获取列表*/
+    @Select("SELECT * FROM hy_business_banner WHERE state = #{state}")
+    List<BusinessBanner> findBusinessBannerListByState(Boolean state);
 }

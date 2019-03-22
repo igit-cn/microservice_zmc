@@ -12,7 +12,7 @@ import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 
 import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
-import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.promotion.HyPromotionFeignClient;
 import com.zmc.springcloud.feignclient.promotion.HySingleitemPromotionFeignClient;
 import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;

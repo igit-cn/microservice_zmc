@@ -1,4 +1,4 @@
-package com.zmc.springcloud.feignclient.express;
+package com.zmc.springcloud.feignclient.product;
 
 import com.zmc.springcloud.entity.BusinessOrderItem;
 import com.zmc.springcloud.entity.SpecialtySpecification;
@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author xyy
  */
-@FeignClient(name = "microservicecloud-express")
+@FeignClient(name = "microservicecloud-product")
 public interface SpecialtySpecificationFeignClient {
     @RequestMapping(value = "/product/specification/{id}")
     SpecialtySpecification getSpecialtySpecificationById(@PathVariable("id") Long id);

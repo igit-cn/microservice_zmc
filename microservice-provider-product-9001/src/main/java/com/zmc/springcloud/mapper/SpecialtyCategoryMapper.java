@@ -1,6 +1,7 @@
 package com.zmc.springcloud.mapper;
 
 import com.zmc.springcloud.entity.SpecialtyCategory;
+import com.zmc.springcloud.utils.CommonAttributes;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.*;
 
@@ -51,6 +52,14 @@ public interface SpecialtyCategoryMapper {
             sql += " ORDER BY id DESC";
             return sql;
         }
+
+        public String findSubListByCategoryIdAndSize(String categoryIdStr, Integer size){
+            String sqlstr = CommonAttributes.SQL_MIN_PRICE_SPEC_PARAMS + CommonAttributes.SQL_MIN_PRICE_SPEC + " and s1.category_id in (" + categoryIdStr + ")";
+            sqlstr += " group by p1.id";
+            sqlstr += " order by hasSold desc";
+            sqlstr += " limit 0," + size;
+            return sqlstr;
+        }
     }
 
     /**
@@ -58,4 +67,7 @@ public interface SpecialtyCategoryMapper {
      */
     @Insert("INSERT INTO hy_specialty_category(create_time, icon_url, is_active, name, operator, pid) VALUES(NOW(), #{iconUrl}, #{isActive}, #{name}, #{operator}, #{pid})")
     void insert(@Param(value = "name") String name, @Param(value = "isActive") Boolean isActive, @Param(value = "pid") Long pid, @Param(value = "iconUrl") String iconUrl, @Param(value = "operator") String operator);
+
+    @SelectProvider(type = SpecialtyCategoryDaoProvicer.class, method = "findSubListByCategoryIdAndSize")
+    List<Object[]> findSubListByCategoryIdAndSize(String categoryIdStr, Integer size);
 }

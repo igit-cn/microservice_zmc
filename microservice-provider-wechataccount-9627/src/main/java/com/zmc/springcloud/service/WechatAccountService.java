@@ -2,6 +2,8 @@ package com.zmc.springcloud.service;
 
 import com.zmc.springcloud.entity.WechatAccount;
 
+import java.util.List;
+
 /**
  * Created by xyy on 2018/12/13.
  *
@@ -18,4 +20,8 @@ public interface WechatAccountService {
     void updateVip(WechatAccount wechatAccount)throws Exception;
     /** 更新vip等级 可用积分 总积分 用户余额*/
     void updateVipPointTotalpointTotalbalance(WechatAccount wechatAccount) throws Exception;
+    /** 根据openId获取WechatAccount的List*/
+    List<WechatAccount> getWechatAccountListByOpenId(String openId) throws Exception;
+    /** 创建新的wechatAccount*/
+    void createWechatAccount(WechatAccount wechatAccount);
 }

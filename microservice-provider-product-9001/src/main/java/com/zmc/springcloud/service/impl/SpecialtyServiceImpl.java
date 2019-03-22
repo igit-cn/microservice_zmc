@@ -9,7 +9,7 @@ import com.zmc.springcloud.entity.CommonSequence.SequenceTypeEnum;
 import com.zmc.springcloud.feignclient.common.CommonSequenceFeignClient;
 import com.zmc.springcloud.feignclient.common.HyAreaFeignClient;
 import com.zmc.springcloud.feignclient.express.HyVinboundFeignClient;
-import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 import com.zmc.springcloud.feignclient.supplier.ProviderFeignClient;
 import com.zmc.springcloud.mapper.SpecialtyMapper;
@@ -514,5 +514,12 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         // 更新特产
         specialtyMapper.update(oldSpecialty);
     }
+
+    @Override
+    public List<Object[]> getSubListForRecommendBySize(Integer size) {
+        return specialtyMapper.findSubListForRecommendBySize(size);
+    }
+
+
 
 }

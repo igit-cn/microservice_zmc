@@ -8,6 +8,7 @@ import com.zmc.springcloud.feignclient.login.HyAdminFeignClient;
 import com.zmc.springcloud.mapper.SpecialtyCategoryMapper;
 import com.zmc.springcloud.service.SpecialtyCategoryService;
 import com.zmc.springcloud.utils.Json;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +98,10 @@ public class SpecialtyCategoryServiceImpl implements SpecialtyCategoryService {
         return obj;
     }
 
-
+    @Override
+    public List<SpecialtyCategory> getSpecialtyCategorySuperList() {
+        return specialtyCategoryMapper.findListSpecialtyCategoryParent();
+    }
 
     private List<HashMap<String, Object>> fieldFilter(SpecialtyCategory parent)throws Exception {
         List<HashMap<String, Object>> res = new ArrayList<>();
@@ -138,5 +142,47 @@ public class SpecialtyCategoryServiceImpl implements SpecialtyCategoryService {
             res.add(map);
         }
         return res;
+    }
+
+    @Override
+    public List<Object[]> getSubListByCategoryIdAndSize(Long categoryId, Integer size) throws Exception {
+        String categoryIdStr = getStringByCategoryId(categoryId);
+        return specialtyCategoryMapper.findSubListByCategoryIdAndSize(categoryIdStr, size);
+    }
+
+    private String getStringByCategoryId(Long categoryId) throws Exception{
+        List<SpecialtyCategory> categories = new ArrayList<>();
+        if(categories != null){
+            SpecialtyCategory category = getSpecialtyCategoryById(categoryId);
+            if(category != null){
+                categories.add(category);
+                categories.addAll(getCategoriesTreeList(category));
+            }
+        }
+
+        List<Long> categoryIds = new ArrayList<>();
+        for (SpecialtyCategory category : categories) {
+            categoryIds.add(category.getId());
+        }
+        String categoryIdStr = StringUtils.join(categoryIds, ",");
+        return categoryIdStr;
+    }
+
+    /** 获取分区所有子分区列表*/
+    private List<SpecialtyCategory> getCategoriesTreeList(SpecialtyCategory parent) {
+        List<SpecialtyCategory> list = new ArrayList<>();
+        List<SpecialtyCategory> subList = specialtyCategoryMapper.findListSpecialtyCategory(null, true, null, parent.getId());
+        if (!subList.isEmpty()) {
+            for (SpecialtyCategory child : subList) {
+                list.add(child);
+            }
+            for (SpecialtyCategory child : subList) {
+                List<SpecialtyCategory> sub = getCategoriesTreeList(child);
+                if (sub != null && !sub.isEmpty()) {
+                    list.addAll(sub);
+                }
+            }
+        }
+        return list;
     }
 }

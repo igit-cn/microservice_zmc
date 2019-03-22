@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/12/12.
@@ -31,5 +32,10 @@ public class BusinessBannerServiceImpl implements BusinessBannerService{
     @Override
     public void saveBusinessBanner(BusinessBanner banner)throws Exception {
         businessBannerMapper.insert(banner);
+    }
+
+    @Override
+    public List<BusinessBanner> getBusinessBannerList(Boolean state) {
+        return businessBannerMapper.findBusinessBannerListByState(state);
     }
 }

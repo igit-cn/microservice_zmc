@@ -78,6 +78,13 @@ public final class CommonAttributes {
     public static final String MEDIA_UPLOAD_PATH = "/upload/media/${.now?string('yyyyMM')}/";
     public static final String FILE_UPLOAD_PATH = "/upload/file/${.now?string('yyyyMM')}/";
 
+    public static class WeBusinessType {
+        public static final int Interior = 0;
+        public static final int Exterior = 1;
+
+    }
+
+
     /************************商贸订单状态***********************************/
     /**
      * 待付款
@@ -139,4 +146,19 @@ public final class CommonAttributes {
     public static final Integer BUSINESS_ORDER_REFUND_STATUS_WAIT_FOR_REFUND_MONEY = 4;
     public static final Integer BUSINESS_ORDER_REFUND_STATUS_FINISH = 5;
 
+
+
+    /*******************************************************************/
+    public static final String SQL_MIN_PRICE_SPEC_TOTAL = "select count(distinct p1.id)";
+    public static final String SQL_MIN_PRICE_SPEC_PARAMS = "select s1.id sid,s1.name sname,sp1.id spid,sp1.specification spname,p1.platform_price pPrice,sum(sp2.sale_number*sp2.has_sold)+s1.base_sale_number hasSold,min(im1.medium_path) mediumPath";
+    public static final String SQL_MIN_PRICE_SPEC = " from hy_specialty_price p1,hy_specialty_specification sp1,hy_specialty s1,hy_specialty_image im1,hy_specialty_specification sp2"
+            + " where p1.is_active=1 and p1.specification_id=sp1.id and sp1.specialty_id=s1.id and sp1.is_active=1 and s1.is_active=1 and s1.sale_state=1 and s1.id=im1.specialty_id and im1.is_logo=1 and sp2.specialty_id=s1.id"
+            + " and sp1.id=(select min(p2.specification_id) from hy_specialty_price p2 where p2.specialty_id=s1.id and p2.platform_price=(select min(p3.platform_price) from hy_specialty_price p3 where p3.is_active=1 and p3.specialty_id=s1.id))"
+            + " and exists(select *from hy_specialty_specification sp3 where sp3.id in (sp1.id,sp1.pid) and sp3.base_inbound>0)";
+
+    public static final String SQL_MIN_PRICE_SPEC_BY_LABEL = " from hy_specialty_price p1,hy_specialty_specification sp1,hy_specialty s1,hy_specialty_image im1,hy_specialty_specification sp2,hy_specialty_label sl1" +
+            " where p1.is_active=1 and p1.specification_id=sp1.id and sp1.specialty_id=s1.id and sp1.is_active=1 and s1.is_active=1 and s1.sale_state=1 and s1.id=im1.specialty_id and im1.is_logo=1 and sp2.specialty_id=s1.id" +
+            " and sp1.id=(select min(p2.specification_id) from hy_specialty_price p2 where p2.specialty_id=s1.id and p2.platform_price=(select min(p3.platform_price) from hy_specialty_price p3 where p3.is_active=1 and p3.specialty_id=s1.id))" +
+            " and exists(select *from hy_specialty_specification sp3 where sp3.id in (sp1.id,sp1.pid) and sp3.base_inbound>0)" +
+            " and sl1.is_marked=1 and sl1.specialty_id=s1.id";
 }

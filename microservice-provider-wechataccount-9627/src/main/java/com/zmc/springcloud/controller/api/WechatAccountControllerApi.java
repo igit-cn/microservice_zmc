@@ -1,12 +1,14 @@
 package com.zmc.springcloud.controller.api;
 
+import com.netflix.discovery.converters.Auto;
+import com.zmc.springcloud.entity.WeBusiness;
 import com.zmc.springcloud.entity.WechatAccount;
+import com.zmc.springcloud.service.WeBusinessService;
 import com.zmc.springcloud.service.WechatAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by xyy on 2019/1/6.
@@ -38,4 +40,15 @@ public class WechatAccountControllerApi {
         wechatAccountService.updateVipPointTotalpointTotalbalance(wechatAccount);
     }
 
+    /** 根据openId获取WechatAccount的List*/
+    @GetMapping("/wechataccount/{openId}")
+    List<WechatAccount> getWechatAccountListByOpenId(@PathVariable("openId")String openId) throws Exception{
+        return wechatAccountService.getWechatAccountListByOpenId(openId);
+    }
+
+    /** 创建新的wechatAccount*/
+    @PostMapping("/wechataccount/create")
+    void createWechatAccount(@RequestBody WechatAccount wechatAccount) throws Exception{
+        wechatAccountService.createWechatAccount(wechatAccount);
+    }
 }

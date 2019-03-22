@@ -3,6 +3,7 @@ package com.zmc.springcloud.service;
 import com.zmc.springcloud.entity.BusinessBanner;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xyy on 2018/12/12.
@@ -16,4 +17,6 @@ public interface BusinessBannerService {
     BusinessBanner getBusinessBanner(Long id, int ordinal) throws Exception;
     /** 新建BusinessBanner*/
     void saveBusinessBanner(BusinessBanner banner) throws Exception;
+    /** 根据BusinessBanner的状态获取列表*/
+    List<BusinessBanner> getBusinessBannerList(Boolean state);
 }

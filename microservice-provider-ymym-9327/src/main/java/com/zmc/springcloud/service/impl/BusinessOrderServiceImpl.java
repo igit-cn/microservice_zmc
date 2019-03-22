@@ -3,7 +3,7 @@ package com.zmc.springcloud.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zmc.springcloud.entity.*;
-import com.zmc.springcloud.feignclient.express.SpecialtySpecificationFeignClient;
+import com.zmc.springcloud.feignclient.product.SpecialtySpecificationFeignClient;
 import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyFeignClient;
 import com.zmc.springcloud.feignclient.product.SpecialtyImageFeignClient;
