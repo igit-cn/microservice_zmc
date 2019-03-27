@@ -33,6 +33,4 @@ public interface SpecialtyService {
 
     /** 客户端-获取推荐商品列表*/
     List<Object[]> getSubListForRecommendBySize(Integer size);
-
-
 }

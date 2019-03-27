@@ -12,7 +12,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.zmc.springcloud.feignclient"})
 public class Product9001 {
     public static void main(String[] args) {
         SpringApplication.run(Product9001.class, args);

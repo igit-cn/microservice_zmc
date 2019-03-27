@@ -6,6 +6,8 @@ import com.zmc.springcloud.service.SpecialtyPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by xyy on 2018/12/10.
  *
@@ -17,8 +19,8 @@ public class SpecialtyPriceServiceImpl implements SpecialtyPriceService{
     private SpecialtyPriceMapper specialtyPriceMapper;
 
     @Override
-    public SpecialtyPrice find(Long specialtyId, boolean isActive) throws Exception{
-        return specialtyPriceMapper.find(specialtyId, isActive);
+    public SpecialtyPrice find(Long specificationId, boolean isActive) throws Exception{
+        return specialtyPriceMapper.find(specificationId, isActive);
     }
 
     @Override

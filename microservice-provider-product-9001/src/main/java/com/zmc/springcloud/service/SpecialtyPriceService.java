@@ -2,13 +2,14 @@ package com.zmc.springcloud.service;
 
 import com.zmc.springcloud.entity.SpecialtyPrice;
 
+
 /**
  * Created by xyy on 2018/12/10.
  *
  * @author xyy
  */
 public interface SpecialtyPriceService {
-    /** 通过特产id筛选isActive的特产价格*/
+    /** 通过规格id筛选isActive的特产价格*/
     SpecialtyPrice find(Long id, boolean isActive) throws Exception;
     /** 新建 SpecialtyPrice*/
     void save(SpecialtyPrice newprice) throws Exception;

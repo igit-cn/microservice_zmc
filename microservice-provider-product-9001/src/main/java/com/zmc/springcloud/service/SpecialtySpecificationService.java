@@ -33,4 +33,7 @@ public interface SpecialtySpecificationService {
 
     /** 更新规格的基础库存和销量*/
     void updateBaseInboundAndHasSold(BusinessOrderItem businessOrderItem, Boolean isSale) throws Exception;
+
+    /** 客户端-商品详情*/
+    List<Map<String,Object>> getSpecificationDetailBySpecialtyIdAndWechatId(Long specialtyId, Long wechatId) throws Exception;
 }

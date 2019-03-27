@@ -35,4 +35,8 @@ public interface SpecialtySpecificationFeignClient {
 
     @RequestMapping(value = "/product/specification/baseinbound/update", method = RequestMethod.POST)
     void updateBaseInboundAndHasSold(@RequestParam("businessOrderItem") BusinessOrderItem businessOrderItem, @RequestParam("isSale") Boolean isSale);
+
+    /** 客户端-商品详情*/
+    @GetMapping("/product/specification/detail")
+    List<Map<String, Object>> getSpecificationDetailBySpecialtyIdAndWechatId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId);
 }

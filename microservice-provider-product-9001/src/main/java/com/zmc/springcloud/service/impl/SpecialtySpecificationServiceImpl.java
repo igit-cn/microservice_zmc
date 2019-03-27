@@ -1,15 +1,17 @@
 package com.zmc.springcloud.service.impl;
 
-import com.zmc.springcloud.entity.BusinessOrderItem;
-import com.zmc.springcloud.entity.HyGroupitemPromotion;
-import com.zmc.springcloud.entity.HyGroupitemPromotionDetail;
-import com.zmc.springcloud.entity.SpecialtySpecification;
+import com.zmc.springcloud.entity.*;
 import com.zmc.springcloud.feignclient.product.HyGroupitemPromotionFeignClient;
+import com.zmc.springcloud.feignclient.promotion.HySingleitemPromotionFeignClient;
+import com.zmc.springcloud.feignclient.wechataccount.WeBusinessFeignClient;
+import com.zmc.springcloud.feignclient.wechataccount.WeDivideModelFeignClient;
+import com.zmc.springcloud.feignclient.wechataccount.WechatAccountFeignClient;
 import com.zmc.springcloud.mapper.SpecialtySpecificationMapper;
-import com.zmc.springcloud.service.SpecialtySpecificationService;
+import com.zmc.springcloud.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,33 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
 
     @Autowired
     private HyGroupitemPromotionFeignClient hyGroupitemPromotionFeignClient;
+
+    @Autowired
+    private WechatAccountFeignClient wechatAccountFeignClient;
+
+    @Autowired
+    private WeBusinessFeignClient weBusinessFeignClient;
+
+    @Autowired
+    private WeDivideModelFeignClient weDivideModelFeignClient;
+
+    @Autowired
+    private HySingleitemPromotionFeignClient hySingleitemPromotionFeignClient;
+
+    @Autowired
+    private SpecialtyService specialtyService;
+
+    @Autowired
+    private SpecialtyImageService specialtyImageService;
+
+    @Autowired
+    private SpecialtyPriceService specialtyPriceService;
+
+    @Autowired
+    private HyLabelService hyLabelService;
+
+    @Autowired
+    private HySpecialtyLabelService hySpecialtyLabelService;
 
     @Override
     public void batchInsert(List<SpecialtySpecification> specialtySpecificationList) throws Exception {
@@ -165,6 +194,13 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
         }
     }
 
+    @Override
+    public List<Map<String, Object>> getSpecificationDetailBySpecialtyIdAndWechatId(Long specialtyId, Long wechatId) throws Exception {
+        List<SpecialtySpecification> srows = specialtySpecificationMapper.findAllSpecificationBySpecialtyId(specialtyId);
+        List<Map<String, Object>> rows = filterSpecificationPrice(doSpecialtyList(srows, wechatId));
+        return rows;
+    }
+
     /**
      * 获取父规格
      */
@@ -175,5 +211,162 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
             return specialtySpecificationMapper.findById(specification.getPid());
         }
         return specification;
+    }
+
+    /**
+     * 重新处理List，获得新的List
+     */
+    private List<Map<String, Object>> doSpecialtyList(List<SpecialtySpecification> srows, Long wechatId) throws Exception {
+        List<Map<String, Object>> rows = new ArrayList<>();
+        Map<Long, Integer> hasSolds = new HashMap<>();
+
+        for (SpecialtySpecification s : srows) {
+            Map<String, Object> map = new HashMap<>();
+            Specialty specialty = specialtyService.getSpecialtyById(s.getSpecialtyId());
+            if (specialty.getIsActive() == null || !specialty.getIsBanner() || specialty.getSaleState() == null
+                    || specialty.getSaleState() == 0 || s.getIsActive() == null || !s.getIsActive()) {
+                continue;
+            }
+            // 产品信息
+            map.put("specialty", specialty);
+
+            // 产品图标
+            List<SpecialtyImage> images = specialtyImageService.getSpecialtyImageList(s.getSpecialtyId());
+            for (SpecialtyImage image : images) {
+                if(image.getIsLogo() != null && image.getIsLogo()){
+                    map.put("iconURL", image);
+                    break;
+                }
+            }
+            // 规格信息
+            map.put("specification", s);
+
+            // 找价格
+            // 先去价格变化表里查
+            SpecialtyPrice price = specialtyPriceService.find(s.getId(), true);
+            if(price == null){
+                continue;
+            }
+            map.put("mPrice", price.getMarketPrice());
+            map.put("pPrice", price.getPlatformPrice());
+            // 运费
+            map.put("deliverPrice", price.getDeliverPrice());
+            // 找库存
+            // 找父规格
+            SpecialtySpecification fuSpecification = this.getParentSpecification(s);
+            if(fuSpecification == null){
+                continue;
+            }
+            Integer totalInbound = fuSpecification.getBaseInbound();
+            if(totalInbound == 0){
+                continue;
+            }
+            map.put("inbound", totalInbound / s.getSaleNumber());
+            // 找提成比例
+            WechatAccount wechatAccount = wechatAccountFeignClient.getWechatAccountById(wechatId);
+            if(wechatAccount != null){
+                List<WeBusiness> weBusinesses = weBusinessFeignClient.getWeBusinessListByOpenId(wechatAccount.getWechatOpenid());
+                if(weBusinesses != null && !weBusinesses.isEmpty()){
+                    WeBusiness weBusiness = weBusinesses.get(0);
+                    switch (weBusiness.getType()){
+                        case 0:
+                            List<WeDivideModel> weDivideModels = weDivideModelFeignClient.getWeDivideModelListByModelTypeAndIsValid("虹宇门店", true);
+                            map.put("divideRatio", price.getStoreDivide().multiply(weDivideModels.get(0).getWeBusiness()));
+                            break;
+                        case 1:
+                            List<WeDivideModel> weDivideModels1 = weDivideModelFeignClient.getWeDivideModelListByModelTypeAndIsValid("非虹宇门店", true);
+                            map.put("divideRatio", price.getStoreDivide().multiply(weDivideModels1.get(0).getWeBusiness()));
+                            break;
+                        case 2:
+                            List<WeDivideModel> weDivideModels2 = weDivideModelFeignClient.getWeDivideModelListByModelTypeAndIsValid("个人商贸", true);
+                            map.put("divideRatio", price.getStoreDivide().multiply(weDivideModels2.get(0).getWeBusiness()));
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    map.put("divideRatio", null);
+                }
+            } else {
+                map.put("divideRatio", null);
+            }
+            // 提成金额
+            if (map.get("divideRatio") != null) {
+                map.put("divideMoney", price.getPlatformPrice().subtract(price.getCostPrice()).subtract(
+                        price.getDeliverPrice()).multiply((BigDecimal) map.get("divideRatio")));
+            }
+
+            // 获取推荐产品
+            map.put("recommends", specialtyService.getSpecialtiesForRecommendSpecialty(s.getSpecialtyId()));
+            HySingleitemPromotion singleitemPromotion = hySingleitemPromotionFeignClient.getValidSingleitemPromotion(s.getId(), null);
+            map.put("promotion", singleitemPromotion);
+
+            // 获取标签
+            List<HyLabel> hyLabels = hyLabelService.getHyLableListBySpecialtyId(s.getSpecialtyId());
+            for (HyLabel label : hyLabels) {
+                if(!label.getIsActive() || !hySpecialtyLabelService.isMarked(label.getId(), s.getSpecialtyId(), true)){
+                    hyLabels.remove(label);
+                }
+            }
+            map.put("labels", hyLabels);
+
+            // 找销量
+            if (hasSolds.containsKey(specialty.getId())) {
+                map.put("hasSold", hasSolds.get(specialty.getId()));
+            } else {
+                Integer hasSold = specialty.getBaseSaleNumber();
+
+                List<SpecialtySpecification> specialtySpecificationList = this.getAllSpecification(specialty.getId());
+                for (SpecialtySpecification specification : specialtySpecificationList) {
+                    hasSold += specification.getSaleNumber() * specification.getHasSold();
+                }
+                map.put("hasSold", hasSold);
+                hasSolds.put(specialty.getId(), hasSold);
+            }
+
+            rows.add(map);
+        }
+        return rows;
+    }
+
+    private List<Map<String, Object>> filterSpecificationPrice(List<Map<String, Object>> srows) {
+        // 特产基本信息Map
+        Map<Object, Map<String, Object>> spMap = new HashMap<>();
+        // 特产销量Map
+        Map<Object, Integer> saMap = new HashMap<>();
+        for (Map<String, Object> sp : srows) {
+            // 最低价格
+            if (spMap.containsKey(sp.get("specialty"))){
+                Map<String, Object> tmp = spMap.get(sp.get("specialty"));
+                BigDecimal spPrice = (BigDecimal) sp.get("pPrice");
+                BigDecimal tmpPrice = (BigDecimal) tmp.get("pPrice");
+                if (spPrice.compareTo(tmpPrice) < 0) {
+                    spMap.put(sp.get("specialty"), sp);
+                }
+            } else {
+                spMap.put(sp.get("specialty"), sp);
+            }
+            // 总销量
+            if (saMap.containsKey(sp.get("specialty"))) {
+                Integer saleNumber = saMap.get(sp.get("specialty"));
+                SpecialtySpecification specification = (SpecialtySpecification) sp.get("specification");
+                saMap.put(sp.get("specialty"), saleNumber + specification.getHasSold() * specification.getSaleNumber());
+            } else {
+                Specialty specialty = (Specialty) sp.get("specialty");
+                SpecialtySpecification specification = (SpecialtySpecification) sp.get("specification");
+                saMap.put(sp.get("specialty"), specialty.getBaseSaleNumber() + specification.getHasSold() * specification.getSaleNumber());
+            }
+        }
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Map.Entry<Object, Map<String, Object>> entry : spMap.entrySet()) {
+            Map<String, Object> value = entry.getValue();
+            Object key = entry.getKey();
+            if(!value.containsKey("hasSold")){
+                value.put("hasSold", saMap.get(key));
+            }
+            list.add(value);
+        }
+        return list;
     }
 }

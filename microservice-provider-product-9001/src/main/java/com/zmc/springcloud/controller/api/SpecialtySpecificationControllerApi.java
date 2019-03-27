@@ -53,4 +53,10 @@ public class SpecialtySpecificationControllerApi {
     public void updateBaseInboundAndHasSold(@RequestBody BusinessOrderItem businessOrderItem, @RequestParam Boolean isSale) throws Exception{
         specialtySpecificationService.updateBaseInboundAndHasSold(businessOrderItem, isSale);
     }
+
+    /** 客户端-商品详情*/
+    @GetMapping("/product/specification/detail")
+    public List<Map<String, Object>> getSpecificationDetailBySpecialtyIdAndWechatId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId) throws Exception{
+        return specialtySpecificationService.getSpecificationDetailBySpecialtyIdAndWechatId(specialtyId, wechatId);
+    }
 }

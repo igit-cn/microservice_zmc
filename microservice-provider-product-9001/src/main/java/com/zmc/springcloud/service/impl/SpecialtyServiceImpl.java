@@ -267,7 +267,7 @@ public class SpecialtyServiceImpl implements SpecialtyService{
         List<SpecialtySpecification> filterSpecifications = new ArrayList<>();
         List<SpecialtySpecification> specialtySpecificationList = specialtySpecificationFeignClient.getAllSpecification(id);
         for (SpecialtySpecification spe : specialtySpecificationList) {
-            SpecialtyPrice specialtyPrice = specialtyPriceService.find(spe.getSpecialtyId(), true);
+            SpecialtyPrice specialtyPrice = specialtyPriceService.find(spe.getId(), true);
             if(specialtyPrice != null){
                 spe.setCostPrice(specialtyPrice.getCostPrice());
                 spe.setMarketPrice(specialtyPrice.getMarketPrice());
