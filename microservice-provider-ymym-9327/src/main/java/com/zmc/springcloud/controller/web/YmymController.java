@@ -1,15 +1,19 @@
 package com.zmc.springcloud.controller.web;
 
+import com.netflix.discovery.converters.Auto;
 import com.zmc.springcloud.entity.ServicePromise;
+import com.zmc.springcloud.entity.WeBusiness;
 import com.zmc.springcloud.entity.WechatAccount;
 import com.zmc.springcloud.feignclient.order.BusinessOrderFeignClient;
 import com.zmc.springcloud.feignclient.product.ServicePromiseFeignClient;
+import com.zmc.springcloud.feignclient.wechataccount.WeBusinessFeignClient;
 import com.zmc.springcloud.feignclient.wechataccount.WechatAccountFeignClient;
 import com.zmc.springcloud.utils.Json;
 import com.zmc.springcloud.wechatpay.util.XMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.server.WeakClassHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +36,9 @@ public class YmymController {
 
     @Autowired
     private WechatAccountFeignClient wechatAccountFeignClient;
+
+    @Autowired
+    private WeBusinessFeignClient weBusinessFeignClient;
 
     @Autowired
     private ServicePromiseFeignClient servicePromiseFeignClient;
@@ -91,4 +98,39 @@ public class YmymController {
         return j;
     }
 
+    /**
+     * 个人中心 信息页
+     */
+    @GetMapping("/usermanagement/info")
+    public Json info(Long wechat_id) {
+        Json j = new Json();
+        try {
+            WechatAccount wechatAccount = wechatAccountFeignClient.getWechatAccountById(wechat_id);
+            if (wechatAccount == null) {
+                j.setSuccess(false);
+                j.setMsg("账户不存在");
+                return j;
+            } else {
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("wechatAccount", wechatAccount);
+                if (wechatAccount.getIsWeBusiness()) {
+                    List<WeBusiness> weBusinesses = weBusinessFeignClient.getWeBusinessListByOpenId(wechatAccount.getWechatOpenid());
+                    if (weBusinesses != null && !weBusinesses.isEmpty()) {
+                        maps.put("weBusiness", weBusinesses.get(0));
+                    } else {
+                        maps.put("weBusiness", null);
+                    }
+                } else {
+                    maps.put("weBusiness", null);
+                }
+            }
+            j.setSuccess(true);
+            j.setMsg("操作成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+        }
+        return j;
+    }
 }
