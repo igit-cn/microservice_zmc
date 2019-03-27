@@ -36,4 +36,7 @@ public interface SpecialtySpecificationService {
 
     /** 客户端-商品详情*/
     List<Map<String,Object>> getSpecificationDetailBySpecialtyIdAndWechatId(Long specialtyId, Long wechatId) throws Exception;
+
+    /** 客户端-商品规格详情*/
+    List<Map<String,Object>> getSpecificationDetailBySpecialtyId(Long specialtyId, Long wechatId) throws Exception;
 }

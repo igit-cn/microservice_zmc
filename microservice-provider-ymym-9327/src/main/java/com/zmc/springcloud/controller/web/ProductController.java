@@ -106,7 +106,7 @@ public class ProductController {
     }
 
     /**
-     * 通过商品id获取商品详情
+     * 客户端 通过商品id获取商品详情
      */
     @GetMapping("/product/specification_detail_by_specialty_id")
     public Json specificationDetailBySpecialtyId(Long id, HttpSession session) {
@@ -150,6 +150,24 @@ public class ProductController {
             j.setSuccess(true);
             j.setMsg("操作成功");
         } catch (Exception e) {
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg("操作失败");
+        }
+        return j;
+    }
+
+    /** 客户端 商品详情 通过规格id获取规格详情*/
+    @GetMapping("/product/specification_detail_by_specification_id")
+    public Json specificationDetailBySpecialtyId2(Long id, HttpSession session){
+        Json j = new Json();
+        try{
+            Long weChatId = (Long) session.getAttribute("wechat_id");
+            List<Map<String, Object>> rows = specialtySpecificationFeignClient.getSpecificationDetailBySpecialtyId(id, weChatId);
+            j.setObj(rows);
+            j.setSuccess(true);
+            j.setMsg("操作成功");
+        }catch(Exception e){
             e.printStackTrace();
             j.setSuccess(false);
             j.setMsg("操作失败");

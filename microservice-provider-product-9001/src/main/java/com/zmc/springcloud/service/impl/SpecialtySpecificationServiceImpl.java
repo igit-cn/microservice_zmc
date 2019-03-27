@@ -201,6 +201,15 @@ public class SpecialtySpecificationServiceImpl implements SpecialtySpecification
         return rows;
     }
 
+    @Override
+    public List<Map<String, Object>> getSpecificationDetailBySpecialtyId(Long specialtyId, Long wechatId) throws Exception{
+        SpecialtySpecification srows = specialtySpecificationMapper.findById(specialtyId);
+        List<SpecialtySpecification> list = new ArrayList<>();
+        list.add(srows);
+        List<Map<String, Object>> rows = filterSpecificationPrice(doSpecialtyList(list, wechatId));
+        return rows;
+    }
+
     /**
      * 获取父规格
      */

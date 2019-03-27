@@ -59,4 +59,10 @@ public class SpecialtySpecificationControllerApi {
     public List<Map<String, Object>> getSpecificationDetailBySpecialtyIdAndWechatId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId) throws Exception{
         return specialtySpecificationService.getSpecificationDetailBySpecialtyIdAndWechatId(specialtyId, wechatId);
     }
+
+    /** 客户端-商品规格详情*/
+    @GetMapping("/product/specfication/detail_2")
+    public List<Map<String, Object>> getSpecificationDetailBySpecialtyId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId) throws Exception{
+        return specialtySpecificationService.getSpecificationDetailBySpecialtyId(specialtyId, wechatId);
+    }
 }

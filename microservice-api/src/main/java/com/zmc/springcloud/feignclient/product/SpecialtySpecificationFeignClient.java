@@ -39,4 +39,8 @@ public interface SpecialtySpecificationFeignClient {
     /** 客户端-商品详情*/
     @GetMapping("/product/specification/detail")
     List<Map<String, Object>> getSpecificationDetailBySpecialtyIdAndWechatId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId);
+
+    /** 客户端-商品规格详情*/
+    @GetMapping("/product/specfication/detail_2")
+    List<Map<String, Object>> getSpecificationDetailBySpecialtyId(@RequestParam("specialtyId") Long specialtyId, @RequestParam("wechatId")Long wechatId);
 }
