@@ -15,9 +15,9 @@ import java.util.Map;
  */
 @FeignClient(name = "microservicecloud-order")
 public interface BusinessOrderFeignClient {
-    @RequestMapping(value = "/order/create",method = RequestMethod.GET)
+    @RequestMapping(value = "/order/create", method = RequestMethod.GET)
     Map<String, Object> createOrder(@RequestParam("map") HashMap<String, Object> map);
 
-    @RequestMapping("/order/updateafter")
-    void updateOrderAfterPay(@RequestParam String orderId);
+    @RequestMapping(value = "/order/updateafter", method = RequestMethod.GET)
+    void updateOrderAfterPay(@RequestParam("orderId") String orderId);
 }

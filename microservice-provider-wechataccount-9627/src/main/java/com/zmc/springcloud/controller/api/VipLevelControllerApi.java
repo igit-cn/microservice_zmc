@@ -18,7 +18,7 @@ public class VipLevelControllerApi {
     private ViplevelService viplevelService;
 
     @RequestMapping("/viplevel/wechataccount/{wechataccountid}")
-    public Viplevel getViplevelBywechataccountId(@PathVariable Long wechataccountid){
+    public Viplevel getViplevelBywechataccountId(@PathVariable("wechataccountid") Long wechataccountid){
         return  viplevelService.getViplevelBywechataccountId(wechataccountid);
     }
 }

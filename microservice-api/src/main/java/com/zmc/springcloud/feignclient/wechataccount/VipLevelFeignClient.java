@@ -13,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "microservicecloud-wechataccount")
 public interface VipLevelFeignClient {
     @RequestMapping("/viplevel/wechataccount/{wechataccountid}")
-    Viplevel getViplevelBywechataccountId(@PathVariable Long wechataccountid);
+    Viplevel getViplevelBywechataccountId(@PathVariable("wechataccountid") Long wechataccountid);
 }

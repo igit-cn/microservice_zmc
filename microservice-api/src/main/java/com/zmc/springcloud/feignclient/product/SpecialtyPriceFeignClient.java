@@ -4,6 +4,7 @@ import com.zmc.springcloud.entity.SpecialtyPrice;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by xyy on 2019/1/19.
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "microservicecloud-product")
 public interface SpecialtyPriceFeignClient {
     @RequestMapping(value = "/product/price")
-    SpecialtyPrice getSpecialtyPrice(@PathVariable("specialtySpecificationId") Long specialtySpecificationId, @PathVariable("isActive") Boolean isActive);
+    SpecialtyPrice getSpecialtyPrice(@RequestParam("specialtySpecificationId") Long specialtySpecificationId, @RequestParam("isActive") Boolean isActive);
 }

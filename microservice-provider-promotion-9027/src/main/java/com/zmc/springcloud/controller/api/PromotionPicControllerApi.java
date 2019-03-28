@@ -20,7 +20,7 @@ public class PromotionPicControllerApi {
     private HyPromotionPicService hyPromotionPicService;
 
     @RequestMapping(value = "/promotion/pic/{promotionId}")
-    public List<HyPromotionPic> getHyPromotionPicListByPromotionId(@PathVariable Long promotionId) throws Exception{
+    public List<HyPromotionPic> getHyPromotionPicListByPromotionId(@PathVariable("promotionId") Long promotionId) throws Exception{
         return hyPromotionPicService.getHyPromotionPicListByPromotionId(promotionId);
     }
 }

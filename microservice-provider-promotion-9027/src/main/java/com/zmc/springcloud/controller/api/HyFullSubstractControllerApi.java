@@ -20,7 +20,7 @@ public class HyFullSubstractControllerApi {
     private HyFullSubstractService hyFullSubstractService;
 
     @RequestMapping(value = "/hyfullsubstract/list/{promotionId}")
-    public List<HyFullSubstract> getHyFullSubstractListByPromotionId(@PathVariable Long promotionId) throws Exception{
+    public List<HyFullSubstract> getHyFullSubstractListByPromotionId(@PathVariable("promotionId") Long promotionId) throws Exception{
         return hyFullSubstractService.getHyFullSubstractListByPromotionId(promotionId);
     }
 }

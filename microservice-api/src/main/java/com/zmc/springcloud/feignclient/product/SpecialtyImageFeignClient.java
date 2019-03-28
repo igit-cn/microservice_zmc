@@ -15,5 +15,5 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-product")
 public interface SpecialtyImageFeignClient {
     @RequestMapping("/product/image/{specialtyId}")
-    List<SpecialtyImage> getSpecialtyImageListBySpecialtyId(@PathVariable Long specialtyId);
+    List<SpecialtyImage> getSpecialtyImageListBySpecialtyId(@PathVariable("specialtyId") Long specialtyId);
 }

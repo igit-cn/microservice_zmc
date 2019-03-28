@@ -15,5 +15,5 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-promotion")
 public interface HyPromotionPicFeignClient {
     @RequestMapping(value = "/promotion/pic/{promotionId}")
-    List<HyPromotionPic> getHyPromotionPicListByPromotionId(@PathVariable Long promotionId);
+    List<HyPromotionPic> getHyPromotionPicListByPromotionId(@PathVariable("promotionId") Long promotionId);
 }

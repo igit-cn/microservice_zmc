@@ -20,7 +20,7 @@ public class SpecialtyImageControllerApi {
     private SpecialtyImageService specialtyImageService;
 
     @RequestMapping("/product/image/{specialtyId}")
-    public List<SpecialtyImage> getSpecialtyImageListBySpecialtyId(@PathVariable Long specialtyId) throws Exception{
+    public List<SpecialtyImage> getSpecialtyImageListBySpecialtyId(@PathVariable("specialtyId") Long specialtyId) throws Exception{
         return specialtyImageService.getSpecialtyImageList(specialtyId);
     }
 }

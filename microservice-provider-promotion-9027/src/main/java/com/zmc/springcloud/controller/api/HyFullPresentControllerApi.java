@@ -20,7 +20,7 @@ public class HyFullPresentControllerApi {
     private HyFullPresentService hyFullPresentService;
 
     @RequestMapping(value = "/hyfullpresent/list/{promotionId}")
-    public List<HyFullPresent> getHyFullPresentListByPromotionId(@PathVariable Long promotionId) throws Exception{
+    public List<HyFullPresent> getHyFullPresentListByPromotionId(@PathVariable("promotionId") Long promotionId) throws Exception{
         return hyFullPresentService.getHyFullPresentListByPromotionId(promotionId);
     }
 }

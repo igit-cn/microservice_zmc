@@ -15,5 +15,5 @@ import java.util.List;
 @FeignClient(name = "microservicecloud-promotion")
 public interface HyFullSubstractFeignClient {
     @RequestMapping(value = "/hyfullsubstract/list/{promotionId}")
-    List<HyFullSubstract> getHyFullSubstractListByPromotionId(@PathVariable Long promotionId);
+    List<HyFullSubstract> getHyFullSubstractListByPromotionId(@PathVariable("promotionId") Long promotionId);
 }

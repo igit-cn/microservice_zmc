@@ -78,24 +78,24 @@ public class StringUtil {
      * @param str
      * @return String
      */
-    public static String encodeString(String str) {
-        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-        return encoder.encodeBuffer(str.getBytes()).trim();
-    }
-
-    /**
-     * Decode a string using Base64 encoding.
-     *
-     * @param str
-     * @return String
-     */
-    public static String decodeString(String str) {
-        sun.misc.BASE64Decoder dec = new sun.misc.BASE64Decoder();
-        try {
-            return new String(dec.decodeBuffer(str));
-        } catch (IOException io) {
-            throw new RuntimeException(io.getMessage(), io.getCause());
-        }
-    }
+//    public static String encodeString(String str) {
+//        sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
+//        return encoder.encodeBuffer(str.getBytes()).trim();
+//    }
+//
+//    /**
+//     * Decode a string using Base64 encoding.
+//     *
+//     * @param str
+//     * @return String
+//     */
+//    public static String decodeString(String str) {
+//        sun.misc.BASE64Decoder dec = new sun.misc.BASE64Decoder();
+//        try {
+//            return new String(dec.decodeBuffer(str));
+//        } catch (IOException io) {
+//            throw new RuntimeException(io.getMessage(), io.getCause());
+//        }
+//    }
 }
 
