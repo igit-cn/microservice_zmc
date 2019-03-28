@@ -18,5 +18,5 @@ public interface VipFeignClient {
     void setVip318(@RequestBody WechatAccount wechatAccount, @RequestParam("money") BigDecimal money);
 
     @RequestMapping("/viplevel/wechataccount/{wechataccountid}")
-    Viplevel getViplevelBywechataccountId(@PathVariable Long wechataccountid);
+    Viplevel getViplevelBywechataccountId(@PathVariable("wechataccountid") Long wechataccountid);
 }

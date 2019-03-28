@@ -3,6 +3,7 @@ package com.zmc.springcloud.feignclient.wechataccount;
 import com.zmc.springcloud.entity.WeDivideModel;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface WeDivideModelFeignClient {
      * 根据提成模型类型和isValid获取WeDivideModel的列表
      */
     @GetMapping("/wedividemodel/list")
-    List<WeDivideModel> getWeDivideModelListByModelTypeAndIsValid(String modelType, Boolean isValid);
+    List<WeDivideModel> getWeDivideModelListByModelTypeAndIsValid(@RequestParam("modelType") String modelType, @RequestParam("isValid")Boolean isValid);
 }
